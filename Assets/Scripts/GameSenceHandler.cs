@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class GameSenceHandler : MonoBehaviour
 {
+
+    string[] directions = new string[4]{"N", "E", "S", "W"};
     // Start is called before the first frame update
     void Start()
     {
@@ -16,6 +18,45 @@ public class GameSenceHandler : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public string oppositeDir(string dir)
+    {
+        if (dir == "N")
+        {
+            return "S";
+        } else if (dir == "S") {
+            return "N";
+        } else if (dir == "E") {
+            return "W";
+        } else if (dir == "W") {
+            return "E";
+        } else if (dir == "U") {
+            return "D";
+        } else if (dir == "D") {
+            return "U";
+        }
+        return "U";
+    }
+
+    public string nextDir(string dir) {
+        int dirIndex = directions.ToList().FindIndex(c => c == dir);
+        dirIndex += 1;
+        if (dirIndex == 4)
+        {
+            dirIndex = 0;
+        }
+        return directions[dirIndex];
+    }
+
+    public string prevDir(string dir) {
+        int dirIndex = directions.ToList().FindIndex(c => c == dir);
+        dirIndex -= 1;
+        if (dirIndex == -1)
+        {
+            dirIndex = 3;
+        }
+        return directions[dirIndex];
     }
 
     public Vector3Int makeV3Int(int x, int y, int z)
@@ -44,7 +85,7 @@ public class GameSenceHandler : MonoBehaviour
         return combineCoords;
     }
 
-    public bool IsConnectionPossible(Bricks brick, Vector3Int placementCordinates, List<char> placementDirections)
+    public bool IsConnectionPossible(Bricks brick, Vector3Int placementCordinates, List<string> placementDirections)
     {
         foreach (var dir in brick.directions)
         {

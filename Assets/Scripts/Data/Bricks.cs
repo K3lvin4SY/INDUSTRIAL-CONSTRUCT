@@ -4,21 +4,24 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 
 [CreateAssetMenu(fileName = "GameSence", menuName = "Game/Bricks")]
-public class Bricks : ScriptableObject
+public class Bricks// : ScriptableObject
 {
     public Belt belt;
     public Tile tile;
     public Vector3Int cordinates;
-    public List<char> directions;
-    public List<char> inputDirections;
-    public List<char> outputDirections;
+    public List<string> directions;
+    public List<string> inputDirections;
+    public List<string> outputDirections;
 
     public GameItem storage;
 
-    public void Creation(Tile cTile, Vector3Int coords, List<char> inputDir, List<char> outputDir)
+    public Bricks(Tile cTile, Vector3Int coords, List<string> inputDir, List<string> outputDir, Belt cBelt)
     {
-        Bricks newBrick = new Bricks();
-        newBrick.tile = cTile;
-        newBrick.cordinates = coords;
+        
+        tile = cTile;
+        cordinates = coords;
+        inputDirections = inputDir;
+        outputDirections = outputDir;
+        belt = cBelt;
     }
 }
