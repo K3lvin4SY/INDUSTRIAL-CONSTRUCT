@@ -8,13 +8,14 @@ public class BrickSaveManager : MonoBehaviour
     public static string directory = "../Data/";
     public static string fileName = "Bricks.json";
     
-    public static void Save(Bricks so)
+    public static void Save()
     {
 
     }
 
+/*
     public static Bricks load()
     {
         
-    }
+    }//*/
 }
