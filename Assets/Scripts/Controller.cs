@@ -10,6 +10,7 @@ public class Controller : MonoBehaviour
 
     public GameObject brickPicker;
     public GameObject main;
+    public GameObject gameUI;
     public GameObject grid;
     public GameObject pauseMenu;
     public GameObject optionsMenu;
@@ -57,6 +58,12 @@ public class Controller : MonoBehaviour
     }
 
     public void UseWindow(GameObject winPick) {
+        if (winPick == main)
+        {
+            gameUI.SetActive(true);
+        } else {
+            gameUI.SetActive(false);
+        }
         if (winPick.activeSelf)
         {
             if (winPick == optionsMenu)

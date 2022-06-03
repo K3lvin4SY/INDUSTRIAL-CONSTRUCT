@@ -11,7 +11,7 @@ public class MousePosition2D : MonoBehaviour
     public Vector3Int location;
     
     public Tilemap map;
-    public Tile tile;
+    public static Tile tile;
     public Tile selectTileBlock;
     public Tile selectTileSlab;
 
@@ -26,7 +26,8 @@ public class MousePosition2D : MonoBehaviour
 
     private void Start() {
         Debug.Log("test1");
-        Debug.Log(tile.name);
+        MousePosition2D.tile = GetTileByName("simple_grass_block");
+        Debug.Log(MousePosition2D.tile.name);
         //tile = pgScript.tilePick;
     }
 
@@ -67,7 +68,6 @@ public class MousePosition2D : MonoBehaviour
         }
         return true;
     }
-    
 
     private void Update() {
         /*populateGrid pgScript = new populateGrid();
@@ -127,7 +127,7 @@ public class MousePosition2D : MonoBehaviour
             buildPath();
             if (availableZ.Count != 0)
             {
-                if (tile.name.StartsWith("conveyor") && tile.name.Contains("straight"))
+                if (MousePosition2D.tile.name.StartsWith("conveyor") && MousePosition2D.tile.name.Contains("straight"))
                 //if (true)
                 {
                     updatePath();
@@ -240,7 +240,7 @@ public class MousePosition2D : MonoBehaviour
     private string getBrickType(string mode = "default") {
         if (mode == "default")
         {
-            if (tile.name.ToLower().Contains("block"))
+            if (MousePosition2D.tile.name.ToLower().Contains("block"))
             {
                 return "block";
             } else {
@@ -338,18 +338,17 @@ public class MousePosition2D : MonoBehaviour
             
         }
         // remove unavailable 3x3 spaces 
-        if (tile.name.Contains("3x3"))
+        if (MousePosition2D.tile.name.Contains("3x3"))
         {
             availableZ.AddRange(aditionalZ);
             aditionalZ.Clear();
-            GameSenceHandler gmh = new GameSenceHandler();
             for (int i = 0; i < 21; i++)
             {
                 if (!availableZ.Contains(i))
                 {
                     tempLocation.z = i;
 
-                    BoundsInt cellBox = new BoundsInt(gmh.GetDirV3("SWD", tempLocation), gmh.makeV3Int(3, 3, 1));
+                    BoundsInt cellBox = new BoundsInt(GameSenceHandler.GetDirV3("SWD", tempLocation), GameSenceHandler.makeV3Int(3, 3, 1));
                     TileBase[] tileBox = map.GetTilesBlock(cellBox);
                     List<bool> tileBoxCheck = new List<bool>();
                     foreach (var item in tileBox)
@@ -371,7 +370,7 @@ public class MousePosition2D : MonoBehaviour
                     {
                         aditionalZ.Add(i);
                     } else {
-                        cellBox = new BoundsInt(gmh.GetDirV3("SW", tempLocation), gmh.makeV3Int(3, 3, 4));
+                        cellBox = new BoundsInt(GameSenceHandler.GetDirV3("SW", tempLocation), GameSenceHandler.makeV3Int(3, 3, 4));
                         tileBox = map.GetTilesBlock(cellBox);
                         tileBox = tileBox.Where((source, index) =>index != 16).ToArray();
                         bool[] tileBoxCheck2 = tileBox.Select(s => !(s == null)).ToArray();
@@ -445,7 +444,7 @@ public class MousePosition2D : MonoBehaviour
 
     private void rotateBrick() {
         char[] directions = new char[4]{'N', 'E', 'S', 'W'};
-        string currentBrickName = tile.name;
+        string currentBrickName = MousePosition2D.tile.name;
         char brickNameDirection = currentBrickName[0];
         if (!directions.Contains(brickNameDirection)) // if current brick cant be rotated
         {
@@ -473,14 +472,14 @@ public class MousePosition2D : MonoBehaviour
         }
         
         Debug.Log(newTileName);
-        tile = GetTileByName(newTileName);
+        MousePosition2D.tile = GetTileByName(newTileName);
     }
 
     
     public void placeBlock() {
         if (Input.GetMouseButtonDown(0))
         {
-            map.SetTile(selectorLocation, tile);
+            map.SetTile(selectorLocation, MousePosition2D.tile);
 
             if (!Input.GetKey(KeyCode.LeftControl)) {
                 placeSelectorBox(true); // for updating the solector box on top of the place object

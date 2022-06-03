@@ -7,19 +7,24 @@ using UnityEngine.Tilemaps;
 
 public class Belt// : ScriptableObject
 {
-    public Dictionary<int, Bricks> subCordinates;
+    public List<Bricks> subCordinates;
+    //public Dictionary<int, Bricks> subCordinates;
     public List<GameItem> storage;
-    GameSenceHandler gmh = new GameSenceHandler();
     
 
     
 
-    public void Main(Dictionary<Vector3Int, Tile> path) {
+    /// <summary>
+    /// It takes a dictionary of Vector3Ints and Tiles, and returns a dictionary of Vector3Ints and
+    /// Tiles
+    /// It Creates the belt from a given dictionary of Vector3Ints and Tiles
+    /// </summary>
+    /// <param name="path">The path that the player is currently on.</param>
+    public Belt(Dictionary<Vector3Int, Tile> path) {
         int indexNumber = -1;
         int pathIndex = -1;
         string lastPut = "X";
-        Belt newBelt = new Belt();
-        newBelt.subCordinates = new Dictionary<int, Bricks>();
+        subCordinates = new List<Bricks>();
         foreach (var (coords, tile) in path)
         {
             indexNumber += 1;
@@ -33,33 +38,32 @@ public class Belt// : ScriptableObject
             
             Tile bTile = tile;
             Vector3Int bCordinates = coords;
-            Belt bBelt = newBelt;
             List<string> bOutputDirections = new List<string>();
             List<string> bInputDirections = new List<string>();
             string tileDir = tile.name[0].ToString();
             if (lastPut == "X") // if this is first in list (since if X isn't vhanged it is the first in the list)
             {
-                if (!path.Keys.ToList().Contains(gmh.GetDirV3(tileDir, coords)) || !path.Keys.ToList().Contains(gmh.GetDirV3(tileDir, gmh.makeV3Int(coords.x, coords.y, coords.z-1)))) // if path connected to dir of path begining
+                if (!path.Keys.ToList().Contains(GameSenceHandler.GetDirV3(tileDir, coords)) || !path.Keys.ToList().Contains(GameSenceHandler.GetDirV3(tileDir, GameSenceHandler.makeV3Int(coords.x, coords.y, coords.z-1)))) // if path connected to dir of path begining
                 {
                     bInputDirections.Add(tileDir);
                     if (tile.name.ToLower().Contains("bend"))
                     {
-                        bOutputDirections.Add(gmh.nextDir(tileDir));
-                        lastPut = gmh.nextDir(tileDir);
+                        bOutputDirections.Add(GameSenceHandler.nextDir(tileDir));
+                        lastPut = GameSenceHandler.nextDir(tileDir);
                     } else if (tile.name.ToLower().Contains("straight"))
                     {
-                        bOutputDirections.Add(gmh.oppositeDir(tileDir));
+                        bOutputDirections.Add(GameSenceHandler.oppositeDir(tileDir));
                     }
                     
                 } else
                 {
                     if (tile.name.ToLower().Contains("bend"))
                     {
-                        bInputDirections.Add(gmh.nextDir(tileDir));
+                        bInputDirections.Add(GameSenceHandler.nextDir(tileDir));
                     
                     } else if (tile.name.ToLower().Contains("straight"))
                     {
-                        bInputDirections.Add(gmh.oppositeDir(tileDir));
+                        bInputDirections.Add(GameSenceHandler.oppositeDir(tileDir));
                     }
                     bOutputDirections.Add(tileDir);
                     lastPut = tileDir;
@@ -68,18 +72,18 @@ public class Belt// : ScriptableObject
                 break;
             } // -----------------------------------------
             // if brick in miidle of path
-            bInputDirections.Add(gmh.oppositeDir(lastPut));
+            bInputDirections.Add(GameSenceHandler.oppositeDir(lastPut));
 
             if (tile.name.ToLower().Contains("straight")) // if conveyor is straight
             {
                 bInputDirections.Add(lastPut);
-                lastPut = lastPut;
+                //lastPut = lastPut;
             } else if (tile.name.ToLower().Contains("eli")) // if conveyor is an elivator (going up or down)
             {
                 if (tile.name.ToLower().Contains("elip")) // if conbveruor is a pipe
                 {
                     bOutputDirections.Add(lastPut);
-                    lastPut = lastPut;
+                    //lastPut = lastPut;
                 } else { // all elivator entrencases
                     if (path.Values.ToList()[indexNumber-1].name.Contains("elip")) // if converor before was a pipe
                     {
@@ -94,17 +98,26 @@ public class Belt// : ScriptableObject
                 
             } else if (tile.name.ToLower().Contains("bend")) // if conveoyor is a bend
             {
-                if (gmh.oppositeDir(lastPut) == tileDir)
+                if (GameSenceHandler.oppositeDir(lastPut) == tileDir)
                 {
-                    bOutputDirections.Add(gmh.nextDir(tileDir));
-                    lastPut = gmh.nextDir(tileDir);
+                    bOutputDirections.Add(GameSenceHandler.nextDir(tileDir));
+                    lastPut = GameSenceHandler.nextDir(tileDir);
                 } else {
-                    bOutputDirections.Add(gmh.prevDir(tileDir));
-                    lastPut = gmh.prevDir(tileDir);
+                    bOutputDirections.Add(GameSenceHandler.prevDir(tileDir));
+                    lastPut = GameSenceHandler.prevDir(tileDir);
                 }
             }
-            Bricks newBrick = new Bricks(bTile, bCordinates, bInputDirections, bOutputDirections, bBelt);
-            newBelt.subCordinates.Add(pathIndex, newBrick);
+            Bricks newBrick = new Bricks(bTile, bCordinates, bInputDirections, bOutputDirections, this);
+            subCordinates.Add(newBrick);
+        }
+    }
+
+    public void AddToBelt(Bricks brick, bool last)
+    {
+        if (last) {
+            subCordinates.Add(brick);
+        } else {
+            subCordinates.Insert(0, brick);
         }
     }
 }

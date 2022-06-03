@@ -17,7 +17,6 @@ public class Bricks// : ScriptableObject
 
     public Bricks(Tile cTile, Vector3Int coords, List<string> inputDir, List<string> outputDir, Belt cBelt)
     {
-        
         tile = cTile;
         cordinates = coords;
         inputDirections = inputDir;

@@ -15,14 +15,13 @@ public class populateGrid : MonoBehaviour
 
     private MousePosition2D sn;
 
-    public Tile tilePick;
-    public String tilePick2;
+    public static Tile tilePick;
 
     public Dictionary<Sprite, Tile> sprites = new Dictionary<Sprite, Tile>();
 
     private void Start() {
         Populate();
-        SelectedBrick.sprite = tilePick.sprite;
+        SelectedBrick.sprite = MousePosition2D.tile.sprite;
         /*MousePosition2D sn = gameObject.GetComponent<MousePosition2D>();
         Debug.Log(sn.GetTileByName("simple_grass_block").name);//*/
     }
@@ -30,6 +29,7 @@ public class populateGrid : MonoBehaviour
     private void Update() {
         
         //sn.tile = tilePick;
+        SelectedBrick.sprite = MousePosition2D.tile.sprite;
     }
 
     private void GetSpriteByName() {
@@ -74,7 +74,7 @@ public class populateGrid : MonoBehaviour
         MousePosition2D sn = gameObject.GetComponent<MousePosition2D>();
         SelectedBrick.sprite = tilei.sprite;
         tilePick = tilei;
-        tilePick2 = tilei.name;
+        MousePosition2D.tile = tilei;
     }
 
 }

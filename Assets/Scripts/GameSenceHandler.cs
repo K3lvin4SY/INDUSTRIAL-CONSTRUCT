@@ -20,26 +20,20 @@ public class GameSenceHandler : MonoBehaviour
         
     }
 
-    public string oppositeDir(string dir)
+    public static string oppositeDir(string dir)
     {
-        if (dir == "N")
+        string[] directions = new string[4]{"N", "E", "S", "W"};
+        int dirIndex = directions.ToList().FindIndex(c => c == dir);
+        dirIndex += 2;
+        if (dirIndex == 4)
         {
-            return "S";
-        } else if (dir == "S") {
-            return "N";
-        } else if (dir == "E") {
-            return "W";
-        } else if (dir == "W") {
-            return "E";
-        } else if (dir == "U") {
-            return "D";
-        } else if (dir == "D") {
-            return "U";
+            dirIndex = 0;
         }
-        return "U";
+        return directions[dirIndex];
     }
 
-    public string nextDir(string dir) {
+    public static string nextDir(string dir) {
+        string[] directions = new string[4]{"N", "E", "S", "W"};
         int dirIndex = directions.ToList().FindIndex(c => c == dir);
         dirIndex += 1;
         if (dirIndex == 4)
@@ -49,7 +43,8 @@ public class GameSenceHandler : MonoBehaviour
         return directions[dirIndex];
     }
 
-    public string prevDir(string dir) {
+    public static string prevDir(string dir) {
+        string[] directions = new string[4]{"N", "E", "S", "W"};
         int dirIndex = directions.ToList().FindIndex(c => c == dir);
         dirIndex -= 1;
         if (dirIndex == -1)
@@ -59,13 +54,13 @@ public class GameSenceHandler : MonoBehaviour
         return directions[dirIndex];
     }
 
-    public Vector3Int makeV3Int(int x, int y, int z)
+    public static Vector3Int makeV3Int(int x, int y, int z)
     {
         Vector3Int newV3I = new Vector3Int(x, y, z);
         return newV3I;
     }
 
-    public Vector3Int GetDirV3(string dir, Vector3Int coords, int distance = 1) {
+    public static Vector3Int GetDirV3(string dir, Vector3Int coords, int distance = 1) {
         Dictionary<string, Vector3Int> dirConvertDic = new Dictionary<string, Vector3Int>();
         dirConvertDic.Add("N", makeV3Int(0, 1*distance, 0));
         dirConvertDic.Add("E", makeV3Int(1*distance, 0, 0));
@@ -85,7 +80,7 @@ public class GameSenceHandler : MonoBehaviour
         return combineCoords;
     }
 
-    public bool IsConnectionPossible(Bricks brick, Vector3Int placementCordinates, List<string> placementDirections)
+    public static bool IsConnectionPossible(Bricks brick, Vector3Int placementCordinates, List<string> placementDirections)
     {
         foreach (var dir in brick.directions)
         {
