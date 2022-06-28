@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-[CreateAssetMenu(fileName = "GameSence", menuName = "Game/Bricks")]
+//[CreateAssetMenu(fileName = "GameSence", menuName = "Game/Bricks")]
 public class Bricks// : ScriptableObject
 {
     public Belt belt;
