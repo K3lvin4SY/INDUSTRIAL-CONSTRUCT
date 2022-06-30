@@ -30,9 +30,13 @@ public class Controller : MonoBehaviour
     void Update()
     {
         PauseMenuHandler();
-        if (main.activeSelf) // only activate if game isn't paused
+        if (!(pauseMenu.activeSelf || optionsMenu.activeSelf))
         {
             BrickSelector();
+        }
+        if (main.activeSelf) // only activate if game isn't paused
+        {
+            
 
             //In-Game Stuff
             GameTools();
@@ -118,7 +122,7 @@ public class Controller : MonoBehaviour
                     return;
                 }
             }
-        }
+        }//*/
         if (winPick == main)
         {
             gameUI.SetActive(true);

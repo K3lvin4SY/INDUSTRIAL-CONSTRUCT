@@ -24,7 +24,7 @@ public class MousePosition2D : MonoBehaviour
 
     private void Start() {
         Debug.Log("test1");
-        MousePosition2D.tile = GetTileByName("simple_grass_block");
+        MousePosition2D.tile = GetTileByName("E-conveyor_Straight_slab");
         Debug.Log(MousePosition2D.tile.name);
         //tile = pgScript.tilePick;
     }
@@ -211,11 +211,17 @@ public class MousePosition2D : MonoBehaviour
                 {
                     if (buildingBlock == "default")
                     {
-                        if (getBrickType(buildingBlock) == "block") // chooses which type of block selector to use
+                        /*if (getBrickType(buildingBlock) == "block") // chooses which type of block selector to use
                         {
                             map.SetTile(location, GetTileByName("selectorBoxBlock"));
                         } else {
                             map.SetTile(location, GetTileByName("selectorBoxSlab"));
+                        }//*/
+                        if (getBrickType(buildingBlock) == "block") // chooses which type of block selector to use
+                        {
+                            map.SetTile(location, GetTileByName(MousePosition2D.tile.name.Replace("block", "") + "SelectorBox_block"));
+                        } else {
+                            map.SetTile(location, GetTileByName(MousePosition2D.tile.name.Replace("slab", "") + "SelectorBox_slab"));
                         }
                     } else {
                         map.SetTile(location, GetTileByName(buildingBlock/*+"sb"*/));
@@ -485,6 +491,7 @@ public class MousePosition2D : MonoBehaviour
         
         Debug.Log(newTileName);
         MousePosition2D.tile = GetTileByName(newTileName);
+        placeSelectorBox(update: true);
     }
 
     

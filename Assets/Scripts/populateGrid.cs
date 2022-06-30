@@ -21,7 +21,7 @@ public class populateGrid : MonoBehaviour
 
     private void Start() {
         Populate();
-        SelectedBrick.sprite = MousePosition2D.tile.sprite;
+        //SelectedBrick.sprite = MousePosition2D.tile.sprite;
         /*MousePosition2D sn = gameObject.GetComponent<MousePosition2D>();
         Debug.Log(sn.GetTileByName("simple_grass_block").name);//*/
     }

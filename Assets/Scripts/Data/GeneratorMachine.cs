@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class GeneratorMachine : MonoBehaviour
 {
-    public Bricks brick;
+    /*public Bricks brick;
     int maxOutStorage = 999;
     public GameItem outStorage;
-    public List<char> inputDirections;
+    public List<char> inputDirections;*/
 }
