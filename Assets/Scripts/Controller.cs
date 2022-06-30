@@ -15,9 +15,11 @@ public class Controller : MonoBehaviour
     public GameObject pauseMenu;
     public GameObject optionsMenu;
     List<GameObject> gameWindows;
+    List<GameObject> inGameWindows;
     void Start()
     {
         gameWindows = new List<GameObject> {brickPicker, main, grid, pauseMenu, optionsMenu};
+        inGameWindows = new List<GameObject> {brickPicker};
         brickPicker.SetActive(false);
         pauseMenu.SetActive(false);
         optionsMenu.SetActive(false);
@@ -28,7 +30,7 @@ public class Controller : MonoBehaviour
     void Update()
     {
         PauseMenuHandler();
-        if (!pauseMenu.activeSelf) // only activate if game isn't paused
+        if (main.activeSelf) // only activate if game isn't paused
         {
             BrickSelector();
 
@@ -40,24 +42,24 @@ public class Controller : MonoBehaviour
     }
 
     void GameTools() {
-        if (Input.GetKeyDown(KeyCode.Alpha0))
+        if (Input.GetKeyDown(KeyCode.Alpha1))
         {   
-            Debug.Log("Pressed 0");
-            GameStateMisc.Build();
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
             Debug.Log("Pressed 1");
-            GameStateMisc.Move();
+            GameStateMisc.Build();
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             Debug.Log("Pressed 2");
-            GameStateMisc.Select();
+            GameStateMisc.Move();
         }
         else if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             Debug.Log("Pressed 3");
+            GameStateMisc.Select();
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            Debug.Log("Pressed 4");
             GameStateMisc.Break();
         }
     }
@@ -108,6 +110,15 @@ public class Controller : MonoBehaviour
     }
 
     public void UseWindow(GameObject winPick) {
+        if (winPick == pauseMenu) {
+            foreach (var win in inGameWindows)
+            {
+                if (win.activeSelf) {
+                    UseWindow(main);
+                    return;
+                }
+            }
+        }
         if (winPick == main)
         {
             gameUI.SetActive(true);

@@ -12,8 +12,6 @@ public class MousePosition2D : MonoBehaviour
     
     public Tilemap map;
     public static Tile tile;
-    public Tile selectTileBlock;
-    public Tile selectTileSlab;
 
     // NOTE: availableZ is a blacklist of z cordinates that you cant place blocks on
     public List<int> availableZ = new List<int>(); // make private
@@ -158,6 +156,20 @@ public class MousePosition2D : MonoBehaviour
         
         placeSelectorBox();
     }
+    /*
+    public void RemoveSelectorBoxes() {
+
+        if (map.GetTile(selectorLocation)) { // if selectorLocation has a tile
+            if (map.GetTile(selectorLocation).name.Contains("SelectorBox")) { // if tile is selectorbox
+                map.SetTile(selectorLocation, null); // clear grid location
+            }
+        }
+        if (map.GetTile(selectorLocation2)) { // if selectorLocation2 has a tile
+            if (map.GetTile(selectorLocation2).name.Contains("SelectorBox")) { // if tile is selectorbox
+                map.SetTile(selectorLocation2, null); // clear grid location
+            }
+        }
+    }*/
 
     private void placeSelectorBox(bool update = false, string buildingBlock = "default", int loc = 1) {
 

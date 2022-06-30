@@ -7,22 +7,10 @@ using UnityEngine;
 public class GameSenceHandler : MonoBehaviour
 {
 
-    string[] directions = new string[4]{"N", "E", "S", "W"};
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    static string[] directions = new string[4]{"N", "E", "S", "W"};
 
     public static string oppositeDir(string dir)
     {
-        string[] directions = new string[4]{"N", "E", "S", "W"};
         int dirIndex = directions.ToList().FindIndex(c => c == dir);
         dirIndex += 2;
         if (dirIndex == 4)
@@ -33,7 +21,6 @@ public class GameSenceHandler : MonoBehaviour
     }
 
     public static string nextDir(string dir) {
-        string[] directions = new string[4]{"N", "E", "S", "W"};
         int dirIndex = directions.ToList().FindIndex(c => c == dir);
         dirIndex += 1;
         if (dirIndex == 4)
@@ -44,7 +31,6 @@ public class GameSenceHandler : MonoBehaviour
     }
 
     public static string prevDir(string dir) {
-        string[] directions = new string[4]{"N", "E", "S", "W"};
         int dirIndex = directions.ToList().FindIndex(c => c == dir);
         dirIndex -= 1;
         if (dirIndex == -1)
