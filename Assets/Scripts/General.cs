@@ -114,8 +114,8 @@ public class General : MonoBehaviour
         {
             //reseting the old selection
             if (map.GetTile(lastLocation)) { // if selectorLocation has a tile
-                    if (map.GetTile(selectorLocation).name.Contains("SelectorBox")) { // if tile is selectorbox
-                        map.SetTile(selectorLocation, null); // clear grid location
+                    if (map.GetTile(lastLocation).name.Contains("selected")) { // if tile is selectorbox
+                        map.SetTile(lastLocation, null); // clear grid location
                     }
                 }
 
