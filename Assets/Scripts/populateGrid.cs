@@ -13,7 +13,7 @@ public class populateGrid : MonoBehaviour
     public GameObject prefab;
     public Image SelectedBrick;
 
-    private MousePosition2D sn;
+    private General sn;
 
     public static Tile tilePick;
 
@@ -29,7 +29,7 @@ public class populateGrid : MonoBehaviour
     private void Update() {
         
         //sn.tile = tilePick;
-        SelectedBrick.sprite = MousePosition2D.tile.sprite;
+        SelectedBrick.sprite = General.tile.sprite;
     }
 
     private void GetSpriteByName() {
@@ -71,10 +71,8 @@ public class populateGrid : MonoBehaviour
 
     public void ChooseBrick(string brickName, Tile tilei) {
         Debug.Log(tilei.name + " was choosen!");
-        MousePosition2D sn = gameObject.GetComponent<MousePosition2D>();
-        SelectedBrick.sprite = tilei.sprite;
         tilePick = tilei;
-        MousePosition2D.tile = tilei;
+        General.tile = tilei;
     }
 
 }

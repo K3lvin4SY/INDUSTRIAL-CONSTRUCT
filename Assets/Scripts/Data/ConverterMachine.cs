@@ -6,7 +6,7 @@ public class ConverterMachine : MonoBehaviour
 {
     public Dictionary<int, Bricks> bricks; // 0 is output, 1 is oposite side input & rest is also input
     //public Vector3Int cordinates;
-    int maxOutStorage = 999, maxInStorage = 999;
+    //int maxOutStorage = 999, maxInStorage = 999;
     public Dictionary<GameItem, int> outStorage;
     public Dictionary<GameItem, int> inStorage;
 

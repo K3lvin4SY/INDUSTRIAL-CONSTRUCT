@@ -11,6 +11,26 @@ public class GameUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        SelectedBrick.sprite = MousePosition2D.tile.sprite;
+        if (General.Instance.gameState == "build")
+        {
+            SelectedBrick.sprite = General.tile.sprite;
+            
+            if (SelectedBrick.enabled == false) {
+                SelectedBrick.enabled = true;
+            }
+            
+        } else if (General.Instance.gameState == "select")
+        {
+            //show selected brick
+
+            if (SelectedBrick.enabled == false) {
+                SelectedBrick.enabled = true;
+            }
+        } else {
+            SelectedBrick.sprite = null;
+            if (SelectedBrick.enabled == true) {
+                SelectedBrick.enabled = false;
+            }
+        }
     }
 }

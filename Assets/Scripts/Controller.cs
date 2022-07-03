@@ -89,6 +89,31 @@ public class Controller : MonoBehaviour
             Debug.Log("Pressing A");
             
         }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            /*GameSenceHandler gmh = new GameSenceHandler();
+            BoundsInt cellBox = new BoundsInt(gmh.GetDirV3("SW", selectorLocation), gmh.makeV3Int(3, 3, 4));
+            tileBox = map.GetTilesBlock(cellBox);
+            tileBoxCheck = tileBox.Select(s => s == null).ToArray();//*/
+            General.Instance.rotateBrick();
+        }
+
+        //*
+        if (Input.GetAxis("Mouse ScrollWheel") > 0f ) // scroll up z pos
+        {
+            General.Instance.ScrollWheelZPos(1);
+        }
+        else if (Input.GetAxis("Mouse ScrollWheel") < 0f ) // scroll down z pos
+        {   
+            General.Instance.ScrollWheelZPos(-1);
+        }
+
+
+        //Debug.Log(Input.mousePosition);
+        if (Input.GetMouseButton(0) || Input.GetMouseButtonUp(0)) {
+            General.Instance.MouseClick();
+        }//*/
     }
 
     void BrickSelector() {

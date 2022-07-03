@@ -6,8 +6,10 @@ using UnityEngine;
 using UnityEditor;
 using UnityEngine.Tilemaps;
 
-public class MousePosition2D : MonoBehaviour
+public class General : MonoBehaviour
 {
+
+    public static General Instance;
     public Vector3Int location;
     
     public Tilemap map;
@@ -15,45 +17,30 @@ public class MousePosition2D : MonoBehaviour
 
     // NOTE: availableZ is a blacklist of z cordinates that you cant place blocks on
     public List<int> availableZ = new List<int>(); // make private
+
+    // NOTE: occupiedZ is a list of z cordinates that player intrecactable blocks are placed on
+    private List<int> occupiedZ = new List<int>();
     private Vector3Int lastLocation;
     private Vector3Int selectorLocation;
     private Vector3Int selectorLocation2;
-
-    private Dictionary<string, Tile> tiles = new Dictionary<string, Tile>();
+    public string gameState;
 
 
     private void Start() {
         Debug.Log("test1");
-        MousePosition2D.tile = GetTileByName("E-conveyor_Straight_slab");
-        Debug.Log(MousePosition2D.tile.name);
+        General.tile = GlobalMethods.GetTileByName("E-conveyor_Straight_slab");
+        Debug.Log(General.tile.name);
+        General.Instance = this;
+        gameState = "select";
         //tile = pgScript.tilePick;
     }
 
+    public void SetGameMode(string mode) {
+        gameState = mode;
+    }
     
 
-    public Tile GetTileByName(string key) {
-        key = key.ToLower();
-        if (!tiles.ContainsKey(key))
-        {
-            string[] assetFiles = Directory.GetFiles("Assets/Tiles/Assets/"); // Gets string array of the tile assets file path
-            assetFiles = assetFiles.Select(s => s.ToLowerInvariant()).ToArray(); // to lowercase
-            bool[] assetFilesCheck = assetFiles.Select(s => s.Contains("selector")).ToArray();
-            
-            if (assetFilesCheck.Contains(true))
-            {
-                string asset = "Assets/Tiles/Assets/"+key+".asset";
-
-                Tile assetTile = (Tile)AssetDatabase.LoadAssetAtPath(asset, typeof(Tile)); // loads the tile asset from path
-                string assetTileName = assetTile.name.ToLower(); // gets the name of the tile
-                tiles[assetTileName] = assetTile; // inserts the data into a dictionary
-                Debug.Log(assetTile.name);
-            } else {
-                Debug.Log("null tile");
-                return null;
-            }
-        }
-        return tiles[key];
-    }
+    
 
 
     private bool minimumZ(Vector3Int loc) { // returns true if given locations z value is the bare minimum allowed (if all z values under is filled/underground) 
@@ -77,65 +64,6 @@ public class MousePosition2D : MonoBehaviour
         location.x = map.WorldToCell(mouseWorldPos).x; // update grid x location
         location.y = map.WorldToCell(mouseWorldPos).y; // update grid y location
 
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            /*GameSenceHandler gmh = new GameSenceHandler();
-            BoundsInt cellBox = new BoundsInt(gmh.GetDirV3("SW", selectorLocation), gmh.makeV3Int(3, 3, 4));
-            tileBox = map.GetTilesBlock(cellBox);
-            tileBoxCheck = tileBox.Select(s => s == null).ToArray();//*/
-            rotateBrick();
-        }
-
-
-        if (Input.GetAxis("Mouse ScrollWheel") > 0f ) // scroll up z pos
-        {
-            do
-            {
-                location.z += 1;
-                
-            } while (availableZ.Contains(location.z));
-            if (availableZ.Count == 0)
-            {
-                location.z += 1;
-            }
-            
-        }
-        else if (Input.GetAxis("Mouse ScrollWheel") < 0f ) // scroll down z pos
-        {   
-            if (!minimumZ(location))
-            {
-                do
-                {
-                    location.z -= 1;
-                } while (availableZ.Contains(location.z));
-            }
-
-            if (availableZ.Count == 0)
-            {
-                if (location.z != 0)
-                {
-                    location.z -= 1;
-                }
-            }
-        }
-
-
-        //Debug.Log(Input.mousePosition);
-        if (Input.GetMouseButton(0) || Input.GetMouseButtonUp(0)) {
-            buildPath();
-            if (availableZ.Count != 0)
-            {
-                if (MousePosition2D.tile.name.StartsWith("conveyor") && MousePosition2D.tile.name.Contains("straight"))
-                //if (true)
-                {
-                    updatePath();
-                } else {
-                    placeBlock();
-                }
-                //return;
-            }
-            return;
-        }
 
         if (map.HasTile(selectorLocation2))
         {
@@ -153,10 +81,20 @@ public class MousePosition2D : MonoBehaviour
         
 
         
+        if (gameState == "build")
+        {
+            placeSelectorBox();
+        } else {
+            RemoveSelectorBoxes();
+        }
+
+        if (gameState == "select")
+        {
+            //add
+        }
         
-        placeSelectorBox();
     }
-    /*
+    //*
     public void RemoveSelectorBoxes() {
 
         if (map.GetTile(selectorLocation)) { // if selectorLocation has a tile
@@ -169,8 +107,22 @@ public class MousePosition2D : MonoBehaviour
                 map.SetTile(selectorLocation2, null); // clear grid location
             }
         }
-    }*/
+    }//*/
 
+    private void markSelectedTile(bool update = false) {
+        if (lastLocation != location || update == true) // runs if pointer have moved to another grid square or if the z position has changed
+        {
+            //reseting the old selection
+            if (map.GetTile(lastLocation)) { // if selectorLocation has a tile
+                    if (map.GetTile(selectorLocation).name.Contains("SelectorBox")) { // if tile is selectorbox
+                        map.SetTile(selectorLocation, null); // clear grid location
+                    }
+                }
+
+            lastLocation.z = location.z;
+            updateZ();
+        }
+    }
     private void placeSelectorBox(bool update = false, string buildingBlock = "default", int loc = 1) {
 
         if (lastLocation != location || update == true) // runs if pointer have moved to another grid square or if the z position has changed
@@ -211,20 +163,9 @@ public class MousePosition2D : MonoBehaviour
                 {
                     if (buildingBlock == "default")
                     {
-                        /*if (getBrickType(buildingBlock) == "block") // chooses which type of block selector to use
-                        {
-                            map.SetTile(location, GetTileByName("selectorBoxBlock"));
-                        } else {
-                            map.SetTile(location, GetTileByName("selectorBoxSlab"));
-                        }//*/
-                        if (getBrickType(buildingBlock) == "block") // chooses which type of block selector to use
-                        {
-                            map.SetTile(location, GetTileByName(MousePosition2D.tile.name.Replace("block", "") + "SelectorBox_block"));
-                        } else {
-                            map.SetTile(location, GetTileByName(MousePosition2D.tile.name.Replace("slab", "") + "SelectorBox_slab"));
-                        }
+                        map.SetTile(location, GlobalMethods.GetTileByName(GlobalMethods.AddTagToBlockName(General.tile.name, "SelectorBox")));
                     } else {
-                        map.SetTile(location, GetTileByName(buildingBlock/*+"sb"*/));
+                        map.SetTile(location, GlobalMethods.GetTileByName(buildingBlock/*+"sb"*/));
                     }
                 }
                 
@@ -255,29 +196,12 @@ public class MousePosition2D : MonoBehaviour
         }
     }
 
-    private string getBrickType(string mode = "default") {
-        if (mode == "default")
-        {
-            if (MousePosition2D.tile.name.ToLower().Contains("block"))
-            {
-                return "block";
-            } else {
-                return "slab";
-            }
-        } else {
-            if (GetTileByName(mode).name.ToLower().Contains("block"))
-            {
-                return "block";
-            } else {
-                return "slab";
-            }
-        }
-        
-    }
+    
 
     private void updateZ(string buildingBlock = "default") {
         
         availableZ.Clear();
+        occupiedZ.Clear();
         // ------------------------------- Creates availableZ list of taken z cordiantes -------------------------------
         Vector3Int tempLocation = location; // temp variable to change without chaneing the real one
         for (int i = 0; i < 21; i++) // loops from 0 to 20. uses i as z value
@@ -285,6 +209,11 @@ public class MousePosition2D : MonoBehaviour
             tempLocation.z = i; // sets i as z value
             if (map.GetTile(tempLocation)) { // if tempLocation is not empty
                 availableZ.Add(i); // add taken Z cordiante to list
+                if (GlobalMethods.isPlayerEditable(map.GetTile(tempLocation).name)) //if tile is conveyor
+                {
+                    occupiedZ.Add(i); // add taken Z cordiante to list
+                }
+                
             }
         }
         tempLocation.z = 0;
@@ -315,7 +244,7 @@ public class MousePosition2D : MonoBehaviour
         foreach (var z in availableZ) // add single z layers if blocktype is block
         {
             tempLocation.z = z;
-            if (getBrickType(buildingBlock) == "block")
+            if (GlobalMethods.getBrickType(buildingBlock) == "block")
             {
                 if (!availableZ.Contains(z+1))
                 {
@@ -343,7 +272,7 @@ public class MousePosition2D : MonoBehaviour
         foreach (var z in availableZ) // add single z layers if blocktype is block
         {
             tempLocation.z = z;
-            if (getBrickType(buildingBlock) == "block")
+            if (GlobalMethods.getBrickType(buildingBlock) == "block")
             {
                 if (z > 0)
                 {
@@ -356,7 +285,7 @@ public class MousePosition2D : MonoBehaviour
             
         }
         // remove unavailable 3x3 spaces 
-        if (MousePosition2D.tile.name.Contains("3x3"))
+        if (General.tile.name.Contains("3x3"))
         {
             availableZ.AddRange(aditionalZ);
             aditionalZ.Clear();
@@ -460,9 +389,44 @@ public class MousePosition2D : MonoBehaviour
         
     }
 
-    private void rotateBrick() {
+    public void ScrollWheelZPos(int direction) {
+        if (!minimumZ(location) || direction == 1)
+        {
+            do
+            {
+                location.z += direction;
+                
+            } while (availableZ.Contains(location.z));
+        }
+        
+        if (availableZ.Count == 0)
+        {
+            if (location.z != 0 || direction == 1)
+            {
+                location.z += direction;
+            }
+        }
+    }
+
+    public void MouseClick() {
+        buildPath();
+            if (availableZ.Count != 0)
+            {
+                if (General.tile.name.StartsWith("conveyor") && General.tile.name.Contains("straight"))
+                //if (true)
+                {
+                    updatePath();
+                } else {
+                    placeBlock();
+                }
+                //return;
+            }
+            return;
+    }
+
+    public void rotateBrick() {
         char[] directions = new char[4]{'N', 'E', 'S', 'W'};
-        string currentBrickName = MousePosition2D.tile.name;
+        string currentBrickName = General.tile.name;
         char brickNameDirection = currentBrickName[0];
         if (!directions.Contains(brickNameDirection)) // if current brick cant be rotated
         {
@@ -490,7 +454,7 @@ public class MousePosition2D : MonoBehaviour
         }
         
         Debug.Log(newTileName);
-        MousePosition2D.tile = GetTileByName(newTileName);
+        General.tile = GlobalMethods.GetTileByName(newTileName);
         placeSelectorBox(update: true);
     }
 
@@ -498,7 +462,7 @@ public class MousePosition2D : MonoBehaviour
     public void placeBlock() {
         if (Input.GetMouseButtonDown(0))
         {
-            map.SetTile(selectorLocation, MousePosition2D.tile);
+            map.SetTile(selectorLocation, General.tile);
 
             if (!Input.GetKey(KeyCode.LeftControl)) {
                 placeSelectorBox(true); // for updating the solector box on top of the place object
