@@ -90,6 +90,11 @@ public class Controller : MonoBehaviour
             
         }
 
+        if (Input.GetKeyDown(KeyCode.LeftControl))
+            {
+                General.Instance.UpdateControlZ();
+            }
+
         if (Input.GetKeyDown(KeyCode.R))
         {
             /*GameSenceHandler gmh = new GameSenceHandler();

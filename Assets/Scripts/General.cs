@@ -68,6 +68,10 @@ public class General : MonoBehaviour
         return true;
     }
 
+    public void UpdateControlZ() {
+        controlZ = location.z;
+    }
+
     private bool maximumZ(Vector3Int loc) {
         for (int i = loc.z+1; i < 21; i++)
         {
@@ -199,22 +203,14 @@ public class General : MonoBehaviour
                 }
             }
             lastLocation.z = location.z;
+            
             updateZ(buildingBlock);
             
             
-            Vector3Int baseLocation = location;
-            baseLocation.z = controlZ;
-            if (map.HasTile(baseLocation)) {
-                baseLocation.z -= 1;
-                if (map.HasTile(baseLocation))
-                {
-                    if (GlobalMethods.getBrickType(map.GetTile(baseLocation).name) != "block")
-                    {
-                        location.z = controlZ;
-                    }
-                } else {
-                    location.z = controlZ;
-                }
+            if (!availableZ.Contains(controlZ) && Input.GetKey(KeyCode.LeftControl))
+            {
+                Debug.Log(controlZ);
+                location.z = controlZ;
             }
 
             if (availableZ.Count == 0)
@@ -403,18 +399,12 @@ public class General : MonoBehaviour
         availableZ.Sort();
         // ------------------------------- End of finalizing availableZ list -------------------------------
 
-        /*if (Input.GetKeyDown(KeyCode.LeftControl))
-        {
-            controlZ = location.z;
-        }//*/
 
         // ctrl hold down stay on height
         if (Input.GetKey(KeyCode.LeftControl))
         {
-            Debug.Log("1");
             if (!map.HasTile(location))
             {   
-                Debug.Log("2");
                 Vector3Int tmpVec = location;
                 tmpVec.z -= 1;
                 if (map.HasTile(tmpVec))
