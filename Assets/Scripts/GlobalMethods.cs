@@ -10,12 +10,11 @@ public class GlobalMethods : MonoBehaviour
 {
 
     private static Dictionary<string, Tile> tiles = new Dictionary<string, Tile>();
-    public static string AddTagToBlockName(string blockName, string tag, bool noTag = true)
+    public static string AddTagToBlockName(string blockName, string tag)
     {
-        if (!noTag)
+        if (doesBlockNameHaveTag(blockName))
         {
-            Debug.Log("Feature not implemented yet");
-            return null;
+            blockName = RemoveTagFromBlockName(blockName);
         }
         if (getBrickType(blockName) == "block") // chooses which type of block selector to use
         {
@@ -24,6 +23,21 @@ public class GlobalMethods : MonoBehaviour
         } else {
             return blockName.Replace("slab", "") + tag + "_slab";
         }
+    }
+
+    public static string RemoveTagFromBlockName(string blockName) {
+        List<string> name = blockName.Split('_').ToList();
+        name.RemoveAt(name.Count - 2);
+        Debug.Log(string.Join("_", name));
+        return string.Join("_", name);
+    }
+
+    private static bool doesBlockNameHaveTag(string blockName) {
+        if (blockName.ToLower().Contains("selected") || blockName.ToLower().Contains("selectorbox"))
+        {
+            return true;
+        }
+        return false;
     }
 
     public static bool isPlayerEditable(string blockName)
@@ -52,6 +66,10 @@ public class GlobalMethods : MonoBehaviour
                 string asset = "Assets/Tiles/Assets/"+key+".asset";
 
                 Tile assetTile = (Tile)AssetDatabase.LoadAssetAtPath(asset, typeof(Tile)); // loads the tile asset from path
+                if (assetTile == null)
+                {
+                    return null;
+                }
                 string assetTileName = assetTile.name.ToLower(); // gets the name of the tile
                 tiles[assetTileName] = assetTile; // inserts the data into a dictionary
                 Debug.Log(assetTile.name);

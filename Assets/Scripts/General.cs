@@ -11,6 +11,8 @@ public class General : MonoBehaviour
 
     public static General Instance;
     public Vector3Int location;
+    private int controlZ; // the z value of the height when control is held down
+    public Sprite selectedSprite;
     
     public Tilemap map;
     public static Tile tile;
@@ -19,7 +21,7 @@ public class General : MonoBehaviour
     public List<int> availableZ = new List<int>(); // make private
 
     // NOTE: occupiedZ is a list of z cordinates that player intrecactable blocks are placed on
-    private List<int> occupiedZ = new List<int>();
+    public List<int> occupiedZ = new List<int>(); // make private
     private Vector3Int lastLocation;
     private Vector3Int selectorLocation;
     private Vector3Int selectorLocation2;
@@ -37,6 +39,9 @@ public class General : MonoBehaviour
 
     public void SetGameMode(string mode) {
         gameState = mode;
+
+        // reset
+        RemoveSelectorBoxes();
     }
     
 
@@ -44,11 +49,38 @@ public class General : MonoBehaviour
 
 
     private bool minimumZ(Vector3Int loc) { // returns true if given locations z value is the bare minimum allowed (if all z values under is filled/underground) 
+        Debug.Log("active");
         for (int i = loc.z-1; i > -1; i--)
         {
-            if (!availableZ.Contains(i))
-            {
-                return false;
+            if (gameState == "build") {
+                if (!availableZ.Contains(i))
+                {
+                    return false;
+                }
+            } else if (gameState == "select") {
+                if (occupiedZ.Contains(i))
+                {
+                    return false;
+                }
+            }
+            
+        }
+        return true;
+    }
+
+    private bool maximumZ(Vector3Int loc) {
+        for (int i = loc.z+1; i < 21; i++)
+        {
+            if (gameState == "build") {
+                if (!availableZ.Contains(i))
+                {
+                    return false;
+                }
+            } else if (gameState == "select") {
+                if (occupiedZ.Contains(i))
+                {
+                    return false;
+                }
             }
         }
         return true;
@@ -84,12 +116,11 @@ public class General : MonoBehaviour
         if (gameState == "build")
         {
             placeSelectorBox();
-        } else {
-            RemoveSelectorBoxes();
         }
 
         if (gameState == "select")
         {
+            markSelectedTile();
             //add
         }
         
@@ -100,6 +131,8 @@ public class General : MonoBehaviour
         if (map.GetTile(selectorLocation)) { // if selectorLocation has a tile
             if (map.GetTile(selectorLocation).name.Contains("SelectorBox")) { // if tile is selectorbox
                 map.SetTile(selectorLocation, null); // clear grid location
+            } else if (map.GetTile(selectorLocation).name.ToLower().Contains("selected")) { // if tile is selectorbox
+                map.SetTile(selectorLocation, GlobalMethods.GetTileByName(GlobalMethods.RemoveTagFromBlockName(map.GetTile(selectorLocation).name))); // turn back to original tile
             }
         }
         if (map.GetTile(selectorLocation2)) { // if selectorLocation2 has a tile
@@ -113,14 +146,35 @@ public class General : MonoBehaviour
         if (lastLocation != location || update == true) // runs if pointer have moved to another grid square or if the z position has changed
         {
             //reseting the old selection
-            if (map.GetTile(lastLocation)) { // if selectorLocation has a tile
-                    if (map.GetTile(lastLocation).name.Contains("selected")) { // if tile is selectorbox
-                        map.SetTile(lastLocation, null); // clear grid location
-                    }
+            if (map.GetTile(selectorLocation)) { // if selectorLocation has a tile
+                if (map.GetTile(selectorLocation).name.Contains("selected")) { // if tile has selected tag
+                    map.SetTile(selectorLocation, GlobalMethods.GetTileByName(GlobalMethods.RemoveTagFromBlockName(map.GetTile(selectorLocation).name))); // turn back to original tile
                 }
+            }
 
             lastLocation.z = location.z;
             updateZ();
+
+            if (map.HasTile(location)) {
+                Tile tmpTile = GlobalMethods.GetTileByName(GlobalMethods.AddTagToBlockName(map.GetTile(location).name, "selected"));
+                if (GlobalMethods.isPlayerEditable(tmpTile.name)) {
+                    map.SetTile(location, tmpTile); // set tile to selected
+                    selectedSprite = tmpTile.sprite; // update selected sprite
+                    selectorLocation = location; // update selectorLocation to current grid location
+                } else {
+                    selectedSprite = null; // update selected sprite
+                }
+            } else {
+                selectedSprite = null; // update selected sprite
+            }
+            
+
+            if (lastLocation.x != location.x || lastLocation.y != location.y)
+            {
+                lastLocation = location;
+            }
+
+
         }
     }
     private void placeSelectorBox(bool update = false, string buildingBlock = "default", int loc = 1) {
@@ -147,8 +201,22 @@ public class General : MonoBehaviour
             lastLocation.z = location.z;
             updateZ(buildingBlock);
             
+            
             Vector3Int baseLocation = location;
-            baseLocation.z = 0;
+            baseLocation.z = controlZ;
+            if (map.HasTile(baseLocation)) {
+                baseLocation.z -= 1;
+                if (map.HasTile(baseLocation))
+                {
+                    if (GlobalMethods.getBrickType(map.GetTile(baseLocation).name) != "block")
+                    {
+                        location.z = controlZ;
+                    }
+                } else {
+                    location.z = controlZ;
+                }
+            }
+
             if (availableZ.Count == 0)
             {
                 if (!Input.GetKey(KeyCode.LeftControl))
@@ -335,7 +403,10 @@ public class General : MonoBehaviour
         availableZ.Sort();
         // ------------------------------- End of finalizing availableZ list -------------------------------
 
-
+        /*if (Input.GetKeyDown(KeyCode.LeftControl))
+        {
+            controlZ = location.z;
+        }//*/
 
         // ctrl hold down stay on height
         if (Input.GetKey(KeyCode.LeftControl))
@@ -348,11 +419,13 @@ public class General : MonoBehaviour
                 tmpVec.z -= 1;
                 if (map.HasTile(tmpVec))
                 {
-                    Debug.Log("ground");
+                    Debug.Log(map.GetTile(tmpVec).name);
                     if (!map.GetTile(tmpVec).name.Contains("block"))
                     {
                         Debug.Log("ground block");
                         return;
+                    } else {
+
                     }
                 } else {
                     return;
@@ -363,14 +436,16 @@ public class General : MonoBehaviour
                 //fix going in ground blocks
                 return;
             }
-            return;
+            //return;
         }
 
 
 
         //
         int lastZ = 0;
-        foreach (var z in availableZ) // finds the first available position from bottom to top and sets that as the z position in the next if statement.
+        if (gameState == "build") {
+            
+            foreach (var z in availableZ) // finds the first available position from bottom to top and sets that as the z position in the next if statement.
             {
                 if (lastZ != z)
                 {
@@ -378,38 +453,73 @@ public class General : MonoBehaviour
                 }
                 lastZ += 1;
             }
-        if (location.z < lastZ) // if current z pos is under the minimum amount
-        {
-            location.z = lastZ;
-        }
-        if (lastLocation.x != location.x || lastLocation.y != location.y) // if change of grid placement (mouse position on grid)
-        {
-            location.z = lastZ;
+            if (location.z < lastZ) // if current z pos is under the minimum amount
+            {
+                location.z = lastZ;
+            }
+            if (lastLocation.x != location.x || lastLocation.y != location.y) // if change of grid placement (mouse position on grid)
+            {
+                location.z = lastZ;
+            }
+        } else if (gameState == "select") {
+            if (occupiedZ.Count > 0) {
+                lastZ = occupiedZ.Last();
+            } else {
+                lastZ = -10;
+            }
+            if (lastLocation.x != location.x || lastLocation.y != location.y) // if change of grid placement (mouse position on grid)
+            {
+                location.z = lastZ;
+            }
         }
         
     }
 
     public void ScrollWheelZPos(int direction) {
-        if (!minimumZ(location) || direction == 1)
+        if (gameState == "build")
         {
-            do
+            if (!minimumZ(location) || direction == 1)
             {
-                location.z += direction;
-                
-            } while (availableZ.Contains(location.z));
-        }
-        
-        if (availableZ.Count == 0)
-        {
-            if (location.z != 0 || direction == 1)
-            {
-                location.z += direction;
+                do
+                {
+                    location.z += direction;
+                    
+                } while (availableZ.Contains(location.z));
             }
+            
+            if (availableZ.Count == 0)
+            {
+                if (location.z != 0 || direction == 1)
+                {
+                    location.z += direction;
+                }
+            }
+        } else if (gameState == "select") {
+            if ((!minimumZ(location) && direction == -1) || (direction == 1 && !maximumZ(location)))
+            {
+                do
+                {
+                    location.z += direction;
+
+                } while (!occupiedZ.Contains(location.z));
+            }
+            
+            /*if (occupiedZ.Count == 0)
+            {
+                if (location.z != 0 || direction == 1)
+                {
+                    location.z += direction;
+                }
+            }//*/
         }
+
+        
     }
 
     public void MouseClick() {
-        buildPath();
+        if (gameState == "build")
+        {
+            buildPath();
             if (availableZ.Count != 0)
             {
                 if (General.tile.name.StartsWith("conveyor") && General.tile.name.Contains("straight"))
@@ -422,40 +532,46 @@ public class General : MonoBehaviour
                 //return;
             }
             return;
+        } else if (gameState == "move") {
+
+        }
     }
 
     public void rotateBrick() {
-        char[] directions = new char[4]{'N', 'E', 'S', 'W'};
-        string currentBrickName = General.tile.name;
-        char brickNameDirection = currentBrickName[0];
-        if (!directions.Contains(brickNameDirection)) // if current brick cant be rotated
+        if (gameState == "build")
         {
-            return;
-        }
-        int dirIndex = directions.ToList().FindIndex(c => c == brickNameDirection);
-        int newDirIndex = dirIndex;
-        string newTileName = "";
-        for (int i = 0; i != 1;)
-        {
-            if (newDirIndex + 1 == 4)
+            char[] directions = new char[4]{'N', 'E', 'S', 'W'};
+            string currentBrickName = General.tile.name;
+            char brickNameDirection = currentBrickName[0];
+            if (!directions.Contains(brickNameDirection)) // if current brick cant be rotated
             {
-                newDirIndex = 0;
-            } else {
-                newDirIndex += 1;
+                return;
             }
-            newTileName = directions[newDirIndex].ToString() + currentBrickName.Substring(1);
-            string[] assetFiles = Directory.GetFiles("Assets/Tiles/Assets/"); // Gets string array of the tile assets file path
-            assetFiles = assetFiles.Select(s => s.ToLowerInvariant()).ToArray(); // to lowercase
-            bool[] assetFilesCheck = assetFiles.Select(s => s.Contains(newTileName.ToLower())).ToArray();
-            if (assetFilesCheck.Contains(true))
+            int dirIndex = directions.ToList().FindIndex(c => c == brickNameDirection);
+            int newDirIndex = dirIndex;
+            string newTileName = "";
+            for (int i = 0; i != 1;)
             {
-                i = 1;
+                if (newDirIndex + 1 == 4)
+                {
+                    newDirIndex = 0;
+                } else {
+                    newDirIndex += 1;
+                }
+                newTileName = directions[newDirIndex].ToString() + currentBrickName.Substring(1);
+                string[] assetFiles = Directory.GetFiles("Assets/Tiles/Assets/"); // Gets string array of the tile assets file path
+                assetFiles = assetFiles.Select(s => s.ToLowerInvariant()).ToArray(); // to lowercase
+                bool[] assetFilesCheck = assetFiles.Select(s => s.Contains(newTileName.ToLower())).ToArray();
+                if (assetFilesCheck.Contains(true))
+                {
+                    i = 1;
+                }
             }
+            
+            Debug.Log(newTileName);
+            General.tile = GlobalMethods.GetTileByName(newTileName);
+            placeSelectorBox(update: true);
         }
-        
-        Debug.Log(newTileName);
-        General.tile = GlobalMethods.GetTileByName(newTileName);
-        placeSelectorBox(update: true);
     }
 
     

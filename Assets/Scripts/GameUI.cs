@@ -14,7 +14,7 @@ public class GameUI : MonoBehaviour
         if (General.Instance.gameState == "build")
         {
             SelectedBrick.sprite = General.tile.sprite;
-            
+
             if (SelectedBrick.enabled == false) {
                 SelectedBrick.enabled = true;
             }
@@ -22,9 +22,12 @@ public class GameUI : MonoBehaviour
         } else if (General.Instance.gameState == "select")
         {
             //show selected brick
+            SelectedBrick.sprite = General.Instance.selectedSprite;
 
-            if (SelectedBrick.enabled == false) {
+            if (SelectedBrick.enabled == false && !(SelectedBrick.sprite == null)) {
                 SelectedBrick.enabled = true;
+            } else if (SelectedBrick.sprite == null) {
+                SelectedBrick.enabled = false;
             }
         } else {
             SelectedBrick.sprite = null;
