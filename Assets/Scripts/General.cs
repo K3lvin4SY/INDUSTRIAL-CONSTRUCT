@@ -27,6 +27,9 @@ public class General : MonoBehaviour
     private Vector3Int selectorLocation2;
     public string gameState;
 
+    public GameObject gridMap;
+    Vector3 offset;
+
 
     private void Start() {
         Debug.Log("test1");
@@ -126,6 +129,28 @@ public class General : MonoBehaviour
         {
             markSelectedTile();
             //add
+        }
+
+        if (gameState == "move")
+        {
+            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            if (Input.GetMouseButtonDown(0))
+            {
+                Collider2D targetObject = Physics2D.OverlapPoint(mousePosition);
+                if (targetObject)
+                {
+                    gridMap = targetObject.transform.gameObject;
+                    offset = gridMap.transform.position - mousePosition;
+                }
+            }
+            if (gridMap)
+            {
+                gridMap.transform.position = mousePosition + offset;
+            }
+            if (Input.GetMouseButtonUp(0) && gridMap)
+            {
+                gridMap = null;
+            }
         }
         
     }

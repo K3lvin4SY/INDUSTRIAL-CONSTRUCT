@@ -16,6 +16,7 @@ public class Controller : MonoBehaviour
     public GameObject optionsMenu;
     List<GameObject> gameWindows;
     List<GameObject> inGameWindows;
+    float moveSpeed;
     void Start()
     {
         gameWindows = new List<GameObject> {brickPicker, main, grid, pauseMenu, optionsMenu};
@@ -69,25 +70,27 @@ public class Controller : MonoBehaviour
     }
 
     void GameControl() {
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            moveSpeed = 1.0f;
+        } else {
+            moveSpeed = 0.5f;
+        }
         if (Input.GetKey(KeyCode.W))
         {   
-            Debug.Log("Pressing W");
-            
+            grid.transform.Translate(0f, -moveSpeed, 0f);
         }
         if (Input.GetKey(KeyCode.D))
         {   
-            Debug.Log("Pressing D");
-            
+            grid.transform.Translate(-moveSpeed, 0f, 0f);
         }
         if (Input.GetKey(KeyCode.S))
         {   
-            Debug.Log("Pressing S");
-            
+            grid.transform.Translate(0f, moveSpeed, 0f);
         }
         if (Input.GetKey(KeyCode.A))
         {   
-            Debug.Log("Pressing A");
-            
+            grid.transform.Translate(moveSpeed, 0f, 0f);
         }
 
         if (Input.GetKeyDown(KeyCode.LeftControl))
