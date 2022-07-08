@@ -529,6 +529,14 @@ public class General : MonoBehaviour
                     location.z += direction;
                 }
             }//*/
+        } else if (gameState == "move") {
+            /*Vector3 scaleChange = new Vector3(0.2f, 0.2f, 0.2f);
+            if (direction == 1)
+            {
+                map.transform.localScale += scaleChange;
+            } else {
+                map.transform.localScale -= scaleChange;
+            }*/
         }
 
         
