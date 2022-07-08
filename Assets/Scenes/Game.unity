@@ -6827,6 +6827,7 @@ MonoBehaviour:
   occupiedZ: 
   gameState: 
   gridMap: {fileID: 0}
+  targetObject: []
 --- !u!4 &1709550668
 Transform:
   m_ObjectHideFlags: 0
@@ -7319,7 +7320,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1000, y: 1000}
   m_EdgeRadius: 0
 --- !u!1 &1825320036
 GameObject:
@@ -9605,7 +9606,7 @@ TilemapCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_MaximumTileChangeCount: 1000
+  m_MaximumTileChangeCount: 10000
   m_ExtrusionFactor: 0.00001
 --- !u!1 &1926834148
 GameObject:

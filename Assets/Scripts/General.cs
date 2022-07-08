@@ -29,6 +29,7 @@ public class General : MonoBehaviour
 
     public GameObject gridMap;
     Vector3 offset;
+    public Collider2D[] targetObject;
 
 
     private void Start() {
@@ -98,10 +99,11 @@ public class General : MonoBehaviour
         Debug.Log(pgScript.tilePick2);
         tile = GetTileByName(pgScript.tilePick2);//*/
         // update grid position
-        Vector2 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition); // update mouseWorld position
+        Vector2 mouseWorldPos2 = Camera.main.ScreenToWorldPoint(Input.mousePosition); // update mouseWorld position
+        Vector3 mouseWorldPos3 = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         
-        location.x = map.WorldToCell(mouseWorldPos).x; // update grid x location
-        location.y = map.WorldToCell(mouseWorldPos).y; // update grid y location
+        location.x = map.WorldToCell(mouseWorldPos2).x; // update grid x location
+        location.y = map.WorldToCell(mouseWorldPos2).y; // update grid y location
 
 
         if (map.HasTile(selectorLocation2))
@@ -127,25 +129,26 @@ public class General : MonoBehaviour
 
         if (gameState == "select")
         {
+            targetObject = Physics2D.OverlapPointAll(mouseWorldPos3);
+            Debug.Log(targetObject);
             markSelectedTile();
             //add
         }
 
         if (gameState == "move")
         {
-            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             if (Input.GetMouseButtonDown(0))
             {
-                Collider2D targetObject = Physics2D.OverlapPoint(mousePosition);
+                Collider2D targetObject = Physics2D.OverlapPoint(mouseWorldPos3);
                 if (targetObject)
                 {
                     gridMap = targetObject.transform.gameObject;
-                    offset = gridMap.transform.position - mousePosition;
+                    offset = gridMap.transform.position - mouseWorldPos3;
                 }
             }
             if (gridMap)
             {
-                gridMap.transform.position = mousePosition + offset;
+                gridMap.transform.position = mouseWorldPos3 + offset;
             }
             if (Input.GetMouseButtonUp(0) && gridMap)
             {
