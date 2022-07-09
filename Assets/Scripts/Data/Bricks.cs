@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 using UnityEngine.Tilemaps;
 
 //[CreateAssetMenu(fileName = "GameSence", menuName = "Game/Bricks")]
@@ -15,12 +16,14 @@ public class Bricks// : ScriptableObject
 
     public GameItem storage;
 
-    public Bricks(Tile cTile, Vector3Int coords, List<string> inputDir, List<string> outputDir, Belt cBelt)
+    public Bricks(Tile cTile, Vector3Int coords, List<string> dir, List<string> inputDir, List<string> outputDir, Belt cBelt)
     {
         tile = cTile;
         cordinates = coords;
         inputDirections = inputDir;
         outputDirections = outputDir;
+        directions = dir;
         belt = cBelt;
+        General.bricks[coords] = this;
     }
 }

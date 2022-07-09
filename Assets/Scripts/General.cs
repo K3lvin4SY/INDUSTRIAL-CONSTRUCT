@@ -10,6 +10,7 @@ public class General : MonoBehaviour
 {
 
     public static General Instance;
+    public static Dictionary<Vector3Int, Bricks> bricks = new Dictionary<Vector3Int, Bricks>();
     public Vector3Int location;
     private int controlZ; // the z value of the height when control is held down
     public Sprite selectedSprite;
@@ -29,7 +30,6 @@ public class General : MonoBehaviour
 
     public GameObject gridMap;
     Vector3 offset;
-    public Collider2D[] targetObject;
 
 
     private void Start() {
@@ -129,8 +129,8 @@ public class General : MonoBehaviour
 
         if (gameState == "select")
         {
-            targetObject = Physics2D.OverlapPointAll(mouseWorldPos3);
-            Debug.Log(targetObject);
+            Collider2D targetObject = Physics2D.OverlapPoint(mouseWorldPos3);
+            //Debug.Log(targetObject);
             markSelectedTile();
             //add
         }
@@ -387,7 +387,7 @@ public class General : MonoBehaviour
                 {
                     tempLocation.z = i;
 
-                    BoundsInt cellBox = new BoundsInt(GameSenceHandler.GetDirV3("SWD", tempLocation), GameSenceHandler.makeV3Int(3, 3, 1));
+                    BoundsInt cellBox = new BoundsInt(GlobalMethods.GetDirV3("SWD", tempLocation), GlobalMethods.makeV3Int(3, 3, 1));
                     TileBase[] tileBox = map.GetTilesBlock(cellBox);
                     List<bool> tileBoxCheck = new List<bool>();
                     foreach (var item in tileBox)
@@ -409,7 +409,7 @@ public class General : MonoBehaviour
                     {
                         aditionalZ.Add(i);
                     } else {
-                        cellBox = new BoundsInt(GameSenceHandler.GetDirV3("SW", tempLocation), GameSenceHandler.makeV3Int(3, 3, 4));
+                        cellBox = new BoundsInt(GlobalMethods.GetDirV3("SW", tempLocation), GlobalMethods.makeV3Int(3, 3, 4));
                         tileBox = map.GetTilesBlock(cellBox);
                         tileBox = tileBox.Where((source, index) =>index != 16).ToArray();
                         bool[] tileBoxCheck2 = tileBox.Select(s => !(s == null)).ToArray();
@@ -530,13 +530,24 @@ public class General : MonoBehaviour
                 }
             }//*/
         } else if (gameState == "move") {
-            /*Vector3 scaleChange = new Vector3(0.2f, 0.2f, 0.2f);
+            Vector3 scaleChange = new Vector3(0.2f, 0.2f, 0.2f);
             if (direction == 1)
             {
-                map.transform.localScale += scaleChange;
+                if (map.transform.localScale.x < 10f)
+                {
+                    map.transform.localScale += scaleChange;
+                } else {
+                    map.transform.localScale = new Vector3(10f, 10f, 10f);
+                }
             } else {
-                map.transform.localScale -= scaleChange;
-            }*/
+                if (map.transform.localScale.x > 0.2f)
+                {
+                    map.transform.localScale -= scaleChange;
+                } else {
+                    map.transform.localScale = scaleChange;
+                }
+                
+            }
         }
 
         
@@ -605,6 +616,7 @@ public class General : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             map.SetTile(selectorLocation, General.tile);
+            new Bricks(General.tile, selectorLocation, GlobalMethods.GetDirections(General.tile.name), null, null, null);
 
             if (!Input.GetKey(KeyCode.LeftControl)) {
                 placeSelectorBox(true); // for updating the solector box on top of the place object

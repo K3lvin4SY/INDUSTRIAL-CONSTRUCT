@@ -43,27 +43,27 @@ public class Belt// : ScriptableObject
             string tileDir = tile.name[0].ToString();
             if (lastPut == "X") // if this is first in list (since if X isn't vhanged it is the first in the list)
             {
-                if (!path.Keys.ToList().Contains(GameSenceHandler.GetDirV3(tileDir, coords)) || !path.Keys.ToList().Contains(GameSenceHandler.GetDirV3(tileDir, GameSenceHandler.makeV3Int(coords.x, coords.y, coords.z-1)))) // if path connected to dir of path begining
+                if (!path.Keys.ToList().Contains(GlobalMethods.GetDirV3(tileDir, coords)) || !path.Keys.ToList().Contains(GlobalMethods.GetDirV3(tileDir, GlobalMethods.makeV3Int(coords.x, coords.y, coords.z-1)))) // if path connected to dir of path begining
                 {
                     bInputDirections.Add(tileDir);
                     if (tile.name.ToLower().Contains("bend"))
                     {
-                        bOutputDirections.Add(GameSenceHandler.nextDir(tileDir));
-                        lastPut = GameSenceHandler.nextDir(tileDir);
+                        bOutputDirections.Add(GlobalMethods.nextDir(tileDir));
+                        lastPut = GlobalMethods.nextDir(tileDir);
                     } else if (tile.name.ToLower().Contains("straight"))
                     {
-                        bOutputDirections.Add(GameSenceHandler.oppositeDir(tileDir));
+                        bOutputDirections.Add(GlobalMethods.oppositeDir(tileDir));
                     }
                     
                 } else
                 {
                     if (tile.name.ToLower().Contains("bend"))
                     {
-                        bInputDirections.Add(GameSenceHandler.nextDir(tileDir));
+                        bInputDirections.Add(GlobalMethods.nextDir(tileDir));
                     
                     } else if (tile.name.ToLower().Contains("straight"))
                     {
-                        bInputDirections.Add(GameSenceHandler.oppositeDir(tileDir));
+                        bInputDirections.Add(GlobalMethods.oppositeDir(tileDir));
                     }
                     bOutputDirections.Add(tileDir);
                     lastPut = tileDir;
@@ -72,7 +72,7 @@ public class Belt// : ScriptableObject
                 break;
             } // -----------------------------------------
             // if brick in miidle of path
-            bInputDirections.Add(GameSenceHandler.oppositeDir(lastPut));
+            bInputDirections.Add(GlobalMethods.oppositeDir(lastPut));
 
             if (tile.name.ToLower().Contains("straight")) // if conveyor is straight
             {
@@ -98,16 +98,16 @@ public class Belt// : ScriptableObject
                 
             } else if (tile.name.ToLower().Contains("bend")) // if conveoyor is a bend
             {
-                if (GameSenceHandler.oppositeDir(lastPut) == tileDir)
+                if (GlobalMethods.oppositeDir(lastPut) == tileDir)
                 {
-                    bOutputDirections.Add(GameSenceHandler.nextDir(tileDir));
-                    lastPut = GameSenceHandler.nextDir(tileDir);
+                    bOutputDirections.Add(GlobalMethods.nextDir(tileDir));
+                    lastPut = GlobalMethods.nextDir(tileDir);
                 } else {
-                    bOutputDirections.Add(GameSenceHandler.prevDir(tileDir));
-                    lastPut = GameSenceHandler.prevDir(tileDir);
+                    bOutputDirections.Add(GlobalMethods.prevDir(tileDir));
+                    lastPut = GlobalMethods.prevDir(tileDir);
                 }
             }
-            Bricks newBrick = new Bricks(bTile, bCordinates, bInputDirections, bOutputDirections, this);
+            Bricks newBrick = new Bricks(bTile, bCordinates, GlobalMethods.GetDirections(bTile.name), bInputDirections, bOutputDirections, this);
             subCordinates.Add(newBrick);
         }
     }
@@ -120,4 +120,5 @@ public class Belt// : ScriptableObject
             subCordinates.Insert(0, brick);
         }
     }
+
 }

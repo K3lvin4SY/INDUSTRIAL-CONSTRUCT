@@ -10,6 +10,8 @@ public class GlobalMethods : MonoBehaviour
 {
 
     private static Dictionary<string, Tile> tiles = new Dictionary<string, Tile>();
+    
+    static string[] directions = new string[4]{"N", "E", "S", "W"};
     public static string AddTagToBlockName(string blockName, string tag)
     {
         if (doesBlockNameHaveTag(blockName))
@@ -99,6 +101,124 @@ public class GlobalMethods : MonoBehaviour
             }
         }
         
+    }
+
+
+    public static string oppositeDir(string dir)
+    {
+        int dirIndex = directions.ToList().FindIndex(c => c == dir);
+        dirIndex += 2;
+        if (dirIndex == 4)
+        {
+            dirIndex = 0;
+        }
+        if (dir == "U")
+        {
+            return "D";
+        } else if (dir == "D")
+        {
+            return "U";
+        }
+        return directions[dirIndex];
+    }
+
+    public static string nextDir(string dir) {
+        int dirIndex = directions.ToList().FindIndex(c => c == dir);
+        dirIndex += 1;
+        if (dirIndex == 4)
+        {
+            dirIndex = 0;
+        }
+        return directions[dirIndex];
+    }
+
+    public static string prevDir(string dir) {
+        int dirIndex = directions.ToList().FindIndex(c => c == dir);
+        dirIndex -= 1;
+        if (dirIndex == -1)
+        {
+            dirIndex = 3;
+        }
+        return directions[dirIndex];
+    }
+
+    public static Vector3Int makeV3Int(int x, int y, int z)
+    {
+        Vector3Int newV3I = new Vector3Int(x, y, z);
+        return newV3I;
+    }
+
+    public static Vector3 makeV3(float x, float y, float z)
+    {
+        Vector3 newV3 = new Vector3(x, y, z);
+        return newV3;
+    }
+
+    public static Vector3Int GetDirV3(string dir, Vector3Int coords, int distance = 1) {
+        Dictionary<string, Vector3Int> dirConvertDic = new Dictionary<string, Vector3Int>();
+        dirConvertDic.Add("N", makeV3Int(0, 1*distance, 0));
+        dirConvertDic.Add("E", makeV3Int(1*distance, 0, 0));
+        dirConvertDic.Add("S", makeV3Int(0, -1*distance, 0));
+        dirConvertDic.Add("W", makeV3Int(-1*distance, 0, 0));
+        dirConvertDic.Add("U", makeV3Int(0, 0, 1*distance)); // Up
+        dirConvertDic.Add("D", makeV3Int(0, 0, -1*distance)); // Down
+        Vector3Int combineCoords = coords + dirConvertDic[dir[0].ToString()];
+        foreach (var dirChar in dir)
+        {
+            if (dirChar == dir[0])
+            {
+                continue;
+            }
+            combineCoords += dirConvertDic[dirChar.ToString()];
+        }
+        return combineCoords;
+    }
+
+    public static List<string> GetDirections(string tileName) {
+        if (tileName.ToLower().Contains("elip"))
+        {
+            return new List<string>() { "U", "D" };
+        } else if (tileName.ToLower().Contains("eli"))
+        {
+            return new List<string>() { tileName[0].ToString(), "U", "D" };
+        } else if (tileName.ToLower().Contains("straight"))
+        {
+            return new List<string>() { tileName[0].ToString(), oppositeDir(tileName[0].ToString()) };
+        } else if (tileName.ToLower().Contains("bend"))
+        {
+            return new List<string>() { tileName[0].ToString(), nextDir(tileName[0].ToString()) };
+        } else if (tileName.ToLower().Contains("merger") || tileName.ToLower().Contains("splitter"))
+        {
+            return new List<string>() { "W", "E", "N", "S" };
+        }
+        return null;
+    }
+
+    public static bool IsConnectionPossible(string tileName) {
+        List<string> dirs = GetDirections(tileName);
+        foreach (var (coord, brick) in General.bricks)
+        {
+            foreach (var dir in dirs)
+            {
+                
+            }
+        }
+    }
+
+    public static bool IsConnectionPossible(Bricks brick, Vector3Int placementCordinates, List<string> placementDirections)
+    {
+        foreach (var dir in brick.directions)
+        {
+            if (placementDirections.Contains(dir))
+            {
+                if (placementCordinates == GetDirV3(dir.ToString(), brick.cordinates))
+                {
+                    return true;
+                }
+            }
+        }
+        
+        return false;
     }
 
 
