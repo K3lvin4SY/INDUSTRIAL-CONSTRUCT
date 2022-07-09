@@ -194,18 +194,45 @@ public class GlobalMethods : MonoBehaviour
         return null;
     }
 
-    public static bool IsConnectionPossible(string tileName) {
+    public static bool IsConnectionPossible(string tileName, Vector3Int loc) {
         List<string> dirs = GetDirections(tileName);
         foreach (var (coord, brick) in General.bricks)
         {
             foreach (var dir in dirs)
             {
-                
+                if (GetDirV3(dir, loc) == coord)
+                {
+                    if (brick.directions.Contains(oppositeDir(dir)))
+                    {
+                        return true;
+                    }
+                }
             }
         }
+        return false;
     }
 
-    public static bool IsConnectionPossible(Bricks brick, Vector3Int placementCordinates, List<string> placementDirections)
+    // Make a method for getting input and out put dirs. Copy the code from the above method and change it to get input and output dirs.
+
+    public static Belt GetBelt(string tileName, Vector3Int loc) {
+        List<string> dirs = GetDirections(tileName);
+        foreach (var (coord, brick) in General.bricks)
+        {
+            foreach (var dir in dirs)
+            {
+                if (GetDirV3(dir, loc) == coord)
+                {
+                    if (brick.directions.Contains(oppositeDir(dir)))
+                    {
+                        return brick.belt;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    /*public static bool IsConnectionPossible(Bricks brick, Vector3Int placementCordinates, List<string> placementDirections)
     {
         foreach (var dir in brick.directions)
         {
@@ -219,7 +246,7 @@ public class GlobalMethods : MonoBehaviour
         }
         
         return false;
-    }
+    }*/
 
 
 
