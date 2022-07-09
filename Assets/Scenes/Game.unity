@@ -6827,7 +6827,6 @@ MonoBehaviour:
   occupiedZ: 
   gameState: 
   gridMap: {fileID: 0}
-  targetObject: []
 --- !u!4 &1709550668
 Transform:
   m_ObjectHideFlags: 0
