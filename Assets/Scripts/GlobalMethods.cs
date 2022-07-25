@@ -213,6 +213,28 @@ public class GlobalMethods : MonoBehaviour
     }
 
     // Make a method for getting input and out put dirs. Copy the code from the above method and change it to get input and output dirs.
+    public static List<string> GetInputDirections(string tileName, Vector3Int loc) {
+        List<string> dirs = GetDirections(tileName);
+        foreach (var (coord, brick) in General.bricks)
+        {
+            foreach (var dir in dirs)
+            {
+                if (GetDirV3(dir, loc) == coord)
+                {
+                    if (brick.directions.Contains(oppositeDir(dir)))
+                    {
+                        if (brick.tile.name.ToLower().Contains("conveyor"))
+                        {
+                            
+                        }
+                        return brick.belt;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
 
     public static Belt GetBelt(string tileName, Vector3Int loc) {
         List<string> dirs = GetDirections(tileName);
