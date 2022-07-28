@@ -616,7 +616,7 @@ public class General : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             map.SetTile(selectorLocation, General.tile);
-            new Bricks(General.tile, selectorLocation, GlobalMethods.GetDirections(General.tile.name), null, null, GlobalMethods.GetBelt(General.tile.name, selectorLocation));
+            new Bricks(General.tile, selectorLocation, GlobalMethods.GetDirections(General.tile.name), GlobalMethods.GetInputDirections(General.tile.name, selectorLocation), GlobalMethods.GetOutputDirections(General.tile.name, selectorLocation), GlobalMethods.GetBelt(General.tile.name, selectorLocation));
 
             if (!Input.GetKey(KeyCode.LeftControl)) {
                 placeSelectorBox(true); // for updating the solector box on top of the place object

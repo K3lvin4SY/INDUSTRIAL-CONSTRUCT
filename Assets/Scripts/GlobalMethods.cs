@@ -112,6 +112,10 @@ public class GlobalMethods : MonoBehaviour
         {
             dirIndex = 0;
         }
+        if (dirIndex == 5)
+        {
+            dirIndex = 1;
+        }
         if (dir == "U")
         {
             return "D";
@@ -194,18 +198,28 @@ public class GlobalMethods : MonoBehaviour
         return null;
     }
 
+    public static string NextTileDir(string tileName, string dir) {
+        List<string> directions = GetDirections(tileName);
+        int dirIndex = directions.ToList().FindIndex(c => c == dir);
+        dirIndex += 1;
+        if (dirIndex == directions.Count)
+        {
+            dirIndex = 0;
+        }
+        return directions[dirIndex];
+    }
+
     public static bool IsConnectionPossible(string tileName, Vector3Int loc) {
         List<string> dirs = GetDirections(tileName);
-        foreach (var (coord, brick) in General.bricks)
+        foreach (var dir in dirs)
         {
-            foreach (var dir in dirs)
+            
+            if (General.bricks.ContainsKey(GetDirV3(dir, loc)))
             {
-                if (GetDirV3(dir, loc) == coord)
+                Bricks brick = General.bricks[GetDirV3(dir, loc)];
+                if (brick.directions.Contains(oppositeDir(dir)))
                 {
-                    if (brick.directions.Contains(oppositeDir(dir)))
-                    {
-                        return true;
-                    }
+                    return true;
                 }
             }
         }
@@ -215,20 +229,65 @@ public class GlobalMethods : MonoBehaviour
     // Make a method for getting input and out put dirs. Copy the code from the above method and change it to get input and output dirs.
     public static List<string> GetInputDirections(string tileName, Vector3Int loc) {
         List<string> dirs = GetDirections(tileName);
-        foreach (var (coord, brick) in General.bricks)
+        if (tileName.ToLower().Contains("merger")) {
+            return GetDirections(tileName).Where(c => c != tileName[0].ToString()).ToList();
+        } else if (tileName.ToLower().Contains("splitter")) {
+            return new List<string>() { tileName[0].ToString() };
+        }
+        foreach (var dir in dirs) // for each direction
         {
-            foreach (var dir in dirs)
+            if (General.bricks.ContainsKey(GetDirV3(dir, loc)))
             {
-                if (GetDirV3(dir, loc) == coord)
+                Bricks brick = General.bricks[GetDirV3(dir, loc)];
+                if (brick.directions.Contains(oppositeDir(dir)))
                 {
-                    if (brick.directions.Contains(oppositeDir(dir)))
+                    Debug.Log(brick.directions[0]);
+                    if (brick.outputDirections == null || brick.inputDirections == null)
                     {
-                        if (brick.tile.name.ToLower().Contains("conveyor"))
-                        {
-                            
-                        }
-                        return brick.belt;
+                        return null;
                     }
+                    Debug.Log(brick.outputDirections[0]);
+                    if (brick.outputDirections.Contains(oppositeDir(dir)))
+                    {
+                        Debug.Log(dir);
+                        return new List<string>() { dir };
+                    } else {
+                        Debug.Log(NextTileDir(tileName, dir));
+                        return new List<string>() { NextTileDir(tileName, dir) };
+                    }
+
+                }
+            }
+        }
+        return null;
+    }
+
+    public static List<string> GetOutputDirections(string tileName, Vector3Int loc) {
+        List<string> dirs = GetDirections(tileName);
+        if (tileName.ToLower().Contains("splitter")) {
+            return GetDirections(tileName).Where(c => c != tileName[0].ToString()).ToList();
+        } else if (tileName.ToLower().Contains("merger")) {
+            return new List<string>() { tileName[0].ToString() };
+        }
+        foreach (var dir in dirs)
+        {
+            if (General.bricks.ContainsKey(GetDirV3(dir, loc)))
+            {
+                Bricks brick = General.bricks[GetDirV3(dir, loc)];
+                if (brick.directions.Contains(oppositeDir(dir)))
+                {
+                    if (brick.outputDirections == null || brick.inputDirections == null)
+                    {
+                        return null;
+                    }
+                    if (brick.inputDirections.Contains(oppositeDir(dir)))
+                    {
+                        return new List<string>() { dir };
+                    } else {
+                        Debug.Log(NextTileDir(tileName, dir));
+                        return new List<string>() { NextTileDir(tileName, dir) };
+                    }
+
                 }
             }
         }
@@ -237,17 +296,18 @@ public class GlobalMethods : MonoBehaviour
 
 
     public static Belt GetBelt(string tileName, Vector3Int loc) {
+        if (tileName.ToLower().Contains("splitter") || tileName.ToLower().Contains("merger")) {
+            return null;
+        }
         List<string> dirs = GetDirections(tileName);
-        foreach (var (coord, brick) in General.bricks)
+        foreach (var dir in dirs)
         {
-            foreach (var dir in dirs)
+            if (General.bricks.ContainsKey(GetDirV3(dir, loc)))
             {
-                if (GetDirV3(dir, loc) == coord)
+                Bricks brick = General.bricks[GetDirV3(dir, loc)];
+                if (brick.directions.Contains(oppositeDir(dir)))
                 {
-                    if (brick.directions.Contains(oppositeDir(dir)))
-                    {
-                        return brick.belt;
-                    }
+                    return brick.belt;
                 }
             }
         }

@@ -121,4 +121,8 @@ public class Belt// : ScriptableObject
         }
     }
 
+    public void updateDirection(string tileName, Vector3Int loc) {
+        
+    }
+
 }

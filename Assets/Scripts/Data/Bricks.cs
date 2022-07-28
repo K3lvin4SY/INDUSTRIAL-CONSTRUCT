@@ -24,6 +24,10 @@ public class Bricks// : ScriptableObject
         outputDirections = outputDir;
         directions = dir;
         belt = cBelt;
-        General.bricks[coords] = this;
+        if (belt == null && tile.name.ToLower().Contains("conveyor"))
+        {
+            belt = new Belt(new Dictionary<Vector3Int, Tile>() { { cordinates, tile } });
+        }
+        General.bricks[cordinates] = this;
     }
 }
