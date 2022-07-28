@@ -188,6 +188,9 @@ public class GlobalMethods : MonoBehaviour
         } else if (tileName.ToLower().Contains("straight"))
         {
             return new List<string>() { tileName[0].ToString(), oppositeDir(tileName[0].ToString()) };
+        } else if (tileName.ToLower().Contains("slant"))
+        {
+            return new List<string>() { tileName[0].ToString(), oppositeDir(tileName[0].ToString()) };
         } else if (tileName.ToLower().Contains("bend"))
         {
             return new List<string>() { tileName[0].ToString(), nextDir(tileName[0].ToString()) };
@@ -246,6 +249,7 @@ public class GlobalMethods : MonoBehaviour
                     {
                         return null;
                     }
+                    
                     Debug.Log(brick.outputDirections[0]);
                     if (brick.outputDirections.Contains(oppositeDir(dir)))
                     {

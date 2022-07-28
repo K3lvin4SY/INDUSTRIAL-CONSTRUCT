@@ -53,7 +53,7 @@ public class General : MonoBehaviour
 
 
     private bool minimumZ(Vector3Int loc) { // returns true if given locations z value is the bare minimum allowed (if all z values under is filled/underground) 
-        Debug.Log("active");
+        //Debug.Log("active");
         for (int i = loc.z-1; i > -1; i--)
         {
             if (gameState == "build") {
