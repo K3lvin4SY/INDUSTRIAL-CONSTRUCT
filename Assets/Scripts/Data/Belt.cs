@@ -112,13 +112,28 @@ public class Belt// : ScriptableObject
         }
     }
 
-    public void AddToBelt(Bricks brick, bool last)
+    public void AddToBelt(Bricks brick)
     {
-        if (last) {
-            subCordinates.Add(brick);
-        } else {
-            subCordinates.Insert(0, brick);
+        foreach (var dir in subCordinates[0].directions)
+        {
+            if (GlobalMethods.GetDirV3(dir, subCordinates[0].cordinates) == brick.cordinates)
+            {
+                // in begining of belt
+                subCordinates.Insert(0, brick);
+                return;
+            }
         }
+
+        foreach (var dir in subCordinates[-1].directions)
+        {
+            if (GlobalMethods.GetDirV3(dir, subCordinates[-1].cordinates) == brick.cordinates)
+            {
+                // in end of belt
+                subCordinates.Add(brick);
+                return;
+            }
+        }
+        Debug.Log("!!!ERROR!!!");
     }
 
     public void updateDirection(string tileName, Vector3Int loc) {
