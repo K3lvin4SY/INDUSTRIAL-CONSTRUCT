@@ -109,7 +109,7 @@ public class General : MonoBehaviour
         if (map.HasTile(selectorLocation2))
         {
             //if (map.GetTile(selectorLocation2).name.Contains(tile.name+"sb"))
-            if (map.GetTile(selectorLocation2).name.ToLower().Contains("selectorbox"))
+            if (map.GetTile(selectorLocation2).name.ToLower().Contains("selectorbox") || map.GetTile(selectorLocation2).name.ToLower().Contains("selectorredbox"))
             {
                 if (Input.GetMouseButtonDown(1)) // cancel path build
                 {
@@ -168,7 +168,7 @@ public class General : MonoBehaviour
             }
         }
         if (map.GetTile(selectorLocation2)) { // if selectorLocation2 has a tile
-            if (map.GetTile(selectorLocation2).name.Contains("SelectorBox")) { // if tile is selectorbox
+            if (map.GetTile(selectorLocation2).name.Contains("SelectorBox") || map.GetTile(selectorLocation2).name.ToLower().Contains("SelectorRedBox")) { // if tile is selectorbox
                 map.SetTile(selectorLocation2, null); // clear grid location
             }
         }
