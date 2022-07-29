@@ -35,10 +35,15 @@ public class Bricks// : ScriptableObject
                 directions.Remove(GlobalMethods.NextTileDir(tile.name, tile.name[0].ToString()));
                 directions.Add("U");
 
-                linkedBrick = new Bricks(null, GlobalMethods.GetDirV3("U", cordinates), new List<string>() { "D", GlobalMethods.NextTileDir(tile.name, tile.name[0].ToString()) }, new List<string>(), new List<string>(), belt, this);
+                linkedBrick = new Bricks(null, GlobalMethods.GetDirV3("U", cordinates), new List<string>() { "D", GlobalMethods.NextTileDir(tile.name, tile.name[0].ToString()) }, null, null, belt, this);
 
+                Debug.Log(inputDirections);
+                Debug.Log(outputDirections);
                 if (inputDirections != null && outputDirections != null)
                 {
+                    Debug.Log("!!!PASS!!!");
+                    linkedBrick.outputDirections = new List<string>();
+                    linkedBrick.inputDirections = new List<string>();
                     if (inputDirections[0] == tile.name[0].ToString())
                     {
                         outputDirections.RemoveAt(0);
@@ -68,8 +73,8 @@ public class Bricks// : ScriptableObject
                 linkedBrick.belt.AddToBelt(linkedBrick);
                 Debug.Log(belt.subCordinates.Count.ToString());
 
-                Debug.Log(linkedBrick.outputDirections.Count.ToString()); // should not be 0 FIX!!!
-                Debug.Log(linkedBrick.inputDirections.Count.ToString()); // should not be 0 FIX!!!
+                //Debug.Log(linkedBrick.outputDirections.Count.ToString()); // should not be 0 FIX!!!
+                //Debug.Log(linkedBrick.inputDirections.Count.ToString()); // should not be 0 FIX!!!
             }
         }
         
