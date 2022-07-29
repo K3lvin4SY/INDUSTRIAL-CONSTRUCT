@@ -43,10 +43,14 @@ public class populateGrid : MonoBehaviour
             {
                 //Debug.Log(item);
                 Tile assetTile = (Tile)AssetDatabase.LoadAssetAtPath<Tile>(item); // loads the tile asset from path
-                if (assetTile.sprite.name.Contains("brpck"))
+                if (assetTile != null) // exclude animation tiles
                 {
-                    sprites[assetTile.sprite] = assetTile; // inserts the data into a dictionary
+                    if (assetTile.sprite.name.Contains("brpck"))
+                    {
+                        sprites[assetTile.sprite] = assetTile; // inserts the data into a dictionary
+                    }
                 }
+                
                 
             }
         }

@@ -217,15 +217,18 @@ public class General : MonoBehaviour
 
             if (loc == 1)
             {
+                
                 if (map.GetTile(selectorLocation)) { // if selectorLocation has a tile
-                    if (map.GetTile(selectorLocation).name.Contains("SelectorBox") || map.GetTile(selectorLocation).name.ToLower().Contains("SelectorRedBox")) { // if tile is selectorbox
+                    Debug.Log(map.GetTile(selectorLocation).name);
+                    if (map.GetTile(selectorLocation).name.Contains("SelectorBox") || map.GetTile(selectorLocation).name.Contains("SelectorRedBox")) { // if tile is selectorbox
+                        
                         map.SetTile(selectorLocation, null); // clear grid location
                     }
                 }
             } else if (loc == 2)
             {
                 if (map.GetTile(selectorLocation2)) { // if selectorLocation2 has a tile
-                    if (map.GetTile(selectorLocation2).name.Contains("SelectorBox") || map.GetTile(selectorLocation).name.ToLower().Contains("SelectorRedBox")) { // if tile is selectorbox
+                    if (map.GetTile(selectorLocation2).name.Contains("SelectorBox") || map.GetTile(selectorLocation).name.Contains("SelectorRedBox")) { // if tile is selectorbox
                         map.SetTile(selectorLocation2, null); // clear grid location
                     }
                 }
