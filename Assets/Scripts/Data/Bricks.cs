@@ -122,7 +122,12 @@ public class Bricks// : ScriptableObject
         
     }
 
-    public void changeTileState(string state) {
-
+    public void changeTileTag(string tag) {
+        if (tag == null)
+        {
+            General.Instance.map.SetTile(cordinates, GlobalMethods.GetTileByName(GlobalMethods.RemoveTagFromBlockName(tile.name))); // Set tile to original type
+        }
+        string newBrickName = GlobalMethods.AddTagToBlockName(tile.name, tag);
+        General.Instance.map.SetTile(cordinates, GlobalMethods.GetTileByName(newBrickName));
     }
 }

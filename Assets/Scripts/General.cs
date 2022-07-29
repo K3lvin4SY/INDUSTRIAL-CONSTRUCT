@@ -161,14 +161,14 @@ public class General : MonoBehaviour
     public void RemoveSelectorBoxes() {
 
         if (map.GetTile(selectorLocation)) { // if selectorLocation has a tile
-            if (map.GetTile(selectorLocation).name.Contains("SelectorBox") || map.GetTile(selectorLocation).name.ToLower().Contains("SelectorRedBox")) { // if tile is selectorbox
+            if (map.GetTile(selectorLocation).name.Contains("SelectorBox") || map.GetTile(selectorLocation).name.Contains("SelectorRedBox")) { // if tile is selectorbox
                 map.SetTile(selectorLocation, null); // clear grid location
             } else if (map.GetTile(selectorLocation).name.ToLower().Contains("selected")) { // if tile is marked
                 map.SetTile(selectorLocation, GlobalMethods.GetTileByName(GlobalMethods.RemoveTagFromBlockName(map.GetTile(selectorLocation).name))); // turn back to original tile
             }
         }
         if (map.GetTile(selectorLocation2)) { // if selectorLocation2 has a tile
-            if (map.GetTile(selectorLocation2).name.Contains("SelectorBox") || map.GetTile(selectorLocation2).name.ToLower().Contains("SelectorRedBox")) { // if tile is selectorbox
+            if (map.GetTile(selectorLocation2).name.Contains("SelectorBox") || map.GetTile(selectorLocation2).name.Contains("SelectorRedBox")) { // if tile is selectorbox
                 map.SetTile(selectorLocation2, null); // clear grid location
             }
         }
@@ -180,7 +180,19 @@ public class General : MonoBehaviour
             //reseting the old selection
             if (map.GetTile(selectorLocation)) { // if selectorLocation has a tile
                 if (map.GetTile(selectorLocation).name.Contains("selected")) { // if tile has selected tag
-                    map.SetTile(selectorLocation, GlobalMethods.GetTileByName(GlobalMethods.RemoveTagFromBlockName(map.GetTile(selectorLocation).name))); // turn back to original tile
+                    if (General.bricks[selectorLocation].belt != null)
+                    {
+                        General.bricks[selectorLocation].belt.Deselect();
+                        if (!General.bricks[selectorLocation].belt.selected)
+                        {
+                            map.SetTile(selectorLocation, GlobalMethods.GetTileByName(GlobalMethods.RemoveTagFromBlockName(map.GetTile(selectorLocation).name))); // turn back to original tile
+                        } else {
+                            map.SetTile(selectorLocation, GlobalMethods.GetTileByName(GlobalMethods.RemoveTagFromBlockName(map.GetTile(selectorLocation).name))); // turn back to original tile
+                        }
+                    }
+                        
+                    
+                    
                 }
             }
 
@@ -191,6 +203,13 @@ public class General : MonoBehaviour
                 Tile tmpTile = GlobalMethods.GetTileByName(GlobalMethods.AddTagToBlockName(map.GetTile(location).name, "selected"));
                 if (GlobalMethods.isPlayerEditable(tmpTile.name)) {
                     map.SetTile(location, tmpTile); // set tile to selected
+                    if (Controller.shiftPressed)
+                    {
+                        if (General.bricks[location].belt != null)
+                        {
+                            General.bricks[location].belt.Select();
+                        }
+                    }
                     selectedSprite = tmpTile.sprite; // update selected sprite
                     selectorLocation = location; // update selectorLocation to current grid location
                 } else {
@@ -219,7 +238,7 @@ public class General : MonoBehaviour
             {
                 
                 if (map.GetTile(selectorLocation)) { // if selectorLocation has a tile
-                    Debug.Log(map.GetTile(selectorLocation).name);
+                    //Debug.Log(map.GetTile(selectorLocation).name);
                     if (map.GetTile(selectorLocation).name.Contains("SelectorBox") || map.GetTile(selectorLocation).name.Contains("SelectorRedBox")) { // if tile is selectorbox
                         
                         map.SetTile(selectorLocation, null); // clear grid location
@@ -625,12 +644,16 @@ public class General : MonoBehaviour
     public void placeBlock() {
         if (Input.GetMouseButtonDown(0))
         {
-            map.SetTile(selectorLocation, General.tile);
-            new Bricks(General.tile, selectorLocation, GlobalMethods.GetDirections(General.tile.name), GlobalMethods.GetInputDirections(General.tile.name, selectorLocation), GlobalMethods.GetOutputDirections(General.tile.name, selectorLocation), GlobalMethods.GetBelt(General.tile.name, selectorLocation));
+            if (!map.GetTile(selectorLocation).name.Contains("SelectorRedBox")) {
 
-            if (!Input.GetKey(KeyCode.LeftControl)) {
-                placeSelectorBox(true); // for updating the solector box on top of the place object
+                map.SetTile(selectorLocation, General.tile);
+                new Bricks(General.tile, selectorLocation, GlobalMethods.GetDirections(General.tile.name), GlobalMethods.GetInputDirections(General.tile.name, selectorLocation), GlobalMethods.GetOutputDirections(General.tile.name, selectorLocation), GlobalMethods.GetBelt(General.tile.name, selectorLocation));
+
+                if (!Input.GetKey(KeyCode.LeftControl)) {
+                    placeSelectorBox(true); // for updating the solector box on top of the place object
+                }
             }
+            
             
         }
     }

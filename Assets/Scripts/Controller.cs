@@ -16,6 +16,8 @@ public class Controller : MonoBehaviour
     public GameObject optionsMenu;
     List<GameObject> gameWindows;
     List<GameObject> inGameWindows;
+
+    public static bool shiftPressed = false;
     float moveSpeed;
     void Start()
     {
@@ -72,9 +74,11 @@ public class Controller : MonoBehaviour
     void GameControl() {
         if (Input.GetKey(KeyCode.LeftShift))
         {
+            Controller.shiftPressed = true;
             moveSpeed = 1.0f;
         } else {
             moveSpeed = 0.5f;
+            Controller.shiftPressed = false;
         }
         if (Input.GetKey(KeyCode.W))
         {   

@@ -11,6 +11,7 @@ public class Belt// : ScriptableObject
     //public Dictionary<int, Bricks> subCordinates;
     public List<GameItem> storage;
     
+    public bool selected;
 
     
 
@@ -212,12 +213,31 @@ public class Belt// : ScriptableObject
             string dir = GlobalMethods.BrickToBrickConnectionDirection(brick, subCordinates[index + 1]);
             if (index == 0) {
                 brick.inputDirections = new List<string>() { GlobalMethods.NextBrickDir(brick, dir) };
-            } else {
-                subCordinates[index + 1].inputDirections = new List<string>() { GlobalMethods.oppositeDir(dir) };
             }
+            subCordinates[index + 1].inputDirections = new List<string>() { GlobalMethods.oppositeDir(dir) };
             brick.outputDirections = new List<string>() { dir };
             index += 1;
         }
+    }
+
+    public void Select() {
+        foreach (var brick in subCordinates)
+        {
+            brick.changeTileTag("selected");
+        }
+        selected = true;
+    }
+
+    public void Deselect() {
+        if (selected)
+        {
+            foreach (var brick in subCordinates)
+            {
+                brick.changeTileTag(null);
+            }
+            selected = false;
+        }
+        
     }
 
 }

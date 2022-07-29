@@ -28,14 +28,18 @@ public class GlobalMethods : MonoBehaviour
     }
 
     public static string RemoveTagFromBlockName(string blockName) {
+        if (!doesBlockNameHaveTag(blockName)) {
+            return blockName;
+        }
         List<string> name = blockName.Split('_').ToList();
         name.RemoveAt(name.Count - 2);
         Debug.Log(string.Join("_", name));
         return string.Join("_", name);
+
     }
 
     private static bool doesBlockNameHaveTag(string blockName) {
-        if (blockName.ToLower().Contains("selected") || blockName.ToLower().Contains("selectorbox") || blockName.ToLower().Contains("animated"))
+        if (blockName.ToLower().Contains("selected") || blockName.ToLower().Contains("selectorredbox") || blockName.ToLower().Contains("selectorbox") || blockName.ToLower().Contains("animated"))
         {
             return true;
         }
