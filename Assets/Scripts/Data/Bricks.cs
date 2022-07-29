@@ -35,10 +35,10 @@ public class Bricks// : ScriptableObject
                 directions.Remove(GlobalMethods.NextTileDir(tile.name, tile.name[0].ToString()));
                 directions.Add("U");
 
-                linkedBrick = new Bricks(null, GlobalMethods.GetDirV3("U", cordinates), new List<string>() { "D", GlobalMethods.NextTileDir(tile.name, tile.name[0].ToString()) }, null, null, belt, this);
+                linkedBrick = new Bricks(null, GlobalMethods.GetDirV3("U", cordinates), new List<string>() { "D", GlobalMethods.NextTileDir(tile.name, tile.name[0].ToString())[0].ToString() }, null, null, belt, this);
 
-                Debug.Log(inputDirections);
-                Debug.Log(outputDirections);
+                //Debug.Log(inputDirections);
+                //Debug.Log(outputDirections);
                 if (inputDirections != null && outputDirections != null)
                 {
                     Debug.Log("!!!PASS!!!");
@@ -49,13 +49,13 @@ public class Bricks// : ScriptableObject
                         outputDirections.RemoveAt(0);
                         outputDirections.Add("U");
                         linkedBrick.inputDirections.Add("D");
-                        linkedBrick.outputDirections.Add(GlobalMethods.NextTileDir(tile.name, tile.name[0].ToString()));
+                        linkedBrick.outputDirections.Add(GlobalMethods.NextTileDir(tile.name, tile.name[0].ToString())[0].ToString());
                     }
                     else
                     {
                         inputDirections.RemoveAt(0);
                         inputDirections.Add("U");
-                        linkedBrick.inputDirections.Add(GlobalMethods.NextTileDir(tile.name, tile.name[0].ToString()));
+                        linkedBrick.inputDirections.Add(GlobalMethods.NextTileDir(tile.name, tile.name[0].ToString())[0].ToString());
                         linkedBrick.outputDirections.Add("D"); // Not working ?
                     }
                 }
@@ -63,20 +63,66 @@ public class Bricks// : ScriptableObject
 
             if (belt == null && tile.name.ToLower().Contains("conveyor"))
             {
+                Debug.Log("!!!NEW BELT!!!");
                 belt = new Belt(new List<Bricks>() {this});
+                /*
+                if (linkedBrick != null)
+                {
+                    belt.AddToBelt(linkedBrick); // adds linkedBrick to belt
+                }//*/
             } else if (belt != null && tile.name.ToLower().Contains("conveyor")) {
-                belt.AddToBelt(this);
-                Debug.Log(belt.subCordinates.Count.ToString());
+                if (linkedBrick == null)
+                {
+                    belt.AddToBelt(this);
+                }
+
+                if (linkedBrick != null)
+                {
+                    if (tile != null)
+                    {
+                        //Debug.Log("!!!Belt Add SUCCESS!!!");
+                        if (belt.AddToBeltCheck(this))
+                        {
+                            belt.AddToBelt(this);
+                            belt.AddToBelt(linkedBrick);
+                        } else {
+                            belt.AddToBelt(linkedBrick);
+                            belt.AddToBelt(this);
+                        }
+                    }
+                }
+                /*else if (linkedBrick.tile == null)
+                {
+                    belt.AddToBelt(this);
+                    /*
+                    if (linkedBrick.tile.name.ToLower().Contains("slant"))
+                    {
+                        belt.AddToBelt(this); 
+                    } 
+                }*/
+                
+                //Debug.Log(belt.subCordinates.Count.ToString());
+                Debug.Log("Belt Length: "+belt.subCordinates.Count.ToString());
             }
 
+            /*
             if (tile.name.ToLower().Contains("slant")) {
-                linkedBrick.belt.AddToBelt(linkedBrick);
-                Debug.Log(belt.subCordinates.Count.ToString());
+                //linkedBrick.belt.AddToBelt(linkedBrick);
+                //Debug.Log("Belt Length: "+belt.subCordinates.Count.ToString());
 
                 //Debug.Log(linkedBrick.outputDirections.Count.ToString()); // should not be 0 FIX!!!
                 //Debug.Log(linkedBrick.inputDirections.Count.ToString()); // should not be 0 FIX!!!
+            }//*/
+
+            if (GlobalMethods.isBrickNotExcludedType(this, "conveyor"))
+            {
+                GlobalMethods.GetBelt(tile.name, cordinates, true).assignDirection(this);
             }
         }
+        
+    }
+
+    public void changeTileState(string state) {
         
     }
 }

@@ -35,7 +35,7 @@ public class GlobalMethods : MonoBehaviour
     }
 
     private static bool doesBlockNameHaveTag(string blockName) {
-        if (blockName.ToLower().Contains("selected") || blockName.ToLower().Contains("selectorbox"))
+        if (blockName.ToLower().Contains("selected") || blockName.ToLower().Contains("selectorbox") || blockName.ToLower().Contains("animated"))
         {
             return true;
         }
@@ -49,6 +49,26 @@ public class GlobalMethods : MonoBehaviour
             if (blockName.ToLower().Contains(editableBlock))
             {
                 return true;
+            }
+        }
+        return false;
+    }
+
+    public static bool isBrickNotExcludedType(Bricks brick, string excludeType)
+    {
+        string[] brickTypes = new string[] {"conveyor", "splitter", "merger", "machine"};
+        excludeType = excludeType.ToLower();
+        if (brickTypes.Contains(excludeType))
+        {
+            brickTypes = brickTypes.Where(x => x != excludeType).ToArray();
+        }
+        foreach (string brickType in brickTypes) {
+            if (brick.tile.name.ToLower().Contains(brickType))
+            {
+                if (!(brick.tile.name.ToLower().Contains(excludeType)))
+                {
+                    return true;
+                }
             }
         }
         return false;
@@ -190,7 +210,7 @@ public class GlobalMethods : MonoBehaviour
             return new List<string>() { tileName[0].ToString(), oppositeDir(tileName[0].ToString()) };
         } else if (tileName.ToLower().Contains("slant"))
         {
-            return new List<string>() { tileName[0].ToString(), oppositeDir(tileName[0].ToString()) };
+            return new List<string>() { tileName[0].ToString(), oppositeDir(tileName[0].ToString())+"U" };
         } else if (tileName.ToLower().Contains("bend"))
         {
             return new List<string>() { tileName[0].ToString(), nextDir(tileName[0].ToString()) };
@@ -203,6 +223,17 @@ public class GlobalMethods : MonoBehaviour
 
     public static string NextTileDir(string tileName, string dir) {
         List<string> directions = GetDirections(tileName);
+        int dirIndex = directions.ToList().FindIndex(c => c == dir);
+        dirIndex += 1;
+        if (dirIndex == directions.Count)
+        {
+            dirIndex = 0;
+        }
+        return directions[dirIndex];
+    }
+
+    public static string NextBrickDir(Bricks brick, string dir) {
+        List<string> directions = brick.directions;
         int dirIndex = directions.ToList().FindIndex(c => c == dir);
         dirIndex += 1;
         if (dirIndex == directions.Count)
@@ -227,6 +258,38 @@ public class GlobalMethods : MonoBehaviour
             }
         }
         return false;
+    }
+
+    public static bool IsBrickToBrickConnectionPossible(Bricks brick1, Bricks brick2) {
+        List<string> dirs = brick1.directions;
+        foreach (var dir in dirs)
+        {
+            
+            if (brick2.cordinates == GetDirV3(dir, brick1.cordinates))
+            {
+                if (brick2.directions.Contains(oppositeDir(dir)))
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static string BrickToBrickConnectionDirection(Bricks brick1, Bricks brick2) {
+        List<string> dirs = brick1.directions;
+        foreach (var dir in dirs)
+        {
+            
+            if (brick2.cordinates == GetDirV3(dir, brick1.cordinates))
+            {
+                if (brick2.directions.Contains(oppositeDir(dir)))
+                {
+                    return dir;
+                }
+            }
+        }
+        return null;
     }
 
     // Make a method for getting input and out put dirs. Copy the code from the above method and change it to get input and output dirs.
@@ -299,22 +362,31 @@ public class GlobalMethods : MonoBehaviour
     }
 
 
-    public static Belt GetBelt(string tileName, Vector3Int loc) {
-        if (tileName.ToLower().Contains("splitter") || tileName.ToLower().Contains("merger")) {
+    public static Belt GetBelt(string tileName, Vector3Int loc, bool overRule = false) {
+        //Debug.Log(loc);
+        if (!overRule && (tileName.ToLower().Contains("splitter") || tileName.ToLower().Contains("merger"))) {
             return null;
         }
         List<string> dirs = GetDirections(tileName);
+        if (overRule)
+        {
+            dirs = new List<string>() { "W", "E", "N", "S" };
+        }
         foreach (var dir in dirs)
         {
+            //Debug.Log(dir);
             if (General.bricks.ContainsKey(GetDirV3(dir, loc)))
             {
+                //Debug.Log("Found a belt");
                 Bricks brick = General.bricks[GetDirV3(dir, loc)];
-                if (brick.directions.Contains(oppositeDir(dir)))
+                if (brick.directions.Contains(oppositeDir(dir[0].ToString())))
                 {
+                    //Debug.Log("Found a connection possible belt");
                     return brick.belt;
                 }
             }
         }
+        //Debug.Log("No belt found");
         return null;
     }
 
