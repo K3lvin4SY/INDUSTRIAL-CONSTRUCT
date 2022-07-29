@@ -58,7 +58,6 @@ public class populateGrid : MonoBehaviour
 
         foreach (var (spritei, tilei) in sprites)
         {
-            Debug.Log("hello");
             newObj = (GameObject)Instantiate(prefab, transform);
             newObj.GetComponent<Image>().sprite = spritei;
             //newObj.AddComponent<ChooseBlock>();
