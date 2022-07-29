@@ -54,7 +54,7 @@ public class GlobalMethods : MonoBehaviour
         return false;
     }
 
-    public static bool isBrickNotExcludedType(Bricks brick, string excludeType)
+    public static bool isBrickNotExcludedType(string brickName, string excludeType)
     {
         string[] brickTypes = new string[] {"conveyor", "splitter", "merger", "machine"};
         excludeType = excludeType.ToLower();
@@ -63,9 +63,9 @@ public class GlobalMethods : MonoBehaviour
             brickTypes = brickTypes.Where(x => x != excludeType).ToArray();
         }
         foreach (string brickType in brickTypes) {
-            if (brick.tile.name.ToLower().Contains(brickType))
+            if (brickName.ToLower().Contains(brickType))
             {
-                if (!(brick.tile.name.ToLower().Contains(excludeType)))
+                if (!(brickName.ToLower().Contains(excludeType)))
                 {
                     return true;
                 }
@@ -254,6 +254,43 @@ public class GlobalMethods : MonoBehaviour
                 if (brick.directions.Contains(oppositeDir(dir)))
                 {
                     return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static bool arePathsColliding(string tileName, Vector3Int loc) {
+        if (isBrickNotExcludedType(tileName, "conveyor"))
+        {
+            List<string> iDirs = GetInputDirections(tileName, loc);
+            List<string> oDirs = GetOutputDirections(tileName, loc);
+            foreach (var dir in iDirs)
+            {
+                if (General.bricks.ContainsKey(GetDirV3(dir, loc)))
+                {
+                    Bricks brick = General.bricks[GetDirV3(dir, loc)];
+                    if (brick.inputDirections != null) {
+                        if (brick.inputDirections.Contains(oppositeDir(dir)))
+                        {
+                            return true;
+                        }
+                    }
+                
+                }
+            }
+            foreach (var dir in oDirs)
+            {
+                if (General.bricks.ContainsKey(GetDirV3(dir, loc)))
+                {
+                    Bricks brick = General.bricks[GetDirV3(dir, loc)];
+                    if (brick.outputDirections != null) {
+                        if (brick.outputDirections.Contains(oppositeDir(dir)))
+                        {
+                            return true;
+                        }
+                    }
+                
                 }
             }
         }

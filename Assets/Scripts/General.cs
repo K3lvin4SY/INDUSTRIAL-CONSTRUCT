@@ -161,9 +161,9 @@ public class General : MonoBehaviour
     public void RemoveSelectorBoxes() {
 
         if (map.GetTile(selectorLocation)) { // if selectorLocation has a tile
-            if (map.GetTile(selectorLocation).name.Contains("SelectorBox")) { // if tile is selectorbox
+            if (map.GetTile(selectorLocation).name.Contains("SelectorBox") || map.GetTile(selectorLocation).name.ToLower().Contains("SelectorRedBox")) { // if tile is selectorbox
                 map.SetTile(selectorLocation, null); // clear grid location
-            } else if (map.GetTile(selectorLocation).name.ToLower().Contains("selected")) { // if tile is selectorbox
+            } else if (map.GetTile(selectorLocation).name.ToLower().Contains("selected")) { // if tile is marked
                 map.SetTile(selectorLocation, GlobalMethods.GetTileByName(GlobalMethods.RemoveTagFromBlockName(map.GetTile(selectorLocation).name))); // turn back to original tile
             }
         }
@@ -218,14 +218,14 @@ public class General : MonoBehaviour
             if (loc == 1)
             {
                 if (map.GetTile(selectorLocation)) { // if selectorLocation has a tile
-                    if (map.GetTile(selectorLocation).name.Contains("SelectorBox")) { // if tile is selectorbox
+                    if (map.GetTile(selectorLocation).name.Contains("SelectorBox") || map.GetTile(selectorLocation).name.ToLower().Contains("SelectorRedBox")) { // if tile is selectorbox
                         map.SetTile(selectorLocation, null); // clear grid location
                     }
                 }
             } else if (loc == 2)
             {
                 if (map.GetTile(selectorLocation2)) { // if selectorLocation2 has a tile
-                    if (map.GetTile(selectorLocation2).name.Contains("SelectorBox")) { // if tile is selectorbox
+                    if (map.GetTile(selectorLocation2).name.Contains("SelectorBox") || map.GetTile(selectorLocation).name.ToLower().Contains("SelectorRedBox")) { // if tile is selectorbox
                         map.SetTile(selectorLocation2, null); // clear grid location
                     }
                 }
@@ -255,7 +255,14 @@ public class General : MonoBehaviour
                 {
                     if (buildingBlock == "default")
                     {
-                        map.SetTile(location, GlobalMethods.GetTileByName(GlobalMethods.AddTagToBlockName(General.tile.name, "SelectorBox")));
+                        if (GlobalMethods.arePathsColliding(General.tile.name, location))
+                        {
+                            map.SetTile(location, GlobalMethods.GetTileByName(GlobalMethods.AddTagToBlockName(General.tile.name, "SelectorRedBox"))); // set tile to selectorredbox
+                        } else
+                        {
+                            map.SetTile(location, GlobalMethods.GetTileByName(GlobalMethods.AddTagToBlockName(General.tile.name, "SelectorBox"))); // set tile to selectorbox
+                        }
+                        
                     } else {
                         map.SetTile(location, GlobalMethods.GetTileByName(buildingBlock/*+"sb"*/));
                     }

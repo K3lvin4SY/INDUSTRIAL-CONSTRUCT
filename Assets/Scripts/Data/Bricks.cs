@@ -114,7 +114,7 @@ public class Bricks// : ScriptableObject
                 //Debug.Log(linkedBrick.inputDirections.Count.ToString()); // should not be 0 FIX!!!
             }//*/
 
-            if (GlobalMethods.isBrickNotExcludedType(this, "conveyor"))
+            if (GlobalMethods.isBrickNotExcludedType(this.tile.name, "conveyor"))
             {
                 GlobalMethods.GetBelt(tile.name, cordinates, true).assignDirection(this);
             }
@@ -123,6 +123,6 @@ public class Bricks// : ScriptableObject
     }
 
     public void changeTileState(string state) {
-        
+
     }
 }
