@@ -179,6 +179,10 @@ public class Belt// : ScriptableObject
     private string getEdgeDir(bool end) {
         if (end)
         {
+            if (subCordinates.Count == 1)
+            {
+                return subCordinates[0].directions[0];
+            }
             Bricks brick = subCordinates.Last();
             foreach (var dir in brick.directions)
             {
@@ -188,6 +192,10 @@ public class Belt// : ScriptableObject
                 }
             }
         } else {
+            if (subCordinates.Count == 1)
+            {
+                return subCordinates[0].directions[0];
+            }
             Bricks brick = subCordinates[0];
             foreach (var dir in brick.directions)
             {
@@ -205,9 +213,27 @@ public class Belt// : ScriptableObject
         int index = 0;
         foreach (var brick in subCordinates)
         {
-            if (index+1 == subCordinates.Count) {
+            if (index+1 == subCordinates.Count && subCordinates.Count != 1) {
                 // if last brick in belt
                 brick.outputDirections = new List<string>() { GlobalMethods.NextBrickDir(brick, brick.inputDirections[0]) };
+                continue;
+            }
+            if (subCordinates.Count == 1)
+            {
+                foreach (var bDir in brick.directions)
+                {
+                    Vector3Int cord = GlobalMethods.GetDirV3(bDir, brick.cordinates);
+                    if (General.bricks.ContainsKey(cord))
+                    {
+                        if (General.bricks[cord].outputDirections.Contains(GlobalMethods.oppositeDir(bDir)))
+                        {
+                            brick.inputDirections = new List<string>() { bDir };
+                            brick.outputDirections = new List<string>() { GlobalMethods.NextBrickDir(brick, bDir) };
+                            continue;
+                        }
+                    }
+                }
+                Debug.Log("!!!ERROR!!!");
                 continue;
             }
             string dir = GlobalMethods.BrickToBrickConnectionDirection(brick, subCordinates[index + 1]);
@@ -217,6 +243,16 @@ public class Belt// : ScriptableObject
             subCordinates[index + 1].inputDirections = new List<string>() { GlobalMethods.oppositeDir(dir) };
             brick.outputDirections = new List<string>() { dir };
             index += 1;
+        }
+        Debug.Log(subCordinates.Count);
+        updateConnectionBelt();
+    }
+
+    private void updateConnectionBelt() {
+        Vector3Int connectionBrickCordinates = GlobalMethods.GetDirV3(subCordinates.Last().outputDirections[0], subCordinates.Last().cordinates);
+        if (General.bricks.ContainsKey(connectionBrickCordinates))
+        {
+            General.bricks[connectionBrickCordinates].belt.assignDirection(subCordinates.Last());
         }
     }
 

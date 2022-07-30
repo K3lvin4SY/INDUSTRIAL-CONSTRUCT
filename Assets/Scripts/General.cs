@@ -180,16 +180,24 @@ public class General : MonoBehaviour
             //reseting the old selection
             if (map.GetTile(selectorLocation)) { // if selectorLocation has a tile
                 if (map.GetTile(selectorLocation).name.Contains("selected")) { // if tile has selected tag
-                    if (General.bricks[selectorLocation].belt != null)
+                    if (General.bricks.ContainsKey(selectorLocation)) // temporary if statement for brick not in bricks dictionary - REMOVE WHEN GAME SAVE is finished or WHEN ALL BRICKS IS in the bricks dictionary
                     {
-                        General.bricks[selectorLocation].belt.Deselect();
-                        if (!General.bricks[selectorLocation].belt.selected)
+                        if (General.bricks[selectorLocation].belt != null)
                         {
-                            map.SetTile(selectorLocation, GlobalMethods.GetTileByName(GlobalMethods.RemoveTagFromBlockName(map.GetTile(selectorLocation).name))); // turn back to original tile
+                            General.bricks[selectorLocation].belt.Deselect();
+                            if (!General.bricks[selectorLocation].belt.selected)
+                            {
+                                map.SetTile(selectorLocation, GlobalMethods.GetTileByName(GlobalMethods.RemoveTagFromBlockName(map.GetTile(selectorLocation).name))); // turn back to original tile
+                            } else {
+                                map.SetTile(selectorLocation, GlobalMethods.GetTileByName(GlobalMethods.RemoveTagFromBlockName(map.GetTile(selectorLocation).name))); // turn back to original tile
+                            }
                         } else {
                             map.SetTile(selectorLocation, GlobalMethods.GetTileByName(GlobalMethods.RemoveTagFromBlockName(map.GetTile(selectorLocation).name))); // turn back to original tile
                         }
+                    } else {
+                        map.SetTile(selectorLocation, GlobalMethods.GetTileByName(GlobalMethods.RemoveTagFromBlockName(map.GetTile(selectorLocation).name))); // turn back to original tile
                     }
+                    
                         
                     
                     
@@ -205,10 +213,14 @@ public class General : MonoBehaviour
                     map.SetTile(location, tmpTile); // set tile to selected
                     if (Controller.shiftPressed)
                     {
-                        if (General.bricks[location].belt != null)
+                        if (General.bricks.ContainsKey(location)) // temporary if statement for brick not in bricks dictionary - REMOVE WHEN GAME SAVE is finished or WHEN ALL BRICKS IS in the bricks dictionary
                         {
-                            General.bricks[location].belt.Select();
+                            if (General.bricks[location].belt != null)
+                            {
+                                General.bricks[location].belt.Select();
+                            }
                         }
+                        
                     }
                     selectedSprite = tmpTile.sprite; // update selected sprite
                     selectorLocation = location; // update selectorLocation to current grid location
