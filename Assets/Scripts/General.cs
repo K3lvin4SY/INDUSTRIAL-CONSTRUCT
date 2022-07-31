@@ -289,7 +289,7 @@ public class General : MonoBehaviour
                 {
                     if (buildingBlock == "default")
                     {
-                        if (GlobalMethods.arePathsColliding(General.tile.name, location))
+                        if (GlobalMethods.arePathsColliding(General.tile.name, location) || GlobalMethods.willCollitionOccur(General.tile.name, location))
                         {
                             map.SetTile(location, GlobalMethods.GetTileByName(GlobalMethods.AddTagToBlockName(General.tile.name, "SelectorRedBox"))); // set tile to selectorredbox
                         } else

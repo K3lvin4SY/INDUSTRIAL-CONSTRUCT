@@ -116,7 +116,7 @@ public class Bricks// : ScriptableObject
 
             if (GlobalMethods.isBrickNotExcludedType(this.tile.name, "conveyor"))
             {
-                GlobalMethods.GetBelt(tile.name, cordinates, true).assignDirection(this);
+                GlobalMethods.GetBelt(this.tile.name, cordinates, true).assignDirection(this);
             }
         }
         

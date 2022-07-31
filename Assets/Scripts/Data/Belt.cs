@@ -42,6 +42,7 @@ public class Belt// : ScriptableObject
                 // in begining of belt
                 subCordinates.Insert(0, brick);
                 brick.belt = this;
+                CheckForDirUpdate(GlobalMethods.GetDirV3(GlobalMethods.NextBrickDir(brick, GlobalMethods.oppositeDir(dir)), brick.cordinates));
                 return;
             }
         }
@@ -57,10 +58,27 @@ public class Belt// : ScriptableObject
                 // in end of belt
                 subCordinates.Add(brick);
                 brick.belt = this;
+                CheckForDirUpdate(GlobalMethods.GetDirV3(GlobalMethods.NextBrickDir(brick, GlobalMethods.oppositeDir(dir)), brick.cordinates));
                 return;
             }
         }
         Debug.Log("!!!ERROR!!!");
+    }
+
+    private void CheckForDirUpdate(Vector3Int cord) { // if placed conveyor that has been aded to the belt is connected to something with an input/output dir. the belt will get updated
+        if (General.bricks.ContainsKey(cord))
+        {
+            Bricks brick = General.bricks[cord];
+            if (brick.inputDirections != null || brick.outputDirections != null)
+            {
+                if (noDirection())
+                {
+                    assignDirection(brick);
+                } else {
+                    Debug.Log("!!!Conveyor Placed Wrongly!!!"); // collision occurs
+                }
+            }
+        }
     }
 
     public bool AddToBeltCheck(Bricks brick)
