@@ -302,23 +302,27 @@ public class GlobalMethods : MonoBehaviour
     }
 
     public static bool willCollitionOccur(string tileName, Vector3Int loc) {
-        List<string> dirs = GetDirections(tileName);
-        if (dirs.Count == 2)
+        if (tileName.ToLower().Contains("conveyor"))
         {
-            Vector3Int loc1 = GetDirV3(dirs[0], loc);
-            Vector3Int loc2 = GetDirV3(dirs[1], loc);
-            if (General.bricks.ContainsKey(loc1) && General.bricks.ContainsKey(loc2))
+            List<string> dirs = GetDirections(tileName);
+            if (dirs.Count == 2)
             {
-                Bricks brick1 = General.bricks[loc1];
-                Bricks brick2 = General.bricks[loc2];
-                if ((brick1.inputDirections.Contains(oppositeDir(dirs[0])) && brick2.inputDirections.Contains(oppositeDir(dirs[1]))) || (brick1.outputDirections.Contains(oppositeDir(dirs[0])) && brick2.outputDirections.Contains(oppositeDir(dirs[1]))))
+                Vector3Int loc1 = GetDirV3(dirs[0], loc);
+                Vector3Int loc2 = GetDirV3(dirs[1], loc);
+                if (General.bricks.ContainsKey(loc1) && General.bricks.ContainsKey(loc2))
                 {
-                    return true;
+                    Bricks brick1 = General.bricks[loc1];
+                    Bricks brick2 = General.bricks[loc2];
+                    if ((brick1.inputDirections.Contains(oppositeDir(dirs[0])) && brick2.inputDirections.Contains(oppositeDir(dirs[1]))) || (brick1.outputDirections.Contains(oppositeDir(dirs[0])) && brick2.outputDirections.Contains(oppositeDir(dirs[1]))))
+                    {
+                        return true;
+                    }
                 }
+            } else {
+                Debug.Log("Error: " + tileName + " has more than 2 directions");
             }
-        } else {
-            Debug.Log("Error: " + tileName + " has more than 2 directions");
         }
+        
         return false;
     }
 
