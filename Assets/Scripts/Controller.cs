@@ -14,6 +14,7 @@ public class Controller : MonoBehaviour
     public GameObject grid;
     public GameObject pauseMenu;
     public GameObject optionsMenu;
+    public GameObject selectInspector;
     List<GameObject> gameWindows;
     List<GameObject> inGameWindows;
 
@@ -21,11 +22,12 @@ public class Controller : MonoBehaviour
     float moveSpeed;
     void Start()
     {
-        gameWindows = new List<GameObject> {brickPicker, main, grid, pauseMenu, optionsMenu};
-        inGameWindows = new List<GameObject> {brickPicker};
+        gameWindows = new List<GameObject> {brickPicker, main, grid, pauseMenu, optionsMenu, selectInspector};
+        inGameWindows = new List<GameObject> {brickPicker, selectInspector};
         brickPicker.SetActive(false);
         pauseMenu.SetActive(false);
         optionsMenu.SetActive(false);
+        selectInspector.SetActive(false);
         main.SetActive(true);
     }
 
