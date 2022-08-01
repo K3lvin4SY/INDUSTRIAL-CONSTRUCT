@@ -313,10 +313,14 @@ public class GlobalMethods : MonoBehaviour
                 {
                     Bricks brick1 = General.bricks[loc1];
                     Bricks brick2 = General.bricks[loc2];
-                    if ((brick1.inputDirections.Contains(oppositeDir(dirs[0])) && brick2.inputDirections.Contains(oppositeDir(dirs[1]))) || (brick1.outputDirections.Contains(oppositeDir(dirs[0])) && brick2.outputDirections.Contains(oppositeDir(dirs[1]))))
+                    if (brick1.inputDirections != null && brick2.outputDirections != null)
                     {
-                        return true;
+                        if ((brick1.inputDirections.Contains(oppositeDir(dirs[0])) && brick2.inputDirections.Contains(oppositeDir(dirs[1]))) || (brick1.outputDirections.Contains(oppositeDir(dirs[0])) && brick2.outputDirections.Contains(oppositeDir(dirs[1]))))
+                        {
+                            return true;
+                        }
                     }
+                    
                 }
             } else {
                 Debug.Log("Error: " + tileName + " has more than 2 directions");

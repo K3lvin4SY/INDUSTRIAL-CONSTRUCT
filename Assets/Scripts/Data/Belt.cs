@@ -188,7 +188,7 @@ public class Belt// : ScriptableObject
                         // end is output (don't flip)
                     }
                 }
-                assignProgressDirection();
+                assignProgressDirection(brick);
             }
         }
         
@@ -227,7 +227,7 @@ public class Belt// : ScriptableObject
         return null;
     }
 
-    private void assignProgressDirection() {
+    private void assignProgressDirection(Bricks inBrick) {
         int index = 0;
         foreach (var brick in subCordinates)
         {
@@ -248,6 +248,11 @@ public class Belt// : ScriptableObject
                             brick.inputDirections = new List<string>() { bDir };
                             brick.outputDirections = new List<string>() { GlobalMethods.NextBrickDir(brick, bDir) };
                             continue;
+                        } else if (General.bricks[cord].inputDirections.Contains(GlobalMethods.oppositeDir(bDir)))
+                        {
+                            brick.outputDirections = new List<string>() { bDir };
+                            brick.inputDirections = new List<string>() { GlobalMethods.NextBrickDir(brick, bDir) };
+                            continue;
                         }
                     }
                 }
@@ -263,14 +268,22 @@ public class Belt// : ScriptableObject
             index += 1;
         }
         Debug.Log(subCordinates.Count);
-        updateConnectionBelt();
+        updateConnectionBelt(inBrick);
     }
 
-    private void updateConnectionBelt() {
+    private void updateConnectionBelt(Bricks brick) {
         Vector3Int connectionBrickCordinates = GlobalMethods.GetDirV3(subCordinates.Last().outputDirections[0], subCordinates.Last().cordinates);
+        Bricks beltBrick = subCordinates.Last();
+        if (connectionBrickCordinates == brick.cordinates)
+        {
+            connectionBrickCordinates = GlobalMethods.GetDirV3(subCordinates[0].inputDirections[0], subCordinates[0].cordinates);
+            beltBrick = subCordinates[0];
+        }
         if (General.bricks.ContainsKey(connectionBrickCordinates))
         {
-            General.bricks[connectionBrickCordinates].belt.assignDirection(subCordinates.Last());
+            Debug.Log(General.bricks[connectionBrickCordinates].belt.subCordinates.Count);
+            //Debug.Log(General.bricks[connectionBrickCordinates].belt.subCordinates.Last().tile.name);
+            General.bricks[connectionBrickCordinates].belt.assignDirection(beltBrick);
         }
     }
 
