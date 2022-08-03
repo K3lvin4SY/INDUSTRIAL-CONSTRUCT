@@ -8,6 +8,7 @@ public class Controller : MonoBehaviour
 {
     // Start is called before the first frame update
 
+    public static Controller Instance;
     public GameObject brickPicker;
     public GameObject main;
     public GameObject gameUI;
@@ -29,6 +30,7 @@ public class Controller : MonoBehaviour
         optionsMenu.SetActive(false);
         selectInspector.SetActive(false);
         main.SetActive(true);
+        Controller.Instance = this;
     }
 
     // Update is called once per frame

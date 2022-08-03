@@ -11,7 +11,7 @@ public class Belt// : ScriptableObject
     //public Dictionary<int, Bricks> subCordinates;
     public List<GameItem> storage;
     
-    public bool selected;
+    public bool selected = false;
 
     
 

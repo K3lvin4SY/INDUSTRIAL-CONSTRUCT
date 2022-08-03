@@ -612,6 +612,8 @@ public class General : MonoBehaviour
             return;
         } else if (gameState == "move") {
 
+        } else if (gameState == "select") {
+            SelectInspecter.InspectAtCordiante(selectorLocation);
         }
     }
 
