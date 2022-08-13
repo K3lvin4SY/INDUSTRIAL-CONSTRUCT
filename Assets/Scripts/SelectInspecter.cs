@@ -7,15 +7,21 @@ using UnityEngine.UI;
 public class SelectInspecter : MonoBehaviour
 {
 
+    public Image SelectedBrickImg;
+    public GameObject beltBtn;
+    public GameObject SelectedBrickImgBg;
     public GameObject brickNameObject;
     public GameObject brickInputsObject;
     public GameObject brickOutputsObject;
-    public Text brickName;
-    public Text brickInputs;
-    public Text brickOutputs;
-    public static string brickNameSelected;
-    public static string brickInputsSelected;
-    public static string brickOutputsSelected;
+    private Text brickName;
+    private Text brickInputs;
+    private Text brickOutputs;
+    private static string brickNameSelected;
+    private static string brickInputsSelected;
+    private static string brickOutputsSelected;
+    private static Sprite brickSpriteSelected;
+    private static string brickType;
+    private static Bricks brickSelected;
 
     void Start() {
         brickName = brickNameObject.GetComponent<Text>();
@@ -25,8 +31,22 @@ public class SelectInspecter : MonoBehaviour
 
     void Update() {
         brickName.text = SelectInspecter.brickNameSelected;
-        brickInputs.text = "Inputs: [ "+SelectInspecter.brickInputsSelected+" ]";
-        brickOutputs.text = "Outputs: [ "+SelectInspecter.brickOutputsSelected+" ]";
+        brickInputs.text = SelectInspecter.brickInputsSelected;
+        brickOutputs.text = SelectInspecter.brickOutputsSelected;
+
+        if (brickSpriteSelected != null) {
+            SelectedBrickImg.sprite = brickSpriteSelected;
+            SelectedBrickImgBg.SetActive(true);
+        } else {
+            SelectedBrickImgBg.SetActive(false);
+        }
+
+        /* Checking if the brick type is a belt. */
+        if (SelectInspecter.brickType == "belt") {
+            beltBtn.SetActive(false);
+        } else {
+            beltBtn.SetActive(true);
+        }
     }
     public static void InspectAtCordiante(Vector3Int cordinate) // move this to other file, maybe
     {
@@ -39,42 +59,17 @@ public class SelectInspecter : MonoBehaviour
                 if (inspectedBrick.belt.selected)
                 {
                     //Display Belt Info
-                    brickNameSelected = "Belt";
+                    LoadBelt(inspectedBrick.belt);
+
+                    brickSelected = inspectedBrick;
                     Controller.Instance.UseWindow(Controller.Instance.selectInspector);
                     return;
                 }
             }
             //Display Brick Info
             //brickName.text = inspectedBrick.tile.name;
-            brickNameSelected = inspectedBrick.tile.name;
-
-            brickInputsSelected = "";
-            if (inspectedBrick.inputDirections != null)
-            {
-                foreach (var dir in inspectedBrick.inputDirections)
-                {
-                    if (inspectedBrick.inputDirections.LastIndexOf(dir) != 0 && inspectedBrick.inputDirections.Last() != dir)
-                    {
-                        brickInputsSelected += ", ";
-                    }
-                    brickInputsSelected += dir.ToString();
-                } 
-            }
             
-            brickOutputsSelected = "";
-            if (inspectedBrick.outputDirections != null)
-            {
-                foreach (var dir in inspectedBrick.outputDirections)
-                {
-                    if (inspectedBrick.outputDirections.LastIndexOf(dir) != 0 && inspectedBrick.outputDirections.Last() != dir)
-                    {
-                        brickOutputsSelected += ", ";
-                    }
-                    brickOutputsSelected += dir.ToString();
-                } 
-            }
-            
-            
+            LoadBrick(inspectedBrick);
             Controller.Instance.UseWindow(Controller.Instance.selectInspector);
             return;
         }
@@ -83,4 +78,85 @@ public class SelectInspecter : MonoBehaviour
             Debug.Log("No brick at " + cordinate);
         }
     }
+
+    private static void LoadBrick(Bricks brick) {
+        brickNameSelected = brick.tile.name;
+
+        brickInputsSelected = "";
+        if (brick.inputDirections != null)
+        {
+            foreach (var dir in brick.inputDirections)
+            {
+                if (brick.inputDirections.LastIndexOf(dir) != 0 && brick.inputDirections.Last() != dir)
+                {
+                    brickInputsSelected += ", ";
+                }
+                brickInputsSelected += dir.ToString();
+            }
+            brickInputsSelected = "Inputs: [ "+brickInputsSelected+" ]";
+        }
+        
+        brickOutputsSelected = "";
+        if (brick.outputDirections != null)
+        {
+            foreach (var dir in brick.outputDirections)
+            {
+                if (brick.outputDirections.LastIndexOf(dir) != 0 && brick.outputDirections.Last() != dir)
+                {
+                    brickOutputsSelected += ", ";
+                }
+                brickOutputsSelected += dir.ToString();
+            }
+            brickOutputsSelected = "Outputs: [ "+brickOutputsSelected+" ]";
+        }
+        
+        brickSpriteSelected = brick.tile.sprite;
+
+        brickType = "brick";
+        
+        brickSelected = brick;
+    }
+
+    private static void LoadBelt(Belt belt) {
+        brickNameSelected = "Belt";
+
+        brickInputsSelected = "Length: " + belt.subCordinates.Count.ToString();
+
+        brickOutputsSelected = "";
+
+        brickSpriteSelected = null;
+
+        brickType = "belt";
+    }
+
+    public static void BeltBtnTrigger() {
+        if (brickType == "brick") {
+            LoadBelt(brickSelected.belt);
+        }
+    }
+
+    public static void NextBtnTrigger() {
+        if (brickType == "brick") {
+            if (brickSelected.belt != null) {
+                if (brickSelected.belt.subCordinates.Last() != brickSelected)
+                {
+                    Bricks nextBrick = brickSelected.belt.subCordinates.Where(b => b.tile != null).ToList()[brickSelected.belt.subCordinates.Where(b => b.tile != null).ToList().FindIndex(x => x == brickSelected) + 1];
+                    LoadBrick(nextBrick);
+                }
+            }
+        }
+    }
+
+    public static void PrevBtnTrigger() {
+        if (brickType == "brick") {
+            if (brickSelected.belt != null) {
+                if (brickSelected.belt.subCordinates.First() != brickSelected)
+                {
+                    Bricks prevBrick = brickSelected.belt.subCordinates.Where(b => b.tile != null).ToList()[brickSelected.belt.subCordinates.Where(b => b.tile != null).ToList().FindIndex(x => x == brickSelected) - 1];
+                    LoadBrick(prevBrick);
+                }
+            }
+        }
+    }
+    
 }
