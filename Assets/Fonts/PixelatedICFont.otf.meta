@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: 9cd71165e451c7846a086a470d2a3e5c
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 500
+  forceTextureCase: 0
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - PixelatedICFont
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 986de9a46f7c71d4cb12067a5faf670d, type: 3}
+  - {fileID: 12800000, guid: fa03a8dca58c97d4daf6a29f752ffa94, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,13 +1,34 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 using UnityEngine.UI;
 
 public class SelectInspecter : MonoBehaviour
 {
 
-    public static Text brickName;
-    public static void InspectAtCordiante(Vector3Int cordinate)
+    public GameObject brickNameObject;
+    public GameObject brickInputsObject;
+    public GameObject brickOutputsObject;
+    public Text brickName;
+    public Text brickInputs;
+    public Text brickOutputs;
+    public static string brickNameSelected;
+    public static string brickInputsSelected;
+    public static string brickOutputsSelected;
+
+    void Start() {
+        brickName = brickNameObject.GetComponent<Text>();
+        brickInputs = brickInputsObject.GetComponent<Text>();
+        brickOutputs = brickOutputsObject.GetComponent<Text>();
+    }
+
+    void Update() {
+        brickName.text = SelectInspecter.brickNameSelected;
+        brickInputs.text = "Inputs: [ "+SelectInspecter.brickInputsSelected+" ]";
+        brickOutputs.text = "Outputs: [ "+SelectInspecter.brickOutputsSelected+" ]";
+    }
+    public static void InspectAtCordiante(Vector3Int cordinate) // move this to other file, maybe
     {
         Debug.Log("Inspecting at " + cordinate);
         if (General.bricks.ContainsKey(cordinate))
@@ -17,14 +38,44 @@ public class SelectInspecter : MonoBehaviour
             {
                 if (inspectedBrick.belt.selected)
                 {
-                    Controller.Instance.UseWindow(Controller.Instance.selectInspector);
                     //Display Belt Info
+                    brickNameSelected = "Belt";
+                    Controller.Instance.UseWindow(Controller.Instance.selectInspector);
                     return;
                 }
             }
-            Controller.Instance.UseWindow(Controller.Instance.selectInspector);
             //Display Brick Info
-            brickName.text = inspectedBrick.tile.name;
+            //brickName.text = inspectedBrick.tile.name;
+            brickNameSelected = inspectedBrick.tile.name;
+
+            brickInputsSelected = "";
+            if (inspectedBrick.inputDirections != null)
+            {
+                foreach (var dir in inspectedBrick.inputDirections)
+                {
+                    if (inspectedBrick.inputDirections.LastIndexOf(dir) != 0 && inspectedBrick.inputDirections.Last() != dir)
+                    {
+                        brickInputsSelected += ", ";
+                    }
+                    brickInputsSelected += dir.ToString();
+                } 
+            }
+            
+            brickOutputsSelected = "";
+            if (inspectedBrick.outputDirections != null)
+            {
+                foreach (var dir in inspectedBrick.outputDirections)
+                {
+                    if (inspectedBrick.outputDirections.LastIndexOf(dir) != 0 && inspectedBrick.outputDirections.Last() != dir)
+                    {
+                        brickOutputsSelected += ", ";
+                    }
+                    brickOutputsSelected += dir.ToString();
+                } 
+            }
+            
+            
+            Controller.Instance.UseWindow(Controller.Instance.selectInspector);
             return;
         }
         else
