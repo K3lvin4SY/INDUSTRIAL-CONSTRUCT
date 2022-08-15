@@ -97,10 +97,26 @@ public class SelectInspecter : MonoBehaviour
             NextBtn.SetActive(false);
             PrevBtn.SetActive(false);
 
-            NorthBtn.SetActive(true);
-            EastBtn.SetActive(true);
-            SouthBtn.SetActive(true);
-            WestBtn.SetActive(true);
+            if (brickSelected.directions.Contains("N")) {
+                NorthBtn.SetActive(DirBtnChecker("N"));
+            } else {
+                NorthBtn.SetActive(false);
+            }
+            if (brickSelected.directions.Contains("E")) {
+                EastBtn.SetActive(DirBtnChecker("E"));
+            } else {
+                EastBtn.SetActive(false);
+            }
+            if (brickSelected.directions.Contains("S")) {
+                SouthBtn.SetActive(DirBtnChecker("S"));
+            } else {
+                SouthBtn.SetActive(false);
+            }
+            if (brickSelected.directions.Contains("W")) {
+                WestBtn.SetActive(DirBtnChecker("W"));
+            } else {
+                WestBtn.SetActive(false);
+            }
         }
     }
     public static void InspectAtCordiante(Vector3Int cordinate) // move this to other file, maybe
@@ -322,19 +338,39 @@ public class SelectInspecter : MonoBehaviour
     }
 
     public static void NorthBtnTrigger() {
-
+        if (General.bricks.ContainsKey(GlobalMethods.GetDirV3("N", brickSelected.cordinates)))
+        {
+            LoadBrick(General.bricks[GlobalMethods.GetDirV3("N", brickSelected.cordinates)]);
+        }
     }
 
     public static void WestBtnTrigger() {
-        
+        if (General.bricks.ContainsKey(GlobalMethods.GetDirV3("W", brickSelected.cordinates)))
+        {
+            LoadBrick(General.bricks[GlobalMethods.GetDirV3("W", brickSelected.cordinates)]);
+        }
     }
 
     public static void EastBtnTrigger() {
-        
+        if (General.bricks.ContainsKey(GlobalMethods.GetDirV3("E", brickSelected.cordinates)))
+        {
+            LoadBrick(General.bricks[GlobalMethods.GetDirV3("E", brickSelected.cordinates)]);
+        }
     }
 
     public static void SouthBtnTrigger() {
-        
+        if (General.bricks.ContainsKey(GlobalMethods.GetDirV3("S", brickSelected.cordinates)))
+        {
+            LoadBrick(General.bricks[GlobalMethods.GetDirV3("S", brickSelected.cordinates)]);
+        }
+    }
+
+    private bool DirBtnChecker(string dir) {
+        if (General.bricks.ContainsKey(GlobalMethods.GetDirV3(dir, brickSelected.cordinates)))
+        {
+            return true;
+        }
+        return false;
     }
     
 }
