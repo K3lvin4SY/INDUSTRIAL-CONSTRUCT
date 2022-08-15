@@ -128,6 +128,10 @@ public class Bricks// : ScriptableObject
 
         if (tile == null || ((inputDirections != null || outputDirections != null) && tile.name.ToLower().Contains("conveyor"))) // here only conveyor bricks with direction passes through
         {
+            if (tile == null)
+            {
+                //return;
+            }
             //*  CODE down bellow may not be finished (its for updating a belt that is already created)
             if (belt != null) {
                 if (belt.isBrick(this) != null) // if brick is in end or start of the belt
@@ -140,7 +144,14 @@ public class Bricks// : ScriptableObject
                         if (connectionBrick.inputDirections != null || connectionBrick.outputDirections != null) { // if the brick has direction
                             connectionBrick = belt.getConnectingEdgeBrick(false == belt.isBrickLast(this)); // change the connection brick to the other brick on the oteher side of the belt
                         }
-                        Debug.Log(connectionBrick.tile.name);
+                        if (connectionBrick == null)
+                        {
+                            connectionBrick = belt.getConnectingEdgeBrick(belt.isBrickLast(this));
+                        }
+                        if (connectionBrick.tile != null)
+                        {
+                            Debug.Log(connectionBrick.tile.name);
+                        }
                         if (connectionBrick.belt != null)
                         {
                             connectionBrick.belt.assignDirection(this);

@@ -389,7 +389,9 @@ public class GlobalMethods : MonoBehaviour
                     if (brick.outputDirections.Contains(oppositeDir(dir)))
                     {
                         Debug.Log(dir);
-                        if (isBrickNotExcludedType(brick.tile.name, "conveyor")) {
+                        if (brick.tile == null) {
+                            return new List<string>() { dir };
+                        } else if (isBrickNotExcludedType(brick.tile.name, "conveyor")) {
                             returnValue = new List<string>() { dir };
                         } else {
                             return new List<string>() { dir };
@@ -397,7 +399,10 @@ public class GlobalMethods : MonoBehaviour
                         
                     } else {
                         Debug.Log(NextTileDir(tileName, dir));
-                        if (isBrickNotExcludedType(brick.tile.name, "conveyor")) {
+                        Debug.Log(brick.tile);
+                        if (brick.tile == null) {
+                            return new List<string>() { NextTileDir(tileName, dir) };
+                        } else if (isBrickNotExcludedType(brick.tile.name, "conveyor")) {
                             returnValue = new List<string>() { NextTileDir(tileName, dir) };
                         } else {
                             return new List<string>() { NextTileDir(tileName, dir) };
@@ -437,14 +442,18 @@ public class GlobalMethods : MonoBehaviour
                     List<string> returnValue = null;
                     if (brick.inputDirections.Contains(oppositeDir(dir)))
                     {
-                        if (isBrickNotExcludedType(brick.tile.name, "conveyor")) {
+                        if (brick.tile == null) {
+                            return new List<string>() { dir };
+                        } else if (isBrickNotExcludedType(brick.tile.name, "conveyor")) {
                             returnValue = new List<string>() { dir };
                         } else {
                             return new List<string>() { dir };
                         }
                     } else {
                         Debug.Log(NextTileDir(tileName, dir));
-                        if (isBrickNotExcludedType(brick.tile.name, "conveyor")) {
+                        if (brick.tile == null) {
+                            return new List<string>() { NextTileDir(tileName, dir) };
+                        } else if (isBrickNotExcludedType(brick.tile.name, "conveyor")) {
                             returnValue = new List<string>() { NextTileDir(tileName, dir) };
                         } else {
                             return new List<string>() { NextTileDir(tileName, dir) };

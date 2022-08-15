@@ -18,14 +18,17 @@ public class SelectInspecter : MonoBehaviour
     public GameObject PrevBtn;
     public GameObject SelectedBrickImgBg;
     public GameObject brickNameObject;
+    public GameObject brickPlaceObject;
     public GameObject brickInputsObject;
     public GameObject brickOutputsObject;
     private Text brickName;
     private Text brickInputs;
     private Text brickOutputs;
+    private Text brickBeltPlace;
     private static string brickNameSelected;
     private static string brickInputsSelected;
     private static string brickOutputsSelected;
+    private static string brickPlaceSelected;
     private static Sprite brickSpriteSelected;
     private static string brickType;
     private static Bricks brickSelected;
@@ -34,12 +37,14 @@ public class SelectInspecter : MonoBehaviour
         brickName = brickNameObject.GetComponent<Text>();
         brickInputs = brickInputsObject.GetComponent<Text>();
         brickOutputs = brickOutputsObject.GetComponent<Text>();
+        brickBeltPlace = brickPlaceObject.GetComponent<Text>();
     }
 
     void Update() {
         brickName.text = SelectInspecter.brickNameSelected;
         brickInputs.text = SelectInspecter.brickInputsSelected;
         brickOutputs.text = SelectInspecter.brickOutputsSelected;
+        brickBeltPlace.text = SelectInspecter.brickPlaceSelected;
 
         if (brickSpriteSelected != null) {
             SelectedBrickImg.sprite = brickSpriteSelected;
@@ -151,6 +156,10 @@ public class SelectInspecter : MonoBehaviour
     }
 
     private static void LoadBrick(Bricks brick) {
+        if (brick.tile == null)
+        {
+            brick = brick.linkedBrick;
+        }
         brickNameSelected = brick.tile.name;
 
         brickInputsSelected = "";
@@ -183,6 +192,12 @@ public class SelectInspecter : MonoBehaviour
             brickOutputsSelected = "Outputs: [ "+brickOutputsSelected+" ]";
         } else {
             brickOutputsSelected = "Outputs: [ None ]";
+        }
+
+        brickPlaceSelected = "";
+        if (brick.belt != null)
+        {
+            brickPlaceSelected = "Belt Placement: "+(brick.belt.subCordinates.FindIndex(x => x == brick)+1).ToString();
         }
         
         brickSpriteSelected = brick.tile.sprite;
@@ -224,7 +239,7 @@ public class SelectInspecter : MonoBehaviour
     public static void NextBtnTrigger() {
         if (brickType == "brick" || brickType == "conveyor") {
             if (brickSelected.belt != null) {
-                if (brickSelected.belt.subCordinates.Last() != brickSelected)
+                if (brickSelected.belt.subCordinates/*.Where(b => b.tile != null).ToList()*/.Last() != brickSelected)
                 {
                     Bricks nextBrick = brickSelected.belt.subCordinates.Where(b => b.tile != null).ToList()[brickSelected.belt.subCordinates.Where(b => b.tile != null).ToList().FindIndex(x => x == brickSelected) + 1];
                     LoadBrick(nextBrick);
@@ -232,15 +247,16 @@ public class SelectInspecter : MonoBehaviour
                     //go to next brick
                     if (brickSelected.belt.isBrick(brickSelected) != null)
                     {
-                        Bricks connectionBrick = brickSelected.belt.getConnectingEdgeBrick(brickSelected.belt.isBrickLast(brickSelected));
+                        Bricks connectionBrick = brickSelected.belt.getConnectingEdgeBrick(brickSelected.belt.isBrickLast(brickSelected), true, true);
                         LoadBrick(connectionBrick);
+                        Debug.Log("2n");
                     }
                 }
             }
         } else if (brickType == "belt") {
-            if (brickSelected.belt.getConnectingEdgeBrick(true) != null)
+            if (brickSelected.belt.getConnectingEdgeBrick(true, true, true) != null)
             {
-                Bricks connectedBrick = brickSelected.belt.getConnectingEdgeBrick(true);
+                Bricks connectedBrick = brickSelected.belt.getConnectingEdgeBrick(true, true, true);
                 if (connectedBrick.belt != null)
                 {
                     if (connectedBrick.tile == null)
@@ -260,23 +276,25 @@ public class SelectInspecter : MonoBehaviour
     public static void PrevBtnTrigger() {
         if (brickType == "brick" || brickType == "conveyor") {
             if (brickSelected.belt != null) {
-                if (brickSelected.belt.subCordinates.First() != brickSelected)
+                if (brickSelected.belt.subCordinates/*.Where(b => b.tile != null).ToList()*/.First() != brickSelected)
                 {
                     Bricks prevBrick = brickSelected.belt.subCordinates.Where(b => b.tile != null).ToList()[brickSelected.belt.subCordinates.Where(b => b.tile != null).ToList().FindIndex(x => x == brickSelected) - 1];
                     LoadBrick(prevBrick);
+                    Debug.Log("1p");
                 } else {
                     //go to previous brick
                     if (brickSelected.belt.isBrick(brickSelected) != null)
                     {
-                        Bricks connectionBrick = brickSelected.belt.getConnectingEdgeBrick(brickSelected.belt.isBrickLast(brickSelected));
+                        Bricks connectionBrick = brickSelected.belt.getConnectingEdgeBrick(brickSelected.belt.isBrickLast(brickSelected), false, true);
                         LoadBrick(connectionBrick);
+                        Debug.Log("2p");
                     }
                 }
             }
         } else if (brickType == "belt") {
-            if (brickSelected.belt.getConnectingEdgeBrick(false) != null)
+            if (brickSelected.belt.getConnectingEdgeBrick(false, false, true) != null)
             {
-                Bricks connectedBrick = brickSelected.belt.getConnectingEdgeBrick(false);
+                Bricks connectedBrick = brickSelected.belt.getConnectingEdgeBrick(false, false, true);
                 if (connectedBrick.belt != null)
                 {
                     if (connectedBrick.tile == null)
@@ -296,18 +314,22 @@ public class SelectInspecter : MonoBehaviour
     private bool PrevBtnChecker() {
         if (brickType == "brick" || brickType == "conveyor") {
             if (brickSelected.belt != null) {
-                if (brickSelected.belt.subCordinates.First() != brickSelected)
+                if (brickSelected.belt.subCordinates.Where(b => b.tile != null).ToList().First() != brickSelected)
                 {
                     return true;
                 } else {
                     if (brickSelected.belt.isBrick(brickSelected) != null)
                     {
-                        return true;
+                        Bricks connectionBrick = brickSelected.belt.getConnectingEdgeBrick(brickSelected.belt.isBrickLast(brickSelected), false, true);
+                        if (connectionBrick != null)
+                        {
+                            return true;
+                        }
                     }
                 }
             }
         } else if (brickType == "belt") {
-            if (brickSelected.belt.getConnectingEdgeBrick(false) != null)
+            if (brickSelected.belt.getConnectingEdgeBrick(false, false, true) != null)
             {
                 return true;
             }
@@ -318,18 +340,22 @@ public class SelectInspecter : MonoBehaviour
     private bool NextBtnChecker() {
         if (brickType == "brick" || brickType == "conveyor") {
             if (brickSelected.belt != null) {
-                if (brickSelected.belt.subCordinates.Last() != brickSelected)
+                if (brickSelected.belt.subCordinates.Where(b => b.tile != null).ToList().Last() != brickSelected)
                 {
                     return true;
                 } else {
                     if (brickSelected.belt.isBrick(brickSelected) != null)
                     {
-                        return true;
+                        Bricks connectionBrick = brickSelected.belt.getConnectingEdgeBrick(brickSelected.belt.isBrickLast(brickSelected), true, true);
+                        if (connectionBrick != null)
+                        {
+                            return true;
+                        }
                     }
                 }
             }
         } else if (brickType == "belt") {
-            if (brickSelected.belt.getConnectingEdgeBrick(true) != null)
+            if (brickSelected.belt.getConnectingEdgeBrick(true, true, true) != null)
             {
                 return true;
             }

@@ -248,16 +248,32 @@ public class Belt// : ScriptableObject
         return false;
     }
 
-    public Bricks getConnectingEdgeBrick(bool end) {
+    public Bricks getConnectingEdgeBrick(bool end, bool next = false, bool manual = false) {
+        if (subCordinates.Count == 1)
+        {
+            if (manual && subCordinates[0].inputDirections != null)
+            {   
+                string dir;
+                if (!next)
+                {
+                    dir = subCordinates[0].inputDirections[0];
+                } else {
+                    dir = subCordinates[0].outputDirections[0];
+                }
+                if (General.bricks.ContainsKey(GlobalMethods.GetDirV3(dir, subCordinates[0].cordinates)))
+                {
+                    return General.bricks[GlobalMethods.GetDirV3(dir, subCordinates[0].cordinates)];
+                }
+            } else if (General.bricks.ContainsKey(GlobalMethods.GetDirV3(subCordinates[0].directions[0], subCordinates[0].cordinates)))
+            {
+                return General.bricks[GlobalMethods.GetDirV3(subCordinates[0].directions[0], subCordinates[0].cordinates)];
+            }
+            //Debug.Log("No Brick by edge");
+            return null;
+        }
         if (end)
         {
-            if (subCordinates.Count == 1)
-            {
-                if (General.bricks.ContainsKey(GlobalMethods.GetDirV3(subCordinates[0].directions[0], subCordinates[0].cordinates)))
-                {
-                    return General.bricks[GlobalMethods.GetDirV3(subCordinates[0].directions[0], subCordinates[0].cordinates)];
-                }
-            }
+            
             Bricks brick = subCordinates.Last();
             foreach (var dir in brick.directions)
             {
@@ -270,13 +286,7 @@ public class Belt// : ScriptableObject
                 }
             }
         } else {
-            if (subCordinates.Count == 1)
-            {
-                if (General.bricks.ContainsKey(GlobalMethods.GetDirV3(subCordinates[0].directions[0], subCordinates[0].cordinates)))
-                {
-                    return General.bricks[GlobalMethods.GetDirV3(subCordinates[0].directions[0], subCordinates[0].cordinates)];
-                }
-            }
+            
             Bricks brick = subCordinates[0];
             foreach (var dir in brick.directions)
             {
@@ -289,7 +299,7 @@ public class Belt// : ScriptableObject
                 }
             }
         }
-        Debug.Log("NO BRICK FOUND!");
+        //Debug.Log("NO BRICK FOUND!");
         return null;
     }
 
