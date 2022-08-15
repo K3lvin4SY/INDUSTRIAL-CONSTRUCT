@@ -375,6 +375,7 @@ public class GlobalMethods : MonoBehaviour
             if (General.bricks.ContainsKey(GetDirV3(dir, loc)))
             {
                 Bricks brick = General.bricks[GetDirV3(dir, loc)];
+                
                 if (brick.directions.Contains(oppositeDir(dir)))
                 {
                     Debug.Log(brick.directions[0]);
@@ -384,13 +385,28 @@ public class GlobalMethods : MonoBehaviour
                     }
                     
                     Debug.Log(brick.outputDirections[0]);
+                    List<string> returnValue = null;
                     if (brick.outputDirections.Contains(oppositeDir(dir)))
                     {
                         Debug.Log(dir);
-                        return new List<string>() { dir };
+                        if (isBrickNotExcludedType(brick.tile.name, "conveyor")) {
+                            returnValue = new List<string>() { dir };
+                        } else {
+                            return new List<string>() { dir };
+                        }
+                        
                     } else {
                         Debug.Log(NextTileDir(tileName, dir));
-                        return new List<string>() { NextTileDir(tileName, dir) };
+                        if (isBrickNotExcludedType(brick.tile.name, "conveyor")) {
+                            returnValue = new List<string>() { NextTileDir(tileName, dir) };
+                        } else {
+                            return new List<string>() { NextTileDir(tileName, dir) };
+                        }
+                        
+                    }
+
+                    if (returnValue != null) {
+                        return returnValue;
                     }
 
                 }
@@ -411,18 +427,32 @@ public class GlobalMethods : MonoBehaviour
             if (General.bricks.ContainsKey(GetDirV3(dir, loc)))
             {
                 Bricks brick = General.bricks[GetDirV3(dir, loc)];
+                
                 if (brick.directions.Contains(oppositeDir(dir)))
                 {
                     if (brick.outputDirections == null || brick.inputDirections == null)
                     {
                         return null;
                     }
+                    List<string> returnValue = null;
                     if (brick.inputDirections.Contains(oppositeDir(dir)))
                     {
-                        return new List<string>() { dir };
+                        if (isBrickNotExcludedType(brick.tile.name, "conveyor")) {
+                            returnValue = new List<string>() { dir };
+                        } else {
+                            return new List<string>() { dir };
+                        }
                     } else {
                         Debug.Log(NextTileDir(tileName, dir));
-                        return new List<string>() { NextTileDir(tileName, dir) };
+                        if (isBrickNotExcludedType(brick.tile.name, "conveyor")) {
+                            returnValue = new List<string>() { NextTileDir(tileName, dir) };
+                        } else {
+                            return new List<string>() { NextTileDir(tileName, dir) };
+                        }
+                    }
+
+                    if (returnValue != null) {
+                        return returnValue;
                     }
 
                 }
@@ -432,16 +462,19 @@ public class GlobalMethods : MonoBehaviour
     }
 
 
-    public static Belt GetBelt(string tileName, Vector3Int loc, bool overRule = false) {
+    public static Belt GetBelt(string tileName, Vector3Int loc, bool overRule = false, List<string> dirs = null) {
         //Debug.Log(loc);
         if (!overRule && (tileName.ToLower().Contains("splitter") || tileName.ToLower().Contains("merger"))) {
             return null;
         }
-        List<string> dirs = GetDirections(tileName);
-        if (overRule)
-        {
-            dirs = new List<string>() { "W", "E", "N", "S" };
+        if (dirs == null) {
+            if (!overRule) {
+                dirs = GetDirections(tileName);
+            } else {
+                dirs = new List<string>() { "W", "E", "N", "S" };
+            }
         }
+        
         foreach (var dir in dirs)
         {
             //Debug.Log(dir);
@@ -449,7 +482,7 @@ public class GlobalMethods : MonoBehaviour
             {
                 //Debug.Log("Found a belt");
                 Bricks brick = General.bricks[GetDirV3(dir, loc)];
-                if (brick.directions.Contains(oppositeDir(dir[0].ToString())))
+                if (brick.directions.Contains(oppositeDir(dir[0].ToString())) && (brick.tile == null || brick.tile.name.ToLower().Contains("conveyor")))
                 {
                     //Debug.Log("Found a connection possible belt");
                     return brick.belt;

@@ -613,7 +613,10 @@ public class General : MonoBehaviour
         } else if (gameState == "move") {
 
         } else if (gameState == "select") {
-            SelectInspecter.InspectAtCordiante(selectorLocation);
+            if (map.GetTile(selectorLocation).name.ToLower().Contains("selected"))
+            {
+                SelectInspecter.InspectAtCordiante(selectorLocation);
+            }
         }
     }
 

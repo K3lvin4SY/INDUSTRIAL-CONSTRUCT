@@ -30,13 +30,14 @@ public class Bricks// : ScriptableObject
 
         if (tile != null)
         {
-            if (tile.name.ToLower().Contains("slant"))
+            
+            if (tile.name.ToLower().Contains("slant")) // creates an invicibale brick if it is a slant brick
             {
                 directions.Remove(GlobalMethods.NextTileDir(tile.name, tile.name[0].ToString()));
                 directions.Add("U");
 
                 linkedBrick = new Bricks(null, GlobalMethods.GetDirV3("U", cordinates), new List<string>() { "D", GlobalMethods.NextTileDir(tile.name, tile.name[0].ToString())[0].ToString() }, null, null, belt, this);
-
+                General.bricks[GlobalMethods.GetDirV3("U", cordinates)] = linkedBrick;
                 //Debug.Log(inputDirections);
                 //Debug.Log(outputDirections);
                 if (inputDirections != null && outputDirections != null)
@@ -61,11 +62,11 @@ public class Bricks// : ScriptableObject
                 }
             }
 
-            if (belt == null && tile.name.ToLower().Contains("conveyor"))
+            if (belt == null && tile.name.ToLower().Contains("conveyor")) // if its a new conveyor it creates a belt for itself
             {
                 Debug.Log("!!!NEW BELT!!!");
                 belt = new Belt(new List<Bricks>() {this});
-                /*
+                //*
                 if (linkedBrick != null)
                 {
                     belt.AddToBelt(linkedBrick); // adds linkedBrick to belt
@@ -76,7 +77,7 @@ public class Bricks// : ScriptableObject
                     belt.AddToBelt(this);
                 }
 
-                if (linkedBrick != null)
+                if (linkedBrick != null) // if conveyor plack has a linked brick it adds the linked brick to the belt
                 {
                     if (tile != null)
                     {
@@ -113,12 +114,51 @@ public class Bricks// : ScriptableObject
                 //Debug.Log(linkedBrick.outputDirections.Count.ToString()); // should not be 0 FIX!!!
                 //Debug.Log(linkedBrick.inputDirections.Count.ToString()); // should not be 0 FIX!!!
             }//*/
+            
 
+            //*
             if (GlobalMethods.isBrickNotExcludedType(this.tile.name, "conveyor"))
             {
-                GlobalMethods.GetBelt(this.tile.name, cordinates, true).assignDirection(this);
-            }
+                if (GlobalMethods.GetBelt(this.tile.name, cordinates, true) != null)
+                {
+                    GlobalMethods.GetBelt(this.tile.name, cordinates, true).assignDirection(this);
+                }
+            }//*/
         }
+
+        if (tile == null || ((inputDirections != null || outputDirections != null) && tile.name.ToLower().Contains("conveyor"))) // here only conveyor bricks with direction passes through
+        {
+            //*  CODE down bellow may not be finished (its for updating a belt that is already created)
+            if (belt != null) {
+                if (belt.isBrick(this) != null) // if brick is in end or start of the belt
+                {
+                    Debug.Log("1");
+                    if (belt.getConnectingEdgeBrick(belt.isBrickLast(this)) != null)
+                    {
+                        Debug.Log("2");
+                        Bricks connectionBrick = belt.getConnectingEdgeBrick(belt.isBrickLast(this));
+                        if (connectionBrick.inputDirections != null || connectionBrick.outputDirections != null) { // if the brick has direction
+                            connectionBrick = belt.getConnectingEdgeBrick(false == belt.isBrickLast(this)); // change the connection brick to the other brick on the oteher side of the belt
+                        }
+                        Debug.Log(connectionBrick.tile.name);
+                        if (connectionBrick.belt != null)
+                        {
+                            connectionBrick.belt.assignDirection(this);
+                            Debug.Log(connectionBrick.belt.subCordinates.Count.ToString());
+                        }
+                    }
+                }
+                Debug.Log("!!!PASSINATION!!!");//*/
+                //Debug.Log(GlobalMethods.GetBelt("", cordinates, true, directions).subCordinates.Count.ToString());
+
+                //GlobalMethods.GetBelt("", cordinates, true, directions).assignDirection(this);
+            } else {
+                Debug.Log("!!!LOOK IN TO PROBLEM!!!");
+            }
+            
+        }
+
+        
         
     }
 

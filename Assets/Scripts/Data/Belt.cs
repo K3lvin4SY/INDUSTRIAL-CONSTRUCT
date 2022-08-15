@@ -65,7 +65,7 @@ public class Belt// : ScriptableObject
         Debug.Log("!!!ERROR!!!");
     }
 
-    private void CheckForDirUpdate(Vector3Int cord) { // if placed conveyor that has been aded to the belt is connected to something with an input/output dir. the belt will get updated
+    public void CheckForDirUpdate(Vector3Int cord) { // if placed conveyor that has been aded to the belt is connected to something with an input/output dir. the belt will get updated
         if (General.bricks.ContainsKey(cord))
         {
             Bricks brick = General.bricks[cord];
@@ -224,6 +224,72 @@ public class Belt// : ScriptableObject
             }
         }
         Debug.Log("!!!ERROR!!!");
+        return null;
+    }
+
+    public string isBrick(Bricks brick) {
+        if (subCordinates.Last() == brick && subCordinates[0] == brick)
+        {
+            return "first&last";
+        } else if (subCordinates.Last() == brick)
+        {
+            return "last";
+        } else if (subCordinates[0] == brick) {
+            return "first";
+        }
+        return null;
+    }
+
+    public bool isBrickLast(Bricks brick) {
+        if (isBrick(brick) == "last")
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public Bricks getConnectingEdgeBrick(bool end) {
+        if (end)
+        {
+            if (subCordinates.Count == 1)
+            {
+                if (General.bricks.ContainsKey(GlobalMethods.GetDirV3(subCordinates[0].directions[0], subCordinates[0].cordinates)))
+                {
+                    return General.bricks[GlobalMethods.GetDirV3(subCordinates[0].directions[0], subCordinates[0].cordinates)];
+                }
+            }
+            Bricks brick = subCordinates.Last();
+            foreach (var dir in brick.directions)
+            {
+                if (!(GlobalMethods.GetDirV3(dir, brick.cordinates) == subCordinates[subCordinates.Count-2].cordinates)) // if the brick is connected to the next brick in belt
+                {
+                    if (General.bricks.ContainsKey(GlobalMethods.GetDirV3(dir, brick.cordinates)))
+                    {
+                        return General.bricks[GlobalMethods.GetDirV3(dir, brick.cordinates)];
+                    }
+                }
+            }
+        } else {
+            if (subCordinates.Count == 1)
+            {
+                if (General.bricks.ContainsKey(GlobalMethods.GetDirV3(subCordinates[0].directions[0], subCordinates[0].cordinates)))
+                {
+                    return General.bricks[GlobalMethods.GetDirV3(subCordinates[0].directions[0], subCordinates[0].cordinates)];
+                }
+            }
+            Bricks brick = subCordinates[0];
+            foreach (var dir in brick.directions)
+            {
+                if (!(GlobalMethods.GetDirV3(dir, brick.cordinates) == subCordinates[1].cordinates)) // if the brick is connected to the next brick in belt
+                {
+                    if (General.bricks.ContainsKey(GlobalMethods.GetDirV3(dir, brick.cordinates)))
+                    {
+                        return General.bricks[GlobalMethods.GetDirV3(dir, brick.cordinates)];
+                    }
+                }
+            }
+        }
+        Debug.Log("NO BRICK FOUND!");
         return null;
     }
 
