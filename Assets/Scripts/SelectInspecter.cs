@@ -212,6 +212,13 @@ public class SelectInspecter : MonoBehaviour
                 {
                     Bricks nextBrick = brickSelected.belt.subCordinates.Where(b => b.tile != null).ToList()[brickSelected.belt.subCordinates.Where(b => b.tile != null).ToList().FindIndex(x => x == brickSelected) + 1];
                     LoadBrick(nextBrick);
+                } else {
+                    //go to next brick
+                    if (brickSelected.belt.isBrick(brickSelected) != null)
+                    {
+                        Bricks connectionBrick = brickSelected.belt.getConnectingEdgeBrick(brickSelected.belt.isBrickLast(brickSelected));
+                        LoadBrick(connectionBrick);
+                    }
                 }
             }
         } else if (brickType == "belt") {
@@ -241,6 +248,13 @@ public class SelectInspecter : MonoBehaviour
                 {
                     Bricks prevBrick = brickSelected.belt.subCordinates.Where(b => b.tile != null).ToList()[brickSelected.belt.subCordinates.Where(b => b.tile != null).ToList().FindIndex(x => x == brickSelected) - 1];
                     LoadBrick(prevBrick);
+                } else {
+                    //go to previous brick
+                    if (brickSelected.belt.isBrick(brickSelected) != null)
+                    {
+                        Bricks connectionBrick = brickSelected.belt.getConnectingEdgeBrick(brickSelected.belt.isBrickLast(brickSelected));
+                        LoadBrick(connectionBrick);
+                    }
                 }
             }
         } else if (brickType == "belt") {
@@ -269,6 +283,11 @@ public class SelectInspecter : MonoBehaviour
                 if (brickSelected.belt.subCordinates.First() != brickSelected)
                 {
                     return true;
+                } else {
+                    if (brickSelected.belt.isBrick(brickSelected) != null)
+                    {
+                        return true;
+                    }
                 }
             }
         } else if (brickType == "belt") {
@@ -286,6 +305,11 @@ public class SelectInspecter : MonoBehaviour
                 if (brickSelected.belt.subCordinates.Last() != brickSelected)
                 {
                     return true;
+                } else {
+                    if (brickSelected.belt.isBrick(brickSelected) != null)
+                    {
+                        return true;
+                    }
                 }
             }
         } else if (brickType == "belt") {
