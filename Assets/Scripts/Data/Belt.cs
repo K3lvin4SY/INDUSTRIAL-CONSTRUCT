@@ -40,7 +40,8 @@ public class Belt// : ScriptableObject
             if (GlobalMethods.GetDirV3(dir, subCordinates[0].cordinates) == brick.cordinates)
             {
                 // in begining of belt
-                subCordinates.Insert(0, brick);
+                
+                subCordinates.Add(brick);
                 brick.belt = this;
                 CheckForDirUpdate(GlobalMethods.GetDirV3(GlobalMethods.NextBrickDir(brick, GlobalMethods.oppositeDir(dir)), brick.cordinates));
                 return;
@@ -56,7 +57,7 @@ public class Belt// : ScriptableObject
             if (GlobalMethods.GetDirV3(dir, subCordinates.Last().cordinates) == brick.cordinates)
             {
                 // in end of belt
-                subCordinates.Add(brick);
+                subCordinates.Insert(0, brick);
                 brick.belt = this;
                 CheckForDirUpdate(GlobalMethods.GetDirV3(GlobalMethods.NextBrickDir(brick, GlobalMethods.oppositeDir(dir)), brick.cordinates));
                 return;
