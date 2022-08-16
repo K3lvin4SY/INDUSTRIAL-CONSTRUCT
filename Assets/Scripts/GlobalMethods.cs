@@ -305,22 +305,22 @@ public class GlobalMethods : MonoBehaviour
         if (tileName.ToLower().Contains("conveyor"))
         {
             List<string> dirs = GetDirections(tileName);
-            Debug.Log(dirs[0] + dirs[1]);
+            //Debug.Log(dirs[0] + dirs[1]);
             if (dirs.Count == 2)
             {
                 Vector3Int loc1 = GetDirV3(dirs[0], loc);
                 Vector3Int loc2 = GetDirV3(dirs[1], loc);
-                Debug.Log(loc1);
-                Debug.Log(loc2);
+                //Debug.Log(loc1);
+                //Debug.Log(loc2);
                 if (General.bricks.ContainsKey(loc1) && General.bricks.ContainsKey(loc2))
                 {
                     Bricks brick1 = General.bricks[loc1];
                     Bricks brick2 = General.bricks[loc2];
-                    Debug.Log(brick1.tile.name);
-                    Debug.Log(brick2.tile.name);
+                    //Debug.Log(brick1.tile.name);
+                    //Debug.Log(brick2.tile.name);
                     if (brick1.inputDirections != null && brick2.outputDirections != null)
                     {
-                        Debug.Log("pas1");
+                        //Debug.Log("pas1");
                         if ((brick1.inputDirections.Contains(oppositeDir(dirs[0][0].ToString())) && brick2.inputDirections.Contains(oppositeDir(dirs[1][0].ToString()))) || (brick1.outputDirections.Contains(oppositeDir(dirs[0][0].ToString())) && brick2.outputDirections.Contains(oppositeDir(dirs[1][0].ToString()))))
                         {
                             return true;

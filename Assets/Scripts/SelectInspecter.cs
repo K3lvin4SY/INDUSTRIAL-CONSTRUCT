@@ -239,7 +239,16 @@ public class SelectInspecter : MonoBehaviour
     public static void NextBtnTrigger() {
         if (brickType == "brick" || brickType == "conveyor") {
             if (brickSelected.belt != null) {
-                if (brickSelected.belt.subCordinates/*.Where(b => b.tile != null).ToList()*/.Last() != brickSelected)
+                if (brickSelected.tile.name.ToLower().Contains("slant") && brickSelected.belt.subCordinates[brickSelected.belt.subCordinates.Count-2] == brickSelected)
+                {
+                    //go to next brick
+                    if (brickSelected.belt.isBrick(brickSelected) != null)
+                    {
+                        Bricks connectionBrick = brickSelected.linkedBrick.belt.getConnectingEdgeBrick(brickSelected.linkedBrick.belt.isBrickLast(brickSelected.linkedBrick), true, true);
+                        LoadBrick(connectionBrick);
+                        Debug.Log("2n");
+                    }
+                } else if (brickSelected.belt.subCordinates/*.Where(b => b.tile != null).ToList()*/.Last() != brickSelected)
                 {
                     Bricks nextBrick = brickSelected.belt.subCordinates.Where(b => b.tile != null).ToList()[brickSelected.belt.subCordinates.Where(b => b.tile != null).ToList().FindIndex(x => x == brickSelected) + 1];
                     LoadBrick(nextBrick);
@@ -394,7 +403,14 @@ public class SelectInspecter : MonoBehaviour
     private bool DirBtnChecker(string dir) {
         if (General.bricks.ContainsKey(GlobalMethods.GetDirV3(dir, brickSelected.cordinates)))
         {
-            return true;
+            foreach (var dir2 in General.bricks[GlobalMethods.GetDirV3(dir, brickSelected.cordinates)].directions)
+            {
+                if (GlobalMethods.GetDirV3(dir2, General.bricks[GlobalMethods.GetDirV3(dir, brickSelected.cordinates)].cordinates) == brickSelected.cordinates)
+                {
+                    return true;
+                }
+            }
+            
         }
         return false;
     }
