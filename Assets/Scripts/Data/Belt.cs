@@ -31,6 +31,35 @@ public class Belt// : ScriptableObject
 
     public void AddToBelt(Bricks brick)
     {
+        if (subCordinates[0] == subCordinates.Last())
+        {
+            if (subCordinates[0].inputDirections != null && subCordinates[0].outputDirections != null)
+            {
+                foreach (var dir in subCordinates[0].directions)
+                {
+                    if (GlobalMethods.GetDirV3(dir, subCordinates[0].cordinates) == brick.cordinates)
+                    {
+                        if (subCordinates[0].inputDirections.Contains(dir))
+                        {
+                            // in begining of belt
+                            subCordinates.Insert(0, brick);
+                            brick.belt = this;
+                            CheckForDirUpdate(GlobalMethods.GetDirV3(GlobalMethods.NextBrickDir(brick, GlobalMethods.oppositeDir(dir)), brick.cordinates));
+                            return;
+                        } else if (subCordinates[0].outputDirections.Contains(dir))
+                        {
+                            // in end of belt
+                            subCordinates.Add(brick);
+                            brick.belt = this;
+                            CheckForDirUpdate(GlobalMethods.GetDirV3(GlobalMethods.NextBrickDir(brick, GlobalMethods.oppositeDir(dir)), brick.cordinates));
+                            return;
+                        } else {
+                            Debug.Log("!!!ERROR!!!");
+                        }
+                    }
+                }
+            }
+        }
         foreach (var dir in subCordinates[0].directions)
         {
             /*
@@ -156,10 +185,22 @@ public class Belt// : ScriptableObject
         }
     }
 
+    /*
     private bool noDirection() {
         if (subCordinates[0].inputDirections == null && subCordinates[0].outputDirections == null) {
             return true;
         }
+        return false;
+    }//*/
+
+    public bool noDirection() {
+        foreach (var brick in subCordinates)
+        {
+            if (brick.inputDirections == null && brick.outputDirections == null) {
+                return true;
+            }
+        }
+        
         return false;
     }
 

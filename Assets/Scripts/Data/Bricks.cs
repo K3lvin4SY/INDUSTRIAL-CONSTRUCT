@@ -168,6 +168,19 @@ public class Bricks// : ScriptableObject
             }
             
         }
+        if (tile == null ||  tile.name.ToLower().Contains("conveyor"))
+        {
+            if (inputDirections != null && outputDirections != null)
+            {
+                if (belt.noDirection())
+                {
+                    inputDirections = null;
+                    outputDirections = null;
+                    belt.assignDirection(this);
+                }
+            }
+        }
+        
 
         
         
