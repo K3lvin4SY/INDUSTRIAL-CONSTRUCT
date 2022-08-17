@@ -19,14 +19,17 @@ public class SelectInspecter : MonoBehaviour
     public GameObject SelectedBrickImgBg;
     public GameObject brickNameObject;
     public GameObject brickPlaceObject;
+    public GameObject brickCordianteObject;
     public GameObject brickInputsObject;
     public GameObject brickOutputsObject;
     private Text brickName;
     private Text brickInputs;
     private Text brickOutputs;
+    private Text brickCordiante;
     private Text brickBeltPlace;
     private static string brickNameSelected;
     private static string brickInputsSelected;
+    private static string brickCordianteSelected;
     private static string brickOutputsSelected;
     private static string brickPlaceSelected;
     private static Sprite brickSpriteSelected;
@@ -38,6 +41,7 @@ public class SelectInspecter : MonoBehaviour
         brickInputs = brickInputsObject.GetComponent<Text>();
         brickOutputs = brickOutputsObject.GetComponent<Text>();
         brickBeltPlace = brickPlaceObject.GetComponent<Text>();
+        brickCordiante = brickCordianteObject.GetComponent<Text>();
     }
 
     void Update() {
@@ -45,6 +49,7 @@ public class SelectInspecter : MonoBehaviour
         brickInputs.text = SelectInspecter.brickInputsSelected;
         brickOutputs.text = SelectInspecter.brickOutputsSelected;
         brickBeltPlace.text = SelectInspecter.brickPlaceSelected;
+        brickCordiante.text = SelectInspecter.brickCordianteSelected;
 
         if (brickSpriteSelected != null) {
             SelectedBrickImg.sprite = brickSpriteSelected;
@@ -155,13 +160,47 @@ public class SelectInspecter : MonoBehaviour
         }
     }
 
+    private static string GetName(string brickName) {
+        brickName = brickName.ToLower();
+        string newBrickName = "";
+        if (brickName.Contains("conveyor"))
+        {
+            newBrickName += "Conveyor ";
+            if (brickName.Contains("straight"))
+            {
+                newBrickName += "Straight";
+            } else if (brickName.Contains("eli"))
+            {
+                newBrickName += "Elivator";
+            } else if (brickName.Contains("bend"))
+            {
+                newBrickName += "Turn";
+            } else if (brickName.Contains("slant"))
+            {
+                newBrickName += "Tilt";
+            }
+        } else if (brickName.Contains("merger")) {
+            newBrickName += "Merger";
+        } else if (brickName.Contains("splitter")) {
+            newBrickName += "Splitter";
+        } else {
+            newBrickName += "Unknown";
+        }
+
+        return newBrickName;
+    }
+
     private static void LoadBrick(Bricks brick) {
+        // if try to load tile empty brick
         if (brick.tile == null)
         {
             brick = brick.linkedBrick;
         }
-        brickNameSelected = brick.tile.name;
 
+        // Name
+        brickNameSelected = GetName(brick.tile.name);
+
+        // Input
         brickInputsSelected = "";
         if (brick.inputDirections != null)
         {
@@ -178,6 +217,7 @@ public class SelectInspecter : MonoBehaviour
             brickInputsSelected = "Inputs: [ None ]";
         }
         
+        // Output
         brickOutputsSelected = "";
         if (brick.outputDirections != null)
         {
@@ -194,6 +234,7 @@ public class SelectInspecter : MonoBehaviour
             brickOutputsSelected = "Outputs: [ None ]";
         }
 
+        // Belt place
         brickPlaceSelected = "";
         if (brick.belt != null)
         {
@@ -208,7 +249,11 @@ public class SelectInspecter : MonoBehaviour
         } else {
             brickType = "brick";
         }
+
+        // cordiantes
+        brickCordianteSelected = "X: " + brick.cordinates.x.ToString() + "\nY: " + brick.cordinates.y.ToString() + "\nZ: " + brick.cordinates.z.ToString();
         
+        // update brickSelected
         brickSelected = brick;
     }
 
@@ -220,6 +265,10 @@ public class SelectInspecter : MonoBehaviour
         brickOutputsSelected = "";
 
         brickSpriteSelected = null;
+
+        brickPlaceSelected = "";
+
+        brickCordianteSelected = "";
 
         brickType = "belt";
     }
