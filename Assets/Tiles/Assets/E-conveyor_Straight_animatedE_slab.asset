@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 13b75c95f34a00d4e8c04f76b73312e6, type: 3}
-  m_Name: E-conveyor_Bend_animated_slab
+  m_Name: E-conveyor_Straight_animatedE_slab
   m_EditorClassIdentifier: 
   m_AnimatedSprites:
-  - {fileID: 21300000, guid: 9547556c390c0e84bbbb9e57f1055dae, type: 3}
-  - {fileID: 21300000, guid: a063350efa0f1714a87b4f7f3896257e, type: 3}
-  - {fileID: 21300000, guid: f54db61d7a63ec24b9455b03c4bec5fe, type: 3}
-  - {fileID: 21300000, guid: 8648d6b1ee40ff54d810bbd0c7a750f6, type: 3}
-  m_MinSpeed: 5
-  m_MaxSpeed: 5
+  - {fileID: 21300000, guid: 4d60230bfcb890149b2a86e9be3d66c8, type: 3}
+  - {fileID: 21300000, guid: f26791d2194858443922248bee500888, type: 3}
+  - {fileID: 21300000, guid: e9c819ce2b5f50f4aba2e651856153ba, type: 3}
+  - {fileID: 21300000, guid: e72f6eef330485547ab7bd2f875487ba, type: 3}
+  m_MinSpeed: 12
+  m_MaxSpeed: 12
   m_AnimationStartTime: 0
   m_AnimationStartFrame: 0
   m_TileColliderType: 0

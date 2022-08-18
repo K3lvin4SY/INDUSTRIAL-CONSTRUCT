@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 13b75c95f34a00d4e8c04f76b73312e6, type: 3}
-  m_Name: N-conveyor_Straight_animated_slab
+  m_Name: N-conveyor_Slant_animatedS_slab
   m_EditorClassIdentifier: 
   m_AnimatedSprites:
-  - {fileID: 21300000, guid: aa3f7dc6ee4d6a246a0be303601c285b, type: 3}
-  - {fileID: 21300000, guid: c68d36f471ea0404b805a771a3ce2700, type: 3}
-  - {fileID: 21300000, guid: 46480ed932b45c946852d985edb883bd, type: 3}
-  - {fileID: 21300000, guid: 689b17aba6ae40a41869837e6e216e0e, type: 3}
-  m_MinSpeed: 5
-  m_MaxSpeed: 5
+  - {fileID: 21300000, guid: 668e04feb14bb6a428135a912d971f52, type: 3}
+  - {fileID: 21300000, guid: 1441fdaa03aaccf479abf4e7a1d1633c, type: 3}
+  - {fileID: 21300000, guid: 4e941a3e1db2c774bbaff5691c500d50, type: 3}
+  - {fileID: 21300000, guid: de00bfd500edb9f41a7b073ccc084687, type: 3}
+  m_MinSpeed: 12
+  m_MaxSpeed: 12
   m_AnimationStartTime: 0
   m_AnimationStartFrame: 0
   m_TileColliderType: 0

@@ -199,4 +199,13 @@ public class Bricks// : ScriptableObject
         }
         
     }
+
+    public void changeInputDir(List<string> dirs) {
+        inputDirections = dirs;
+    }
+
+    public void changeOutputDir(List<string> dirs) {
+        outputDirections = dirs;
+    }
 }
+
