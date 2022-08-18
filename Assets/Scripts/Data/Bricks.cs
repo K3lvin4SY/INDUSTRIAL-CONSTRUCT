@@ -17,6 +17,8 @@ public class Bricks// : ScriptableObject
 
     public GameItem storage;
 
+    private string currentTag;
+
     public Bricks(Tile cTile, Vector3Int coords, List<string> dir, List<string> inputDir, List<string> outputDir, Belt cBelt = null, Bricks linkBrick = null)
     {
         tile = cTile;
@@ -186,12 +188,16 @@ public class Bricks// : ScriptableObject
         
     }
 
-    public void changeTileTag(string tag) {
+    public void changeTileTag(string tag, bool temp = false) {
         if (tile != null)
         {
             if (tag == null)
             {
                 General.Instance.map.SetTile(cordinates, GlobalMethods.GetTileByName(GlobalMethods.RemoveTagFromBlockName(tile.name))); // Set tile to original type
+                if (!temp)
+                {
+                    currentTag = tag;
+                }
                 return;
             }
             string newBrickName = GlobalMethods.AddTagToBlockName(tile.name, tag);
@@ -201,9 +207,30 @@ public class Bricks// : ScriptableObject
             } else {
                 General.Instance.map.SetTile(cordinates, GlobalMethods.GetTileByName(newBrickName));
             }
-            
+            if (!temp)
+            {
+                currentTag = tag;
+            }
         }
         
+    }
+
+    public void resetTileTag() {
+        if (tile != null)
+        {
+            if (currentTag == null)
+            {
+                General.Instance.map.SetTile(cordinates, GlobalMethods.GetTileByName(GlobalMethods.RemoveTagFromBlockName(tile.name))); // Set tile to original type
+                return;
+            }
+            string newBrickName = GlobalMethods.AddTagToBlockName(tile.name, currentTag);
+            if (currentTag.Contains("animated"))
+            {
+                General.Instance.map.SetTile(cordinates, GlobalMethods.GetAnimatedTileByName(newBrickName));
+            } else {
+                General.Instance.map.SetTile(cordinates, GlobalMethods.GetTileByName(newBrickName));
+            }
+        }
     }
 
     public void changeInputDir(List<string> dirs) {

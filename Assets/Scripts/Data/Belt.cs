@@ -407,7 +407,7 @@ public class Belt// : ScriptableObject
     public void Select() {
         foreach (var brick in subCordinates)
         {
-            brick.changeTileTag("selected");
+            brick.changeTileTag("selected", temp: true);
         }
         selected = true;
     }
@@ -417,7 +417,7 @@ public class Belt// : ScriptableObject
         {
             foreach (var brick in subCordinates)
             {
-                brick.changeTileTag(null);
+                brick.resetTileTag();
             }
             selected = false;
         }
