@@ -205,10 +205,12 @@ public class General : MonoBehaviour
             if (map.HasTile(location)) {
                 Tile tmpTile = GlobalMethods.GetTileByName(GlobalMethods.AddTagToBlockName(map.GetTile(location).name, "selected"));
                 if (GlobalMethods.isPlayerEditable(tmpTile.name)) {
-                    //map.SetTile(location, tmpTile); // set tile to selected
                     if (General.bricks.ContainsKey(location))
                     {
                         // add tag via bricks class
+                        General.bricks[location].changeTileTag("selected", temp: true);
+                    } else {
+                        map.SetTile(location, tmpTile); // set tile to selected
                     }
                     if (Controller.shiftPressed)
                     {
