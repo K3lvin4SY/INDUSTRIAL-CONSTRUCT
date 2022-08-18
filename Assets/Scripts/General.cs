@@ -185,14 +185,9 @@ public class General : MonoBehaviour
                         if (General.bricks[selectorLocation].belt != null)
                         {
                             General.bricks[selectorLocation].belt.Deselect();
-                            if (!General.bricks[selectorLocation].belt.selected)
-                            {
-                                map.SetTile(selectorLocation, GlobalMethods.GetTileByName(GlobalMethods.RemoveTagFromBlockName(map.GetTile(selectorLocation).name))); // turn back to original tile
-                            } else {
-                                map.SetTile(selectorLocation, GlobalMethods.GetTileByName(GlobalMethods.RemoveTagFromBlockName(map.GetTile(selectorLocation).name))); // turn back to original tile
-                            }
+                            General.bricks[selectorLocation].resetTileTag(); // turn back to original tile
                         } else {
-                            map.SetTile(selectorLocation, GlobalMethods.GetTileByName(GlobalMethods.RemoveTagFromBlockName(map.GetTile(selectorLocation).name))); // turn back to original tile
+                            General.bricks[selectorLocation].resetTileTag(); // turn back to original tile
                         }
                     } else {
                         map.SetTile(selectorLocation, GlobalMethods.GetTileByName(GlobalMethods.RemoveTagFromBlockName(map.GetTile(selectorLocation).name))); // turn back to original tile
@@ -210,7 +205,11 @@ public class General : MonoBehaviour
             if (map.HasTile(location)) {
                 Tile tmpTile = GlobalMethods.GetTileByName(GlobalMethods.AddTagToBlockName(map.GetTile(location).name, "selected"));
                 if (GlobalMethods.isPlayerEditable(tmpTile.name)) {
-                    map.SetTile(location, tmpTile); // set tile to selected
+                    //map.SetTile(location, tmpTile); // set tile to selected
+                    if (General.bricks.ContainsKey(location))
+                    {
+                        // add tag via bricks class
+                    }
                     if (Controller.shiftPressed)
                     {
                         if (General.bricks.ContainsKey(location)) // temporary if statement for brick not in bricks dictionary - REMOVE WHEN GAME SAVE is finished or WHEN ALL BRICKS IS in the bricks dictionary
