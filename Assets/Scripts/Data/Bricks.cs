@@ -195,7 +195,13 @@ public class Bricks// : ScriptableObject
                 return;
             }
             string newBrickName = GlobalMethods.AddTagToBlockName(tile.name, tag);
-            General.Instance.map.SetTile(cordinates, GlobalMethods.GetTileByName(newBrickName));
+            if (tag.Contains("animated"))
+            {
+                General.Instance.map.SetTile(cordinates, GlobalMethods.GetAnimatedTileByName(newBrickName));
+            } else {
+                General.Instance.map.SetTile(cordinates, GlobalMethods.GetTileByName(newBrickName));
+            }
+            
         }
         
     }
@@ -206,6 +212,13 @@ public class Bricks// : ScriptableObject
 
     public void changeOutputDir(List<string> dirs) {
         outputDirections = dirs;
+        if (tile != null && tile.name.ToLower().Contains("conveyor") && !tile.name.ToLower().Contains("eli"))
+        {
+            if (outputDirections != null)
+            {
+                changeTileTag("animated"+outputDirections[0]);
+            }
+        }
     }
 }
 

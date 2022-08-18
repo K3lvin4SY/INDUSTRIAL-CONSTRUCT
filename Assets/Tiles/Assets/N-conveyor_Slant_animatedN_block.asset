@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 13b75c95f34a00d4e8c04f76b73312e6, type: 3}
-  m_Name: S-conveyor_Slant_animatedN_slab
+  m_Name: N-conveyor_Slant_animatedN_block
   m_EditorClassIdentifier: 
   m_AnimatedSprites:
-  - {fileID: 21300000, guid: f12658264ee18344ebefd1f86aa5de0e, type: 3}
-  - {fileID: 21300000, guid: fe88b7452c40004458d0349e89cc3591, type: 3}
-  - {fileID: 21300000, guid: f885a7b97aae9c24fac6f2dfcfa11c24, type: 3}
-  - {fileID: 21300000, guid: 3c8219b4137725641a25ed62adfc92b1, type: 3}
+  - {fileID: 21300000, guid: de00bfd500edb9f41a7b073ccc084687, type: 3}
+  - {fileID: 21300000, guid: 4e941a3e1db2c774bbaff5691c500d50, type: 3}
+  - {fileID: 21300000, guid: 1441fdaa03aaccf479abf4e7a1d1633c, type: 3}
+  - {fileID: 21300000, guid: 668e04feb14bb6a428135a912d971f52, type: 3}
   m_MinSpeed: 12
   m_MaxSpeed: 12
   m_AnimationStartTime: 0

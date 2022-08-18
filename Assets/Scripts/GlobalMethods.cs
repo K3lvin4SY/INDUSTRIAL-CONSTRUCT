@@ -10,6 +10,7 @@ public class GlobalMethods : MonoBehaviour
 {
 
     private static Dictionary<string, Tile> tiles = new Dictionary<string, Tile>();
+    private static Dictionary<string, AnimatedTile> aTiles = new Dictionary<string, AnimatedTile>();
     
     static string[] directions = new string[4]{"N", "E", "S", "W"};
     public static string AddTagToBlockName(string blockName, string tag)
@@ -94,6 +95,7 @@ public class GlobalMethods : MonoBehaviour
                 Tile assetTile = (Tile)AssetDatabase.LoadAssetAtPath(asset, typeof(Tile)); // loads the tile asset from path
                 if (assetTile == null)
                 {
+                    Debug.Log("null assetTile");
                     return null;
                 }
                 string assetTileName = assetTile.name.ToLower(); // gets the name of the tile
@@ -105,6 +107,35 @@ public class GlobalMethods : MonoBehaviour
             }
         }
         return tiles[key];
+    }
+
+    public static AnimatedTile GetAnimatedTileByName(string key) {
+        key = key.ToLower();
+        if (!tiles.ContainsKey(key))
+        {
+            string[] assetFiles = Directory.GetFiles("Assets/Tiles/Assets/"); // Gets string array of the tile assets file path
+            assetFiles = assetFiles.Select(s => s.ToLowerInvariant()).ToArray(); // to lowercase
+            bool[] assetFilesCheck = assetFiles.Select(s => s.Contains("selector")).ToArray();
+            
+            if (assetFilesCheck.Contains(true))
+            {
+                string asset = "Assets/Tiles/Assets/"+key+".asset";
+
+                AnimatedTile assetTile = (AnimatedTile)AssetDatabase.LoadAssetAtPath(asset, typeof(AnimatedTile)); // loads the tile asset from path
+                if (assetTile == null)
+                {
+                    Debug.Log("null assetTile");
+                    return null;
+                }
+                string assetTileName = assetTile.name.ToLower(); // gets the name of the tile
+                aTiles[assetTileName] = assetTile; // inserts the data into a dictionary
+                Debug.Log(assetTile.name);
+            } else {
+                Debug.Log("null tile");
+                return null;
+            }
+        }
+        return aTiles[key];
     }
 
     public static string getBrickType(string mode = "default") {
