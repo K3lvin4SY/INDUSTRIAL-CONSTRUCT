@@ -21,8 +21,8 @@ public class Bricks// : ScriptableObject
     {
         tile = cTile;
         cordinates = coords;
-        inputDirections = inputDir;
-        outputDirections = outputDir;
+        changeInputDir(inputDir);
+        changeOutputDir(outputDir);
         directions = dir;
         belt = cBelt;
         linkedBrick = linkBrick;
@@ -43,8 +43,8 @@ public class Bricks// : ScriptableObject
                 if (inputDirections != null && outputDirections != null)
                 {
                     Debug.Log("!!!PASS!!!");
-                    linkedBrick.outputDirections = new List<string>();
-                    linkedBrick.inputDirections = new List<string>();
+                    linkedBrick.changeOutputDir(new List<string>());
+                    linkedBrick.changeInputDir(new List<string>());
                     if (inputDirections[0] == tile.name[0].ToString())
                     {
                         outputDirections.RemoveAt(0);
@@ -174,8 +174,8 @@ public class Bricks// : ScriptableObject
             {
                 if (belt.noDirection())
                 {
-                    inputDirections = null;
-                    outputDirections = null;
+                    changeInputDir(null);
+                    changeOutputDir(null);
                     belt.assignDirection(this);
                 }
             }

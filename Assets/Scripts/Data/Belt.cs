@@ -180,8 +180,8 @@ public class Belt// : ScriptableObject
     private void clearDirection() {
         foreach (var brick in subCordinates)
         {
-            brick.inputDirections = null;
-            brick.outputDirections = null;
+            brick.changeInputDir(null);
+            brick.changeOutputDir(null);
         }
     }
 
@@ -350,7 +350,7 @@ public class Belt// : ScriptableObject
         {
             if (index+1 == subCordinates.Count && subCordinates.Count != 1) {
                 // if last brick in belt
-                brick.outputDirections = new List<string>() { GlobalMethods.NextBrickDir(brick, brick.inputDirections[0]) };
+                brick.changeOutputDir(new List<string>() { GlobalMethods.NextBrickDir(brick, brick.inputDirections[0]) });
                 continue;
             }
             if (subCordinates.Count == 1)
@@ -362,13 +362,13 @@ public class Belt// : ScriptableObject
                     {
                         if (General.bricks[cord].outputDirections.Contains(GlobalMethods.oppositeDir(bDir)))
                         {
-                            brick.inputDirections = new List<string>() { bDir };
-                            brick.outputDirections = new List<string>() { GlobalMethods.NextBrickDir(brick, bDir) };
+                            brick.changeInputDir(new List<string>() { bDir });
+                            brick.changeOutputDir(new List<string>() { GlobalMethods.NextBrickDir(brick, bDir) });
                             continue;
                         } else if (General.bricks[cord].inputDirections.Contains(GlobalMethods.oppositeDir(bDir)))
                         {
-                            brick.outputDirections = new List<string>() { bDir };
-                            brick.inputDirections = new List<string>() { GlobalMethods.NextBrickDir(brick, bDir) };
+                            brick.changeOutputDir(new List<string>() { bDir });
+                            brick.changeInputDir(new List<string>() { GlobalMethods.NextBrickDir(brick, bDir) });
                             continue;
                         }
                     }
@@ -378,10 +378,10 @@ public class Belt// : ScriptableObject
             }
             string dir = GlobalMethods.BrickToBrickConnectionDirection(brick, subCordinates[index + 1]);
             if (index == 0) {
-                brick.inputDirections = new List<string>() { GlobalMethods.NextBrickDir(brick, dir) };
+                brick.changeInputDir(new List<string>() { GlobalMethods.NextBrickDir(brick, dir) });
             }
-            subCordinates[index + 1].inputDirections = new List<string>() { GlobalMethods.oppositeDir(dir) };
-            brick.outputDirections = new List<string>() { dir };
+            subCordinates[index + 1].changeInputDir(new List<string>() { GlobalMethods.oppositeDir(dir) });
+            brick.changeOutputDir(new List<string>() { dir });
             index += 1;
         }
         Debug.Log(subCordinates.Count);
