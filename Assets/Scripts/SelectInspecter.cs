@@ -288,20 +288,24 @@ public class SelectInspecter : MonoBehaviour
     public static void NextBtnTrigger() {
         if (brickType == "brick" || brickType == "conveyor") {
             if (brickSelected.belt != null) {
-                if (brickSelected.tile.name.ToLower().Contains("slant") && brickSelected.belt.subCordinates[brickSelected.belt.subCordinates.Count-2] == brickSelected)
+                Debug.Log("belt1");
+                if (brickSelected.tile.name.ToLower().Contains("slant") && brickSelected.belt.subCordinates[brickSelected.belt.subCordinates.Count-2] == brickSelected && brickSelected.belt.subCordinates[brickSelected.belt.subCordinates.Count-1] == brickSelected.linkedBrick)
                 {
+                    Debug.Log("s1");
                     //go to next brick
-                    if (brickSelected.belt.isBrick(brickSelected) != null)
+                    if (brickSelected.belt.isBrick(brickSelected.linkedBrick) != null)
                     {
                         Bricks connectionBrick = brickSelected.linkedBrick.belt.getConnectingEdgeBrick(brickSelected.linkedBrick.belt.isBrickLast(brickSelected.linkedBrick), true, true);
                         LoadBrick(connectionBrick);
-                        Debug.Log("2n");
+                        Debug.Log("2n2");
                     }
                 } else if (brickSelected.belt.subCordinates/*.Where(b => b.tile != null).ToList()*/.Last() != brickSelected)
                 {
+                    Debug.Log("p2");
                     Bricks nextBrick = brickSelected.belt.subCordinates.Where(b => b.tile != null).ToList()[brickSelected.belt.subCordinates.Where(b => b.tile != null).ToList().FindIndex(x => x == brickSelected) + 1];
                     LoadBrick(nextBrick);
                 } else {
+                    Debug.Log("p3");
                     //go to next brick
                     if (brickSelected.belt.isBrick(brickSelected) != null)
                     {
@@ -329,12 +333,22 @@ public class SelectInspecter : MonoBehaviour
                 }
             }
         }
+        Debug.Log("end4");
     }
 
     public static void PrevBtnTrigger() {
         if (brickType == "brick" || brickType == "conveyor") {
             if (brickSelected.belt != null) {
-                if (brickSelected.belt.subCordinates/*.Where(b => b.tile != null).ToList()*/.First() != brickSelected)
+                if (brickSelected.tile.name.ToLower().Contains("slant") && brickSelected.belt.subCordinates[1] == brickSelected && brickSelected.belt.subCordinates[0] == brickSelected.linkedBrick)
+                {
+                    //go to next brick
+                    if (brickSelected.belt.isBrick(brickSelected.linkedBrick) != null)
+                    {
+                        Bricks connectionBrick = brickSelected.linkedBrick.belt.getConnectingEdgeBrick(brickSelected.linkedBrick.belt.isBrickLast(brickSelected.linkedBrick), false, true);
+                        LoadBrick(connectionBrick);
+                        Debug.Log("2n");
+                    }
+                } else if (brickSelected.belt.subCordinates/*.Where(b => b.tile != null).ToList()*/.First() != brickSelected)
                 {
                     Bricks prevBrick = brickSelected.belt.subCordinates.Where(b => b.tile != null).ToList()[brickSelected.belt.subCordinates.Where(b => b.tile != null).ToList().FindIndex(x => x == brickSelected) - 1];
                     LoadBrick(prevBrick);
@@ -372,7 +386,20 @@ public class SelectInspecter : MonoBehaviour
     private bool PrevBtnChecker() {
         if (brickType == "brick" || brickType == "conveyor") {
             if (brickSelected.belt != null) {
-                if (brickSelected.belt.subCordinates.Where(b => b.tile != null).ToList().First() != brickSelected)
+                if (brickSelected.tile.name.ToLower().Contains("slant") && brickSelected.belt.subCordinates[1] == brickSelected && brickSelected.belt.subCordinates[0] == brickSelected.linkedBrick)
+                {
+                    //go to next brick
+                    if (brickSelected.belt.isBrick(brickSelected.linkedBrick) != null)
+                    {
+                        Bricks connectionBrick = brickSelected.linkedBrick.belt.getConnectingEdgeBrick(brickSelected.linkedBrick.belt.isBrickLast(brickSelected.linkedBrick), false, true);
+                        if (connectionBrick == null)
+                        {
+                            return false;
+                        } else {
+                            return true;
+                        }
+                    }
+                } else if (brickSelected.belt.subCordinates.Where(b => b.tile != null).ToList().First() != brickSelected)
                 {
                     return true;
                 } else {
@@ -398,7 +425,20 @@ public class SelectInspecter : MonoBehaviour
     private bool NextBtnChecker() {
         if (brickType == "brick" || brickType == "conveyor") {
             if (brickSelected.belt != null) {
-                if (brickSelected.belt.subCordinates.Where(b => b.tile != null).ToList().Last() != brickSelected)
+                if (brickSelected.tile.name.ToLower().Contains("slant") && brickSelected.belt.subCordinates[brickSelected.belt.subCordinates.Count-2] == brickSelected && brickSelected.belt.subCordinates[brickSelected.belt.subCordinates.Count-1] == brickSelected.linkedBrick)
+                {
+                    //go to next brick
+                    if (brickSelected.belt.isBrick(brickSelected.linkedBrick) != null)
+                    {
+                        Bricks connectionBrick = brickSelected.linkedBrick.belt.getConnectingEdgeBrick(brickSelected.linkedBrick.belt.isBrickLast(brickSelected.linkedBrick), true, true);
+                        if (connectionBrick == null)
+                        {
+                            return false;
+                        } else {
+                            return true;
+                        }
+                    }
+                } else if (brickSelected.belt.subCordinates.Where(b => b.tile != null).ToList().Last() != brickSelected)
                 {
                     return true;
                 } else {

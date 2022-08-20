@@ -219,7 +219,7 @@ public class Belt// : ScriptableObject
         return false;
     }
 
-    public void fixFaltyDirection() {
+    public void fixFaltyDirection() { // not completed
         int loopNum = -1;
         Bricks brickToBeFixed = null;
         Bricks brickToUseFixing = null;
