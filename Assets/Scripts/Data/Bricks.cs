@@ -167,9 +167,12 @@ public class Bricks// : ScriptableObject
                 //GlobalMethods.GetBelt("", cordinates, true, directions).assignDirection(this);
             } else {
                 Debug.Log("!!!LOOK IN TO PROBLEM!!!");
+                Debug.Log(tile);
             }
             
         }
+
+        // This last code for fixing when you connect a belt to an already placed dir brick
         if (tile == null ||  tile.name.ToLower().Contains("conveyor"))
         {
             if (inputDirections != null && outputDirections != null)
@@ -183,7 +186,13 @@ public class Bricks// : ScriptableObject
             }
         }
         
-
+        if (belt != null)
+        {
+            if (belt.faltyDirection())
+            {
+                belt.fixFaltyDirection();
+            }
+        }
         
         
     }
@@ -243,7 +252,7 @@ public class Bricks// : ScriptableObject
         {
             if (outputDirections != null)
             {
-                changeTileTag("animated"+outputDirections[0]);
+                changeTileTag("animated"+outputDirections[0][0].ToString());
             }
         }
     }

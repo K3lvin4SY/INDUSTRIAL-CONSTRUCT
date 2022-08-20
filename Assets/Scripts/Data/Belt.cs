@@ -203,6 +203,65 @@ public class Belt// : ScriptableObject
         
         return false;
     }
+    public bool faltyDirection() {
+        foreach (var brick in subCordinates)
+        {
+            if (brick.inputDirections == null && brick.outputDirections == null) {
+                foreach (var brick2 in subCordinates)
+                {
+                    if (brick2.inputDirections != null && brick2.outputDirections != null) {
+                        return true;
+                    }
+                }
+            }
+            
+        }
+        return false;
+    }
+
+    public void fixFaltyDirection() {
+        int loopNum = -1;
+        Bricks brickToBeFixed = null;
+        Bricks brickToUseFixing = null;
+        foreach (var brick in subCordinates)
+        {
+            loopNum += 1;
+            if (brick.inputDirections == null && brick.outputDirections == null) {
+                if (subCordinates.Count == 1)
+                {
+                    Debug.Log("!!!ERROR!!! FIX ME");
+                }
+                brickToBeFixed = brick;
+                if (loopNum == 0)
+                {
+                    brickToUseFixing = subCordinates[1];
+                } else if (loopNum == subCordinates.Count-1)
+                {
+                    brickToUseFixing = subCordinates[subCordinates.Count-2];
+                } else {
+                    brickToUseFixing = subCordinates[loopNum+1];
+                }
+                break;
+            }
+            
+        }
+        
+        if (GlobalMethods.GetDirV3(brickToUseFixing.outputDirections[0], brickToUseFixing.cordinates) == brickToBeFixed.cordinates)
+        {
+            
+        }
+        foreach (var fDir in brickToBeFixed.directions)
+        {
+            if (brickToUseFixing.inputDirections.Contains(GlobalMethods.oppositeDir(fDir)))
+            {
+                brickToBeFixed.changeOutputDir(new List<string>() { fDir });
+                brickToBeFixed.changeInputDir(new List<string>() { GlobalMethods.NextBrickDir(brickToBeFixed, fDir) });
+            } else if (brickToUseFixing.outputDirections.Contains(GlobalMethods.oppositeDir(fDir))) {
+                brickToBeFixed.changeInputDir(new List<string>() { fDir });
+                brickToBeFixed.changeOutputDir(new List<string>() { GlobalMethods.NextBrickDir(brickToBeFixed, fDir) });
+            }
+        }
+    }
 
     public void assignDirection(Bricks brick) {
         if (noDirection())

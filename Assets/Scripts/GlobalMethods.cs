@@ -120,6 +120,7 @@ public class GlobalMethods : MonoBehaviour
             if (assetFilesCheck.Contains(true))
             {
                 string asset = "Assets/Tiles/Assets/"+key+".asset";
+                //Debug.Log(asset);
 
                 AnimatedTile assetTile = (AnimatedTile)AssetDatabase.LoadAssetAtPath(asset, typeof(AnimatedTile)); // loads the tile asset from path
                 if (assetTile == null)
