@@ -190,7 +190,8 @@ public class Bricks// : ScriptableObject
         {
             if (belt.faltyDirection())
             {
-                belt.fixFaltyDirection();
+                Debug.Log(inputDirections);
+                //belt.fixFaltyDirection();
             }
         }
         
@@ -244,6 +245,8 @@ public class Bricks// : ScriptableObject
 
     public void changeInputDir(List<string> dirs) {
         inputDirections = dirs;
+        Debug.Log("inputDirections");
+        Debug.Log(inputDirections);
     }
 
     public void changeOutputDir(List<string> dirs) {

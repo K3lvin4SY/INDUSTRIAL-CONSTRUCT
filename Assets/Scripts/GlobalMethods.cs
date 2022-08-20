@@ -162,6 +162,7 @@ public class GlobalMethods : MonoBehaviour
 
     public static string oppositeDir(string dir)
     {
+        dir = dir[0].ToString();
         int dirIndex = directions.ToList().FindIndex(c => c == dir);
         dirIndex += 2;
         if (dirIndex == 4)
