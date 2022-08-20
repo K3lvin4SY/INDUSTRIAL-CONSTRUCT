@@ -42,7 +42,7 @@ public class Bricks// : ScriptableObject
                 General.bricks[GlobalMethods.GetDirV3("U", cordinates)] = linkedBrick;
                 //Debug.Log(inputDirections);
                 //Debug.Log(outputDirections);
-                if (inputDirections != null && outputDirections != null)
+                if (inputDirections != null || outputDirections != null)
                 {
                     Debug.Log("!!!PASS!!!");
                     linkedBrick.changeOutputDir(new List<string>());
@@ -128,12 +128,14 @@ public class Bricks// : ScriptableObject
             }//*/
         }
 
+
         if (tile == null || ((inputDirections != null || outputDirections != null) && tile.name.ToLower().Contains("conveyor"))) // here only conveyor bricks with direction passes through
         {
             if (tile == null)
             {
                 //return;
             }
+            Debug.Log("p1");
             //*  CODE down bellow may not be finished (its for updating a belt that is already created)
             if (belt != null) {
                 if (belt.isBrick(this) != null) // if brick is in end or start of the belt
@@ -175,10 +177,11 @@ public class Bricks// : ScriptableObject
         // This last code for fixing when you connect a belt to an already placed dir brick
         if (tile == null ||  tile.name.ToLower().Contains("conveyor"))
         {
-            if (inputDirections != null && outputDirections != null)
+            if (inputDirections != null || outputDirections != null)
             {
                 if (belt.noDirection())
                 {
+                    Debug.Log("p21");
                     changeInputDir(null);
                     changeOutputDir(null);
                     belt.assignDirection(this);

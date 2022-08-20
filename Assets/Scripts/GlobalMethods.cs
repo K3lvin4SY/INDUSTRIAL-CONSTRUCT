@@ -49,7 +49,7 @@ public class GlobalMethods : MonoBehaviour
 
     public static bool isPlayerEditable(string blockName)
     {
-        string[] playerEditable = new string[] {"conveyor", "splitter", "merger", "machine"};
+        string[] playerEditable = new string[] {"conveyor", "splitter", "merger", "machine", "miner"};
         foreach (string editableBlock in playerEditable) {
             if (blockName.ToLower().Contains(editableBlock))
             {
@@ -61,7 +61,7 @@ public class GlobalMethods : MonoBehaviour
 
     public static bool isBrickNotExcludedType(string brickName, string excludeType)
     {
-        string[] brickTypes = new string[] {"conveyor", "splitter", "merger", "machine"};
+        string[] brickTypes = new string[] {"conveyor", "splitter", "merger", "machine", "miner"};
         excludeType = excludeType.ToLower();
         if (brickTypes.Contains(excludeType))
         {
@@ -251,6 +251,9 @@ public class GlobalMethods : MonoBehaviour
         } else if (tileName.ToLower().Contains("bend"))
         {
             return new List<string>() { tileName[0].ToString(), nextDir(tileName[0].ToString()) };
+        } else if (tileName.ToLower().Contains("miner"))
+        {
+            return new List<string>() { tileName[0].ToString() };
         } else if (tileName.ToLower().Contains("merger") || tileName.ToLower().Contains("splitter"))
         {
             return new List<string>() { "W", "E", "N", "S" };
@@ -302,34 +305,42 @@ public class GlobalMethods : MonoBehaviour
         {
             List<string> iDirs = GetInputDirections(tileName, loc);
             List<string> oDirs = GetOutputDirections(tileName, loc);
-            foreach (var dir in iDirs)
+            if (iDirs != null)
             {
-                if (General.bricks.ContainsKey(GetDirV3(dir, loc)))
+                foreach (var dir in iDirs)
                 {
-                    Bricks brick = General.bricks[GetDirV3(dir, loc)];
-                    if (brick.inputDirections != null) {
-                        if (brick.inputDirections.Contains(oppositeDir(dir)))
-                        {
-                            return true;
+                    if (General.bricks.ContainsKey(GetDirV3(dir, loc)))
+                    {
+                        Bricks brick = General.bricks[GetDirV3(dir, loc)];
+                        if (brick.inputDirections != null) {
+                            if (brick.inputDirections.Contains(oppositeDir(dir)))
+                            {
+                                return true;
+                            }
                         }
+                    
                     }
-                
                 }
             }
-            foreach (var dir in oDirs)
+            
+            if (oDirs != null)
             {
-                if (General.bricks.ContainsKey(GetDirV3(dir, loc)))
+                foreach (var dir in oDirs)
                 {
-                    Bricks brick = General.bricks[GetDirV3(dir, loc)];
-                    if (brick.outputDirections != null) {
-                        if (brick.outputDirections.Contains(oppositeDir(dir)))
-                        {
-                            return true;
+                    if (General.bricks.ContainsKey(GetDirV3(dir, loc)))
+                    {
+                        Bricks brick = General.bricks[GetDirV3(dir, loc)];
+                        if (brick.outputDirections != null) {
+                            if (brick.outputDirections.Contains(oppositeDir(dir)))
+                            {
+                                return true;
+                            }
                         }
+                    
                     }
-                
                 }
             }
+            
         }
         return false;
     }
@@ -351,7 +362,7 @@ public class GlobalMethods : MonoBehaviour
                     Bricks brick2 = General.bricks[loc2];
                     //Debug.Log(brick1.tile.name);
                     //Debug.Log(brick2.tile.name);
-                    if (brick1.inputDirections != null && brick2.outputDirections != null)
+                    if (brick1.inputDirections != null || brick2.outputDirections != null)
                     {
                         //Debug.Log("pas1");
                         if ((brick1.inputDirections.Contains(oppositeDir(dirs[0][0].ToString())) && brick2.inputDirections.Contains(oppositeDir(dirs[1][0].ToString()))) || (brick1.outputDirections.Contains(oppositeDir(dirs[0][0].ToString())) && brick2.outputDirections.Contains(oppositeDir(dirs[1][0].ToString()))))
@@ -403,6 +414,10 @@ public class GlobalMethods : MonoBehaviour
 
     // Make a method for getting input and out put dirs. Copy the code from the above method and change it to get input and output dirs.
     public static List<string> GetInputDirections(string tileName, Vector3Int loc) {
+        if (tileName.ToLower().Contains("miner"))
+        {
+            return null;
+        }
         List<string> dirs = GetDirections(tileName);
         if (tileName.ToLower().Contains("merger")) {
             return GetDirections(tileName).Where(c => c != tileName[0].ToString()).ToList();
@@ -418,7 +433,7 @@ public class GlobalMethods : MonoBehaviour
                 if (brick.directions.Contains(oppositeDir(dir)))
                 {
                     Debug.Log(brick.directions[0]);
-                    if (brick.outputDirections == null || brick.inputDirections == null)
+                    if (brick.outputDirections == null && brick.inputDirections == null)
                     {
                         return null;
                     }
@@ -461,6 +476,10 @@ public class GlobalMethods : MonoBehaviour
 
     public static List<string> GetOutputDirections(string tileName, Vector3Int loc) {
         List<string> dirs = GetDirections(tileName);
+        if (tileName.ToLower().Contains("miner"))
+        {
+            return dirs;
+        }
         if (tileName.ToLower().Contains("splitter")) {
             return GetDirections(tileName).Where(c => c != tileName[0].ToString()).ToList();
         } else if (tileName.ToLower().Contains("merger")) {
@@ -474,12 +493,12 @@ public class GlobalMethods : MonoBehaviour
                 
                 if (brick.directions.Contains(oppositeDir(dir)))
                 {
-                    if (brick.outputDirections == null || brick.inputDirections == null)
+                    if (brick.outputDirections == null && brick.inputDirections == null)
                     {
                         return null;
                     }
                     List<string> returnValue = null;
-                    if (brick.inputDirections.Contains(oppositeDir(dir)))
+                    if (!brick.outputDirections.Contains(oppositeDir(dir)))
                     {
                         if (brick.tile == null) {
                             return new List<string>() { dir };

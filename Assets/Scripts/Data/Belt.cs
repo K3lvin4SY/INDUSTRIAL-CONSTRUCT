@@ -33,7 +33,7 @@ public class Belt// : ScriptableObject
     {
         if (subCordinates[0] == subCordinates.Last())
         {
-            if (subCordinates[0].inputDirections != null && subCordinates[0].outputDirections != null)
+            if (subCordinates[0].inputDirections != null || subCordinates[0].outputDirections != null)
             {
                 foreach (var dir in subCordinates[0].directions)
                 {
@@ -196,7 +196,7 @@ public class Belt// : ScriptableObject
     public bool noDirection() {
         foreach (var brick in subCordinates)
         {
-            if (brick.inputDirections == null && brick.outputDirections == null) {
+            if (brick.inputDirections == null || brick.outputDirections == null) {
                 return true;
             }
         }
@@ -206,10 +206,10 @@ public class Belt// : ScriptableObject
     public bool faltyDirection() {
         foreach (var brick in subCordinates)
         {
-            if (brick.inputDirections == null && brick.outputDirections == null) {
+            if (brick.inputDirections == null || brick.outputDirections == null) {
                 foreach (var brick2 in subCordinates)
                 {
-                    if (brick2.inputDirections != null && brick2.outputDirections != null) {
+                    if (brick2.inputDirections != null || brick2.outputDirections != null) {
                         return true;
                     }
                 }
@@ -226,7 +226,7 @@ public class Belt// : ScriptableObject
         foreach (var brick in subCordinates)
         {
             loopNum += 1;
-            if (brick.inputDirections == null && brick.outputDirections == null) {
+            if (brick.inputDirections == null || brick.outputDirections == null) {
                 if (subCordinates.Count == 1)
                 {
                     Debug.Log("!!!ERROR!!! FIX ME");
