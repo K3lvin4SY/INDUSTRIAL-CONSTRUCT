@@ -1,3 +1,5 @@
+//using System.Threading;
+using System.Timers;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,7 +7,7 @@ using System.Linq;
 using UnityEngine.Tilemaps;
 
 //[CreateAssetMenu(fileName = "GameSence", menuName = "Game/Bricks")]
-public class Bricks// : ScriptableObject
+public class Bricks
 {
     public Belt belt;
     public Tile tile;
@@ -18,6 +20,8 @@ public class Bricks// : ScriptableObject
     public GameItem storage;
 
     private string currentTag;
+
+    public bool powerOn = false;
 
     public Bricks(Tile cTile, Vector3Int coords, List<string> dir, List<string> inputDir, List<string> outputDir, Belt cBelt = null, Bricks linkBrick = null)
     {
@@ -201,7 +205,7 @@ public class Bricks// : ScriptableObject
         
     }
 
-    public void changeTileTag(string tag, bool temp = false) {
+    public virtual void changeTileTag(string tag, bool temp = false) {
         if (tile != null)
         {
             if (tag == null)
@@ -258,8 +262,21 @@ public class Bricks// : ScriptableObject
         {
             if (outputDirections != null)
             {
-                changeTileTag("animated"+outputDirections[0][0].ToString());
+                string dir = outputDirections[0][0].ToString();
+                if (dir == "D" || dir == "U")
+                {
+                    dir = GlobalMethods.oppositeDir(inputDirections[0]);
+                }
+                changeTileTag("animated"+dir);
             }
+        }
+    }
+
+    public void GenerateItem() {
+        if (powerOn)
+        {
+            Debug.Log("item generated");
+            Debug.Log(Time.time);
         }
     }
 }

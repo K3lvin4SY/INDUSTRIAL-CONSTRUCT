@@ -22,6 +22,9 @@ public class SelectInspecter : MonoBehaviour
     public GameObject brickCordianteObject;
     public GameObject brickInputsObject;
     public GameObject brickOutputsObject;
+    public GameObject brickPowerObject;
+    public Image brickPowerLblImg;
+    public Image brickPowerBtnImg;
     private Text brickName;
     private Text brickInputs;
     private Text brickOutputs;
@@ -35,6 +38,11 @@ public class SelectInspecter : MonoBehaviour
     private static Sprite brickSpriteSelected;
     private static string brickType;
     private static Bricks brickSelected;
+
+    public Sprite powerLblOn;
+    public Sprite powerLblOff;
+    public Sprite powerBtnOn;
+    public Sprite powerBtnOff;
 
     void Start() {
         brickName = brickNameObject.GetComponent<Text>();
@@ -56,6 +64,15 @@ public class SelectInspecter : MonoBehaviour
             SelectedBrickImgBg.SetActive(true);
         } else {
             SelectedBrickImgBg.SetActive(false);
+        }
+
+        if (brickSelected.powerOn)
+        {
+            brickPowerLblImg.sprite = powerLblOn;
+            brickPowerBtnImg.sprite = powerBtnOn;
+        } else {
+            brickPowerLblImg.sprite = powerLblOff;
+            brickPowerBtnImg.sprite = powerBtnOff;
         }
 
         /* Checking if the brick type is a belt. */
@@ -91,6 +108,7 @@ public class SelectInspecter : MonoBehaviour
             EastBtn.SetActive(false);
             SouthBtn.SetActive(false);
             WestBtn.SetActive(false);
+            brickPowerObject.SetActive(false);
         } else if (SelectInspecter.brickType == "conveyor") {
             beltBtn.SetActive(true);
             backBtn.SetActive(false);
@@ -101,11 +119,24 @@ public class SelectInspecter : MonoBehaviour
             EastBtn.SetActive(false);
             SouthBtn.SetActive(false);
             WestBtn.SetActive(false);
+            brickPowerObject.SetActive(false);
+        } else if (SelectInspecter.brickType == "miner") {
+            beltBtn.SetActive(false);
+            backBtn.SetActive(false);
+            NextBtn.SetActive(NextBtnChecker());
+            PrevBtn.SetActive(false);
+
+            NorthBtn.SetActive(false);
+            EastBtn.SetActive(false);
+            SouthBtn.SetActive(false);
+            WestBtn.SetActive(false);
+            brickPowerObject.SetActive(true);
         } else {
             beltBtn.SetActive(false);
             backBtn.SetActive(false);
             NextBtn.SetActive(false);
             PrevBtn.SetActive(false);
+            brickPowerObject.SetActive(false);
 
             if (brickSelected.directions.Contains("N")) {
                 NorthBtn.SetActive(DirBtnChecker("N"));
@@ -183,6 +214,8 @@ public class SelectInspecter : MonoBehaviour
             newBrickName += "Merger";
         } else if (brickName.Contains("splitter")) {
             newBrickName += "Splitter";
+        } else if (brickName.Contains("miner")) {
+            newBrickName += "Miner";
         } else {
             newBrickName += "Unknown";
         }
@@ -246,6 +279,9 @@ public class SelectInspecter : MonoBehaviour
         if (brick.tile.name.ToLower().Contains("conveyor"))
         {
             brickType = "conveyor";
+        } else if (brick.tile.name.ToLower().Contains("miner"))
+        {
+            brickType = "miner";
         } else {
             brickType = "brick";
         }
@@ -502,6 +538,16 @@ public class SelectInspecter : MonoBehaviour
             
         }
         return false;
+    }
+
+    public static void PowerBtnTrigger() {
+        brickSelected.powerOn = !brickSelected.powerOn;
+        if (brickSelected.powerOn)
+        {
+            brickSelected.changeTileTag("animated");
+        } else {
+            brickSelected.changeTileTag(null);
+        }
     }
     
 }

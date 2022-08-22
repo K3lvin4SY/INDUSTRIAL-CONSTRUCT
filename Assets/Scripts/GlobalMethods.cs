@@ -126,6 +126,7 @@ public class GlobalMethods : MonoBehaviour
                 if (assetTile == null)
                 {
                     Debug.Log("null assetTile");
+                    //Debug.Log(key);
                     return null;
                 }
                 string assetTileName = assetTile.name.ToLower(); // gets the name of the tile

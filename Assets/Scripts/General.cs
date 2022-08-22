@@ -33,6 +33,7 @@ public class General : MonoBehaviour
 
 
     private void Start() {
+        InvokeRepeating("OutputTime", 1f, 1.5f);  //1s delay, repeat every 1s
         Debug.Log("test1");
         General.tile = GlobalMethods.GetTileByName("E-conveyor_Straight_slab");
         Debug.Log(General.tile.name);
@@ -49,7 +50,15 @@ public class General : MonoBehaviour
     }
     
 
-    
+    private void OutputTime() {
+        foreach (var (cord, brick) in General.bricks)
+        {
+            if (brick.tile != null && brick.tile.name.ToLower().Contains("miner"))
+            {
+                brick.GenerateItem();
+            }
+        }
+    }
 
 
     private bool minimumZ(Vector3Int loc) { // returns true if given locations z value is the bare minimum allowed (if all z values under is filled/underground) 
