@@ -123,7 +123,7 @@ public class SelectInspecter : MonoBehaviour
         } else if (SelectInspecter.brickType == "miner") {
             beltBtn.SetActive(false);
             backBtn.SetActive(false);
-            NextBtn.SetActive(NextBtnChecker());
+            NextBtn.SetActive(false);
             PrevBtn.SetActive(false);
 
             NorthBtn.SetActive(false);
