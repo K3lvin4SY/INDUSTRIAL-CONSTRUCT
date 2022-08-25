@@ -1,0 +1,32 @@
+{
+    "miner":[
+        {
+            "output":[
+                "Gold_Ore"
+            ]
+        },
+        {
+            "output":[
+                "Iron_Ore"
+            ]
+        }
+    ],
+    "smelter":[
+        {
+            "input":[
+                "Gold_Ore"
+            ],
+            "output":[
+                "Gold_Bar"
+            ]
+        },
+        {
+            "input":[
+                "Iron_Ore"
+            ],
+            "output":[
+                "Iron_Bar"
+            ] 
+        }
+    ]
+}

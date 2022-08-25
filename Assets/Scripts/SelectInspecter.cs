@@ -23,6 +23,7 @@ public class SelectInspecter : MonoBehaviour
     public GameObject brickInputsObject;
     public GameObject brickOutputsObject;
     public GameObject brickPowerObject;
+    public GameObject craftingObject;
     public Image brickPowerLblImg;
     public Image brickPowerBtnImg;
     private Text brickName;
@@ -37,7 +38,7 @@ public class SelectInspecter : MonoBehaviour
     private static string brickPlaceSelected;
     private static Sprite brickSpriteSelected;
     private static string brickType;
-    private static Bricks brickSelected;
+    public static Bricks brickSelected;
 
     public Sprite powerLblOn;
     public Sprite powerLblOff;
@@ -109,6 +110,7 @@ public class SelectInspecter : MonoBehaviour
             SouthBtn.SetActive(false);
             WestBtn.SetActive(false);
             brickPowerObject.SetActive(false);
+            craftingObject.SetActive(false);
         } else if (SelectInspecter.brickType == "conveyor") {
             beltBtn.SetActive(true);
             backBtn.SetActive(false);
@@ -120,6 +122,7 @@ public class SelectInspecter : MonoBehaviour
             SouthBtn.SetActive(false);
             WestBtn.SetActive(false);
             brickPowerObject.SetActive(false);
+            craftingObject.SetActive(false);
         } else if (SelectInspecter.brickType == "miner") {
             beltBtn.SetActive(false);
             backBtn.SetActive(false);
@@ -131,12 +134,14 @@ public class SelectInspecter : MonoBehaviour
             SouthBtn.SetActive(false);
             WestBtn.SetActive(false);
             brickPowerObject.SetActive(true);
+            craftingObject.SetActive(true);
         } else {
             beltBtn.SetActive(false);
             backBtn.SetActive(false);
             NextBtn.SetActive(false);
             PrevBtn.SetActive(false);
             brickPowerObject.SetActive(false);
+            craftingObject.SetActive(false);
 
             if (brickSelected.directions.Contains("N")) {
                 NorthBtn.SetActive(DirBtnChecker("N"));
