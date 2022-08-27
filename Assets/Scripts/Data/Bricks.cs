@@ -17,6 +17,18 @@ public class Bricks
     public List<string> outputDirections;
     public Bricks linkedBrick;
 
+    public Dictionary<string, List<string>> crafting = new Dictionary<string, List<string>>()
+    {
+        {
+            "input",
+            new List<string>()
+        },
+        {
+            "output",
+            new List<string>()
+        }
+    };
+
     public GameItem storage;
 
     private string currentTag;

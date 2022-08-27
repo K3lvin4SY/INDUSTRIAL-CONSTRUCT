@@ -33,6 +33,25 @@ public class populateItemGrid : MonoBehaviour
                     new Dictionary<string, List<string>>()
                     {
                         {
+                            "input",
+                            new List<string>()
+                            {
+                                "Iron_Ore",
+                                "Copper_Wire",
+                                "Gold_Rod"
+                            }
+                        },
+                        {
+                            "output",
+                            new List<string>()
+                            {
+                                "Iron_Bar"
+                            }
+                        }
+                    },
+                    new Dictionary<string, List<string>>()
+                    {
+                        {
                             "output",
                             new List<string>()
                             {
@@ -139,6 +158,10 @@ public class populateItemGrid : MonoBehaviour
     }
 
     public void Populate() { //https://www.youtube.com/watch?v=kdkrjCF0KCo
+        foreach (Transform child in transform) {
+            GameObject.Destroy(child.gameObject);
+        }
+
         GameObject newObj;
         GameObject newObjItem;
         string type;
@@ -159,9 +182,14 @@ public class populateItemGrid : MonoBehaviour
 
             if (recepie.ContainsKey("input"))
             {
+                int inputLoopNum = 0;
                 foreach (var item in recepie["input"])
                 {
                     
+                    newObjItem = (GameObject)Instantiate(prefab, newObj.transform);
+                    newObjItem.GetComponent<Image>().sprite = GetSpriteByName(item);
+                    newObjItem.transform.Translate(new Vector3(-21.2f+12.2f*inputLoopNum, 3f, 0f));
+                    inputLoopNum++;
                 }
             }
             if (recepie.ContainsKey("output"))
@@ -169,6 +197,7 @@ public class populateItemGrid : MonoBehaviour
                 var item = recepie["output"][0];
                 newObjItem = (GameObject)Instantiate(prefab, newObj.transform);
                 newObjItem.GetComponent<Image>().sprite = GetSpriteByName(item);
+                newObjItem.transform.Translate(new Vector3(22.3f, 3f, 0f));
             }
             
 
@@ -184,6 +213,8 @@ public class populateItemGrid : MonoBehaviour
     public void ChooseMethod(Dictionary<string, List<string>> recepie)
     {
         Debug.Log(recepie["output"][0]);
+        SelectInspecter.brickSelected.crafting["output"] = recepie["output"];
+        SelectInspecter.brickSelected.crafting["input"] = recepie["input"];
     }
 
 }

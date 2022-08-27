@@ -10,6 +10,7 @@ public class GlobalMethods : MonoBehaviour
 {
 
     private static Dictionary<string, Tile> tiles = new Dictionary<string, Tile>();
+    private static Dictionary<string, Sprite> sprites = new Dictionary<string, Sprite>();
     private static Dictionary<string, AnimatedTile> aTiles = new Dictionary<string, AnimatedTile>();
     
     static string[] directions = new string[4]{"N", "E", "S", "W"};
@@ -79,6 +80,28 @@ public class GlobalMethods : MonoBehaviour
         return false;
     }
 
+    public static Sprite GetSpriteByName(string key) {
+        key = key.ToLower();
+        if (!tiles.ContainsKey(key))
+        {
+            string[] assetFiles2 = Directory.GetFiles("Assets/imgs/items/"); // Gets string array of the tile assets file path
+            assetFiles2 = assetFiles2.Select(s => s.ToLowerInvariant()).ToArray(); // to lowercase
+            
+            string asset = "Assets/imgs/items/"+key+".png";
+
+            Sprite assetTile = (Sprite)AssetDatabase.LoadAssetAtPath(asset, typeof(Sprite)); // loads the tile asset from path
+            if (assetTile == null)
+            {
+                Debug.Log("null assetTile");
+                return null;
+            }
+            string assetTileName = assetTile.name.ToLower(); // gets the name of the tile
+            sprites[assetTileName] = assetTile; // inserts the data into a dictionary
+            
+        }
+        return sprites[key];
+        
+    }
 
     public static Tile GetTileByName(string key) {
         key = key.ToLower();

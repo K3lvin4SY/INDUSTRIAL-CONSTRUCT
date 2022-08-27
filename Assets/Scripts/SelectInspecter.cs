@@ -135,6 +135,21 @@ public class SelectInspecter : MonoBehaviour
             WestBtn.SetActive(false);
             brickPowerObject.SetActive(true);
             craftingObject.SetActive(true);
+
+            int loopNum = 0;
+            foreach (Transform child in craftingObject.transform) {
+                if (loopNum >= 4)
+                {
+                    child.GetComponent<Image>().sprite = GlobalMethods.GetSpriteByName(brickSelected.crafting["output"][0]);
+                } else {
+                    if (brickSelected.crafting["input"].Count-1 >= loopNum)
+                    {
+                        child.GetComponent<Image>().sprite = GlobalMethods.GetSpriteByName(brickSelected.crafting["input"][loopNum]);
+                    }
+                    
+                }
+                loopNum++;
+            }
         } else {
             beltBtn.SetActive(false);
             backBtn.SetActive(false);
