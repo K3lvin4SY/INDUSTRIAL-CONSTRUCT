@@ -16,6 +16,8 @@ public class Controller : MonoBehaviour
     public GameObject pauseMenu;
     public GameObject optionsMenu;
     public GameObject selectInspector;
+    public GameObject itemPicker;
+    private GameObject currentWin;
     List<GameObject> gameWindows;
     List<GameObject> inGameWindows;
 
@@ -23,14 +25,16 @@ public class Controller : MonoBehaviour
     float moveSpeed;
     void Start()
     {
-        gameWindows = new List<GameObject> {brickPicker, main, grid, pauseMenu, optionsMenu, selectInspector};
-        inGameWindows = new List<GameObject> {brickPicker, selectInspector};
+        gameWindows = new List<GameObject> {brickPicker, main, grid, pauseMenu, optionsMenu, selectInspector, itemPicker};
+        inGameWindows = new List<GameObject> {brickPicker, selectInspector, itemPicker};
         brickPicker.SetActive(false);
         pauseMenu.SetActive(false);
         optionsMenu.SetActive(false);
         selectInspector.SetActive(false);
+        itemPicker.SetActive(false);
         main.SetActive(true);
         Controller.Instance = this;
+        currentWin = main;
     }
 
     // Update is called once per frame
@@ -128,7 +132,11 @@ public class Controller : MonoBehaviour
 
         //Debug.Log(Input.mousePosition);
         if (Input.GetMouseButton(0) || Input.GetMouseButtonUp(0)) {
-            General.Instance.MouseClick();
+            if (main.activeSelf)
+            {
+                //Debug.Log(currentWin);
+                General.Instance.MouseClick();
+            }
         }//*/
     }
 
@@ -155,6 +163,13 @@ public class Controller : MonoBehaviour
     }
 
     public void UseWindow(GameObject winPick) {
+        //Debug.Log(winPick);
+        if (winPick == main)
+        {
+            gameUI.SetActive(true);
+        } else {
+            gameUI.SetActive(false);
+        }
         if (winPick == pauseMenu) {
             foreach (var win in inGameWindows)
             {
@@ -164,12 +179,6 @@ public class Controller : MonoBehaviour
                 }
             }
         }//*/
-        if (winPick == main)
-        {
-            gameUI.SetActive(true);
-        } else {
-            gameUI.SetActive(false);
-        }
         if (winPick.activeSelf)
         {
             if (winPick == optionsMenu)
@@ -179,6 +188,17 @@ public class Controller : MonoBehaviour
             }
             UseWindow(main);
             return;
+        }
+        foreach (var win in inGameWindows)
+        {
+            if (win.activeSelf)
+            {
+                if (inGameWindows.Contains(winPick) && winPick != itemPicker)
+                {
+                    UseWindow(main);
+                    return;
+                }
+            }
         }
         foreach (var win in gameWindows)
         {
@@ -197,7 +217,14 @@ public class Controller : MonoBehaviour
                 }
             }
         }
+
+        if (winPick == itemPicker)
+        {
+            populateItemGrid.Instance.Populate();
+        }
         winPick.SetActive(true);
+        
+        currentWin = winPick;
     }
 }
 
