@@ -20,6 +20,7 @@ public class SelectInspecter : MonoBehaviour
     public GameObject brickNameObject;
     public GameObject brickPlaceObject;
     public GameObject brickCordianteObject;
+    public GameObject brickStorageObject;
     public GameObject brickInputsObject;
     public GameObject brickOutputsObject;
     public GameObject brickPowerObject;
@@ -30,6 +31,7 @@ public class SelectInspecter : MonoBehaviour
     private Text brickInputs;
     private Text brickOutputs;
     private Text brickCordiante;
+    private Text brickStorage;
     private Text brickBeltPlace;
     private static string brickNameSelected;
     private static string brickInputsSelected;
@@ -51,6 +53,7 @@ public class SelectInspecter : MonoBehaviour
         brickOutputs = brickOutputsObject.GetComponent<Text>();
         brickBeltPlace = brickPlaceObject.GetComponent<Text>();
         brickCordiante = brickCordianteObject.GetComponent<Text>();
+        brickStorage = brickStorageObject.GetComponent<Text>();
     }
 
     void Update() {
@@ -58,6 +61,16 @@ public class SelectInspecter : MonoBehaviour
         brickInputs.text = SelectInspecter.brickInputsSelected;
         brickOutputs.text = SelectInspecter.brickOutputsSelected;
         brickBeltPlace.text = SelectInspecter.brickPlaceSelected;
+        if (SelectInspecter.brickType == "miner")
+        {
+            brickBeltPlace.text = "";
+        }
+        if (SelectInspecter.brickType == "conveyor")
+        {
+            brickStorage.text = SelectInspecter.brickSelected.GetItem();
+        } else {
+            brickStorage.text = "";
+        }
         brickCordiante.text = SelectInspecter.brickCordianteSelected;
 
         if (brickSpriteSelected != null) {
@@ -578,12 +591,15 @@ public class SelectInspecter : MonoBehaviour
     }
 
     public static void PowerBtnTrigger() {
-        brickSelected.powerOn = !brickSelected.powerOn;
-        if (brickSelected.powerOn)
+        if (brickSelected.crafting["output"].Count >= 1)
         {
-            brickSelected.changeTileTag("animated");
-        } else {
-            brickSelected.changeTileTag(null);
+            brickSelected.powerOn = !brickSelected.powerOn;
+            if (brickSelected.powerOn)
+            {
+                brickSelected.changeTileTag("animated");
+            } else {
+                brickSelected.changeTileTag(null);
+            }
         }
     }
     

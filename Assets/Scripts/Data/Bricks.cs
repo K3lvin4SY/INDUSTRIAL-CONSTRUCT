@@ -29,7 +29,8 @@ public class Bricks
         }
     };
 
-    public GameItem storage;
+    public List<string> inStorage; // only for converters and other machines
+    public List<string> outStorage; // only for miners, converters and other machines
 
     private string currentTag;
 
@@ -285,11 +286,98 @@ public class Bricks
     }
 
     public void GenerateItem() {
+        string item;
         if (powerOn)
         {
+            item = crafting["output"][0];
             Debug.Log("item generated");
             Debug.Log(Time.time);
+        } else {
+            item = null;
+            //Debug.Log("update sequence");
         }
+        moveToNext(item);
+    }
+
+    public string GetItem() {
+        if (belt != null)
+        {
+            int index = belt.subCordinates.IndexOf(this);
+            if (belt.storage[index] != null)
+            {
+                return "Item: " + belt.storage[index];
+            }
+        }
+        return "Item: None";
+    }
+
+
+    // below is only methods for splitter & merger
+
+    public void receiveItem(string item) {
+        if (belt != null)
+        {
+            belt.receiveItem(item);
+        } else {
+            moveToNext(item);
+        }
+    }
+
+    private void moveToNext(string item) {
+        if (outputDirections != null)
+        {
+            foreach (string outputDir in outputDirections)
+            {
+                //Debug.Log(outputDir);
+                var itemHandler = GlobalMethods.GetBrickByDirCord(outputDir, cordinates);
+                if (itemHandler == null || itemHandler.ifStorageFull()) // if path is full or if there is no path at all
+                {
+                    //Debug.Log("1");
+                    if (outputDirections.Last() == outputDir && itemHandler != null)
+                    {
+                        //Debug.Log("3");
+                        if (tile.name.ToLower().Contains("miner"))
+                        {
+                           Debug.Log("Connot send more from gen"); 
+                        } else {
+                            Debug.Log("!!!ERROR!!! - FIX ME - isStorageFull check failed");
+                        }
+                    }
+                } else {
+                    //Debug.Log("2");
+                    outputDirections.Remove(outputDir); // remove from output dirs
+                    outputDirections.Add(outputDir); // add the removed to the end of list - why? because: that way it will rotate and not send everything though only one way untill full
+                    itemHandler.receiveItem(item);
+                    return;
+                }
+            } 
+        } else {
+            Debug.Log("!!!ERROR!!! - FIX ME");
+        }
+    }
+
+    public bool ifStorageFull() {
+        if (belt != null)
+        {
+            return belt.ifStorageFull();
+        }
+        if (outputDirections != null)
+        {
+            foreach (string outputDir in outputDirections)
+            {
+                var itemHandler = GlobalMethods.GetBrickByDirCord(outputDir, cordinates);
+                if (itemHandler == null || itemHandler.ifStorageFull()) // if path is full or if there is no path at all
+                {
+                    if (outputDirections.Last() == outputDir)
+                    {
+                        return true;
+                    }
+                } else {
+                    return false;
+                }
+            } 
+        }
+        return true;
     }
 }
 

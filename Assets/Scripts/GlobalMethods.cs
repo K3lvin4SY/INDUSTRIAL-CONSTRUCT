@@ -123,7 +123,7 @@ public class GlobalMethods : MonoBehaviour
                 }
                 string assetTileName = assetTile.name.ToLower(); // gets the name of the tile
                 tiles[assetTileName] = assetTile; // inserts the data into a dictionary
-                Debug.Log(assetTile.name);
+                //Debug.Log(assetTile.name);
             } else {
                 Debug.Log("null tile");
                 return null;
@@ -154,7 +154,7 @@ public class GlobalMethods : MonoBehaviour
                 }
                 string assetTileName = assetTile.name.ToLower(); // gets the name of the tile
                 aTiles[assetTileName] = assetTile; // inserts the data into a dictionary
-                Debug.Log(assetTile.name);
+                //Debug.Log(assetTile.name);
             } else {
                 Debug.Log("null tile");
                 return null;
@@ -296,6 +296,29 @@ public class GlobalMethods : MonoBehaviour
         return directions[dirIndex];
     }
 
+    public static Bricks GetBrickByDirCord(string dir, Vector3Int cord) {
+        cord = GetDirV3(dir, cord);
+        if (General.bricks.ContainsKey(cord))
+        {
+            return General.bricks[cord];
+        }
+        return null;
+    }
+
+    /*
+    public static dynamic GetItemHandlerByDirCord(string dir, Vector3Int cord) {
+        cord = GetDirV3(dir, cord);
+        if (General.bricks.ContainsKey(cord))
+        {
+            if (General.bricks[cord].belt != null)
+            {
+                return General.bricks[cord].belt;
+            }
+            return General.bricks[cord];
+        }
+        return null;
+    }//*/
+
     public static string NextBrickDir(Bricks brick, string dir) {
         List<string> directions = brick.directions;
         int dirIndex = directions.ToList().FindIndex(c => c == dir);
@@ -386,7 +409,7 @@ public class GlobalMethods : MonoBehaviour
                     Bricks brick2 = General.bricks[loc2];
                     //Debug.Log(brick1.tile.name);
                     //Debug.Log(brick2.tile.name);
-                    if (brick1.inputDirections != null || brick2.outputDirections != null)
+                    if (brick1.inputDirections != null && brick2.outputDirections != null)
                     {
                         //Debug.Log("pas1");
                         if ((brick1.inputDirections.Contains(oppositeDir(dirs[0][0].ToString())) && brick2.inputDirections.Contains(oppositeDir(dirs[1][0].ToString()))) || (brick1.outputDirections.Contains(oppositeDir(dirs[0][0].ToString())) && brick2.outputDirections.Contains(oppositeDir(dirs[1][0].ToString()))))
@@ -568,14 +591,14 @@ public class GlobalMethods : MonoBehaviour
         
         foreach (var dir in dirs)
         {
-            //Debug.Log(dir);
+            Debug.Log(dir);
             if (General.bricks.ContainsKey(GetDirV3(dir, loc)))
             {
-                //Debug.Log("Found a belt");
+                Debug.Log("Found a belt");
                 Bricks brick = General.bricks[GetDirV3(dir, loc)];
                 if (brick.directions.Contains(oppositeDir(dir[0].ToString())) && (brick.tile == null || brick.tile.name.ToLower().Contains("conveyor")))
                 {
-                    //Debug.Log("Found a connection possible belt");
+                    Debug.Log("Found a connection possible belt");
                     return brick.belt;
                 }
             }

@@ -9,7 +9,7 @@ public class Belt// : ScriptableObject
 {
     public List<Bricks> subCordinates;
     //public Dictionary<int, Bricks> subCordinates;
-    public List<string> storage;
+    public List<string> storage = new List<string>();
     
     public bool selected = false;
 
@@ -490,6 +490,7 @@ public class Belt// : ScriptableObject
     }
 
     public void receiveItem(string item) {
+        Debug.Log("Item received: "+item);
         if (storage.Where(c => c != null).ToList().Count >= subCordinates.Count)
         {
             Debug.Log("ERROR - TO MANY ITEMS");
@@ -498,22 +499,95 @@ public class Belt// : ScriptableObject
         tickMoveStorage();
     }
 
-    public void tickMoveStorage() {
+    private void tickMoveStorage() {
         //if (storage.Where(c => c != null).ToList().Count > 0) { // if statement for seeing if belt is empty
-            if (moveToNextCheck())
+            if (moveToNextCheck()) // if path continues
             {
-                moveToNext(storage.Last());
-                storage.RemoveAt(storage.Count-1);
+                if (!getNextItemHandler().ifStorageFull()) // next storage is not full
+                {
+                    moveToNext(storage.Last());
+                    storage.RemoveAt(storage.Count-1);
+                } else {
+                    // next is full and connot pass
+                    removeEmptyStorageSpace();
+                }
+            } else { // if end of path
+                //if (ifStorageFull()) { // maybe it should be !ifStorageFull()???
+                    removeEmptyStorageSpace();
+                //}
+            }
+            // temp code for seeing items passing through
+            for (int i = 0; i < subCordinates.Count; i++)
+            {
+                if (storage[i] != null)
+                {
+                    subCordinates[i].changeTileTag("selected", true);
+                } else {
+                    subCordinates[i].resetTileTag();
+                }
             }
         //}
     }
 
+    public bool ifStorageFull() {
+        if (storage.Where(c => c != null).ToList().Count >= subCordinates.Count) // if storage full
+        {
+            if (moveToNextCheck()) { // if there is a connection brick (the path leads forward and doesnt end)
+                return getNextItemHandler().ifStorageFull();
+            } else {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void removeEmptyStorageSpace() {
+        for (int i = storage.Count-1; i >= 0; i--)
+        {
+            if (storage[i] == null)
+            {
+                storage.RemoveAt(i);
+                return;
+            }
+        }
+    }
     private void moveToNext(string item) { // send the item to the connected brick
-        
+        Bricks brick = getConnectingEdgeBrick(true, true); // if some error may look inte the second true - note
+        if (brick != null)
+        {
+            if (brick.belt != null)
+            {
+                brick.belt.receiveItem(item);
+                return;
+            }
+            brick.receiveItem(item);
+        }
+    }
+
+    /*
+    private dynamic getNextItemHandler() { // send the item to the connected brick
+        Bricks brick = getConnectingEdgeBrick(true, true); // if some error may look inte the second true - note
+        if (brick != null)
+        {
+            if (brick.belt != null)
+            {
+                return brick.belt;
+            }
+        }
+        return brick;
+    }//*/
+
+    private Bricks getNextItemHandler() { // send the item to the connected brick
+        return getConnectingEdgeBrick(true, true); // if some error may look inte the second true - note
     }
 
     private bool moveToNextCheck() { // check if there is a brick to move item to
-        return true;
+        Bricks brick = getConnectingEdgeBrick(true, true); // if some error may look inte the second true - note
+        if (brick != null)
+        {
+            return true;
+        }
+        return false;
     }
 
 }
