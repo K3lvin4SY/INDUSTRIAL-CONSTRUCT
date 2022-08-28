@@ -9,7 +9,7 @@ public class Belt// : ScriptableObject
 {
     public List<Bricks> subCordinates;
     //public Dictionary<int, Bricks> subCordinates;
-    public List<GameItem> storage;
+    public List<string> storage;
     
     public bool selected = false;
 
@@ -26,6 +26,7 @@ public class Belt// : ScriptableObject
         foreach (var brick in path)
         {
             subCordinates.Add(brick);
+            storage.Add(null);
         }
     }
 
@@ -43,6 +44,7 @@ public class Belt// : ScriptableObject
                         {
                             // in begining of belt
                             subCordinates.Insert(0, brick);
+                            storage.Insert(0, null);
                             brick.belt = this;
                             CheckForDirUpdate(GlobalMethods.GetDirV3(GlobalMethods.NextBrickDir(brick, GlobalMethods.oppositeDir(dir)), brick.cordinates));
                             return;
@@ -50,6 +52,7 @@ public class Belt// : ScriptableObject
                         {
                             // in end of belt
                             subCordinates.Add(brick);
+                            storage.Add(null);
                             brick.belt = this;
                             CheckForDirUpdate(GlobalMethods.GetDirV3(GlobalMethods.NextBrickDir(brick, GlobalMethods.oppositeDir(dir)), brick.cordinates));
                             return;
@@ -70,6 +73,7 @@ public class Belt// : ScriptableObject
             {
                 // in begining of belt
                 subCordinates.Insert(0, brick);
+                storage.Insert(0, null);
                 brick.belt = this;
                 CheckForDirUpdate(GlobalMethods.GetDirV3(GlobalMethods.NextBrickDir(brick, GlobalMethods.oppositeDir(dir)), brick.cordinates));
                 return;
@@ -86,6 +90,7 @@ public class Belt// : ScriptableObject
             {
                 // in end of belt
                 subCordinates.Add(brick);
+                storage.Add(null);
                 brick.belt = this;
                 CheckForDirUpdate(GlobalMethods.GetDirV3(GlobalMethods.NextBrickDir(brick, GlobalMethods.oppositeDir(dir)), brick.cordinates));
                 return;
@@ -171,6 +176,7 @@ public class Belt// : ScriptableObject
         if (noDirection())
         {
             subCordinates.Reverse();
+            storage.Reverse();
         } else {
             Debug.Log("!!!Could Not Flip!!!");
         }
@@ -481,6 +487,33 @@ public class Belt// : ScriptableObject
             selected = false;
         }
         
+    }
+
+    public void receiveItem(string item) {
+        if (storage.Where(c => c != null).ToList().Count >= subCordinates.Count)
+        {
+            Debug.Log("ERROR - TO MANY ITEMS");
+        }
+        storage.Insert(0, item);
+        tickMoveStorage();
+    }
+
+    public void tickMoveStorage() {
+        //if (storage.Where(c => c != null).ToList().Count > 0) { // if statement for seeing if belt is empty
+            if (moveToNextCheck())
+            {
+                moveToNext(storage.Last());
+                storage.RemoveAt(storage.Count-1);
+            }
+        //}
+    }
+
+    private void moveToNext(string item) { // send the item to the connected brick
+        
+    }
+
+    private bool moveToNextCheck() { // check if there is a brick to move item to
+        return true;
     }
 
 }

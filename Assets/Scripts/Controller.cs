@@ -174,6 +174,7 @@ public class Controller : MonoBehaviour
             foreach (var win in inGameWindows)
             {
                 if (win.activeSelf) {
+                    //Debug.Log("1");
                     UseWindow(main);
                     return;
                 }
@@ -186,6 +187,7 @@ public class Controller : MonoBehaviour
                 UseWindow(pauseMenu);
                 return;
             }
+            //Debug.Log("2");
             UseWindow(main);
             return;
         }
@@ -193,8 +195,9 @@ public class Controller : MonoBehaviour
         {
             if (win.activeSelf)
             {
-                if (inGameWindows.Contains(winPick) && winPick != itemPicker)
+                if (inGameWindows.Contains(winPick) && winPick != itemPicker && winPick != selectInspector)
                 {
+                    //Debug.Log("3");
                     UseWindow(main);
                     return;
                 }
@@ -223,8 +226,9 @@ public class Controller : MonoBehaviour
             populateItemGrid.Instance.Populate();
         }
         winPick.SetActive(true);
-        
+        //Debug.Log(currentWin);
         currentWin = winPick;
+        //Debug.Log(currentWin);
     }
 }
 

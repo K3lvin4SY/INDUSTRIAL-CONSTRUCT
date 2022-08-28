@@ -11,8 +11,6 @@ using UnityEngine.UI;
 public class populateItemGrid : MonoBehaviour
 {
     public GameObject prefab;
-    public Image SelectedBrick;
-    public TextAsset jsonFile;
     
     public static populateItemGrid Instance;
     public static Sprite tilePick;
@@ -114,47 +112,6 @@ public class populateItemGrid : MonoBehaviour
         };
 
         populateItemGrid.Instance = this;
-        //Populate();
-        //SelectedBrick.sprite = MousePosition2D.tile.sprite;
-        /*MousePosition2D sn = gameObject.GetComponent<MousePosition2D>();
-        Debug.Log(sn.GetTileByName("simple_grass_block").name);//*/
-    }
-
-    private void Update() {
-        
-        SelectedBrick.sprite = populateItemGrid.tilePick;
-    }
-
-    private Sprite GetSpriteByName(string key) {
-        if (sprites.ContainsKey(key.ToLower()))
-        {
-            return sprites[key.ToLower()];
-        }
-        sprites.Clear();
-
-        string[] assetFiles = Directory.GetFiles("Assets/imgs/items/"); // Gets string array of the tile assets file path
-        
-        foreach (var item in assetFiles)
-        {
-            if (item.EndsWith(".png"))
-            {
-                //Debug.Log(item);
-                Sprite assetTile = (Sprite)AssetDatabase.LoadAssetAtPath<Sprite>(item); // loads the tile asset from path
-                if (assetTile != null) // exclude animation tiles
-                {
-                    sprites[assetTile.name.ToLower()] = assetTile; // inserts the data into a dictionary
-                }
-                
-                
-            }
-        }
-        if (sprites.ContainsKey(key.ToLower()))
-        {
-            return sprites[key.ToLower()];
-        }else {
-            return null;
-        }
-        
     }
 
     public void Populate() { //https://www.youtube.com/watch?v=kdkrjCF0KCo
@@ -178,7 +135,7 @@ public class populateItemGrid : MonoBehaviour
         foreach (var recepie in craftingRecepie[type])
         {
             newObj = (GameObject)Instantiate(prefab, transform);
-            newObj.GetComponent<Image>().sprite = GetSpriteByName("crafting-window");
+            newObj.GetComponent<Image>().sprite = GlobalMethods.GetSpriteByName("crafting-window");
 
             if (recepie.ContainsKey("input"))
             {
@@ -187,7 +144,7 @@ public class populateItemGrid : MonoBehaviour
                 {
                     
                     newObjItem = (GameObject)Instantiate(prefab, newObj.transform);
-                    newObjItem.GetComponent<Image>().sprite = GetSpriteByName(item);
+                    newObjItem.GetComponent<Image>().sprite = GlobalMethods.GetSpriteByName(item);
                     newObjItem.transform.Translate(new Vector3(-21.2f+12.2f*inputLoopNum, 3f, 0f));
                     inputLoopNum++;
                 }
@@ -196,7 +153,7 @@ public class populateItemGrid : MonoBehaviour
             {
                 var item = recepie["output"][0];
                 newObjItem = (GameObject)Instantiate(prefab, newObj.transform);
-                newObjItem.GetComponent<Image>().sprite = GetSpriteByName(item);
+                newObjItem.GetComponent<Image>().sprite = GlobalMethods.GetSpriteByName(item);
                 newObjItem.transform.Translate(new Vector3(22.3f, 3f, 0f));
             }
             
@@ -212,9 +169,20 @@ public class populateItemGrid : MonoBehaviour
 
     public void ChooseMethod(Dictionary<string, List<string>> recepie)
     {
-        Debug.Log(recepie["output"][0]);
-        SelectInspecter.brickSelected.crafting["output"] = recepie["output"];
-        SelectInspecter.brickSelected.crafting["input"] = recepie["input"];
+        if (recepie.ContainsKey("output"))
+        {
+            SelectInspecter.brickSelected.crafting["output"] = recepie["output"];
+        } else {
+            SelectInspecter.brickSelected.crafting["output"] = new List<string>();
+        }
+        if (recepie.ContainsKey("input"))
+        {
+            SelectInspecter.brickSelected.crafting["input"] = recepie["input"];
+        } else {
+            SelectInspecter.brickSelected.crafting["input"] = new List<string>();
+        }
+
+        Controller.Instance.UseWindow(Controller.Instance.selectInspector);
     }
 
 }

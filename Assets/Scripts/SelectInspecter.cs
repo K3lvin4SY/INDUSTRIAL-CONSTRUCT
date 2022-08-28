@@ -76,6 +76,38 @@ public class SelectInspecter : MonoBehaviour
             brickPowerBtnImg.sprite = powerBtnOff;
         }
 
+        if (SelectInspecter.brickType == "miner")
+        {
+            int loopNum = 0;
+            foreach (Transform child in craftingObject.transform) {
+                if (loopNum >= 3)
+                {
+                    if (brickSelected.crafting["output"].Count == 1)
+                    {
+                        child.gameObject.SetActive(true);
+                        child.GetComponent<Image>().sprite = GlobalMethods.GetSpriteByName(brickSelected.crafting["output"][0]);
+                    } else {
+                        child.gameObject.SetActive(false);
+                    }
+                    
+                } else {
+                    if (brickSelected.crafting["input"].Count-1 >= loopNum)
+                    {
+                        child.gameObject.SetActive(true);
+                        child.GetComponent<Image>().sprite = GlobalMethods.GetSpriteByName(brickSelected.crafting["input"][loopNum]);
+                    } else {
+                        child.gameObject.SetActive(false);
+                    }
+                    
+                }
+                loopNum++;
+            }
+        } else {
+            foreach (Transform child in craftingObject.transform) {
+                child.gameObject.SetActive(false);
+            }
+        }
+
         /* Checking if the brick type is a belt. */
         if (SelectInspecter.brickType == "belt") {
             beltBtn.SetActive(false);
@@ -135,21 +167,6 @@ public class SelectInspecter : MonoBehaviour
             WestBtn.SetActive(false);
             brickPowerObject.SetActive(true);
             craftingObject.SetActive(true);
-
-            int loopNum = 0;
-            foreach (Transform child in craftingObject.transform) {
-                if (loopNum >= 4)
-                {
-                    child.GetComponent<Image>().sprite = GlobalMethods.GetSpriteByName(brickSelected.crafting["output"][0]);
-                } else {
-                    if (brickSelected.crafting["input"].Count-1 >= loopNum)
-                    {
-                        child.GetComponent<Image>().sprite = GlobalMethods.GetSpriteByName(brickSelected.crafting["input"][loopNum]);
-                    }
-                    
-                }
-                loopNum++;
-            }
         } else {
             beltBtn.SetActive(false);
             backBtn.SetActive(false);

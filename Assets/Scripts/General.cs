@@ -627,7 +627,10 @@ public class General : MonoBehaviour
             {
                 if (map.GetTile(selectorLocation).name.ToLower().Contains("selected"))
                 {
-                    SelectInspecter.InspectAtCordiante(selectorLocation);
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                        SelectInspecter.InspectAtCordiante(selectorLocation);
+                    }
                 }
             }
             
