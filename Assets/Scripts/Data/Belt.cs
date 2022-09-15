@@ -560,7 +560,15 @@ public class Belt// : ScriptableObject
                 brick.belt.receiveItem(item);
                 return;
             }
-            brick.receiveItem(item);
+            if (brick.inputDirections.Count > 1)
+            {
+                if (brick.mergerAvailable(getEdgeDir(true)))
+                {
+                    brick.receiveItem(item);
+                }
+            } else {
+                brick.receiveItem(item);
+            }
         }
     }
 

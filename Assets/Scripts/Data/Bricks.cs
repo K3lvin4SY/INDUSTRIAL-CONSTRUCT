@@ -323,6 +323,29 @@ public class Bricks
         }
     }
 
+    public bool mergerAvailable(string comingFromDir) {
+        string dir = GlobalMethods.oppositeDir(comingFromDir);
+        if (inputDirections[0] == dir) // if dir is first in place
+        {
+            return true;
+        }
+        foreach (var iDir in inputDirections)
+        {
+            if (General.bricks.ContainsKey(GlobalMethods.GetDirV3(iDir, cordinates)))
+            {
+                Bricks brick = General.bricks[GlobalMethods.GetDirV3(iDir, cordinates)];
+                if (brick.belt != null)
+                {
+                    if (brick.belt.storage.Last() != null)
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
+        
+    }
+
     private void moveToNext(string item) {
         if (outputDirections != null)
         {
@@ -343,12 +366,15 @@ public class Bricks
                             Debug.Log("!!!ERROR!!! - FIX ME - isStorageFull check failed");
                         }
                     }
-                } else {
+                    continue;
+                } else if (outputDirections[0] == outputDir) {
                     //Debug.Log("2");
                     outputDirections.Remove(outputDir); // remove from output dirs
                     outputDirections.Add(outputDir); // add the removed to the end of list - why? because: that way it will rotate and not send everything though only one way untill full
                     itemHandler.receiveItem(item);
-                    return;
+                    continue;
+                } else {
+                    itemHandler.receiveItem(null);
                 }
             } 
         } else {
