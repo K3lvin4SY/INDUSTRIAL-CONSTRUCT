@@ -14,6 +14,7 @@ public class Bricks
     public Vector3Int cordinates;
     public List<string> directions;
     public List<string> inputDirections;
+    private List<string> tempInputDirections; // only for item system
     public List<string> outputDirections;
     public Bricks linkedBrick;
 
@@ -323,28 +324,54 @@ public class Bricks
         }
     }
 
-    public bool mergerAvailable(string comingFromDir) {
+    
+    public bool mergerAvailable(string comingFromDir, string item) {
         string dir = GlobalMethods.oppositeDir(comingFromDir);
-        if (inputDirections[0] == dir) // if dir is first in place
+        if (inputDirections[0] == dir && item != null) // if dir is first in place
         {
+            string dirToMove = tempInputDirections[0];
+            tempInputDirections.Remove(dirToMove);
+            tempInputDirections.Add(dirToMove);
             return true;
         }
         foreach (var iDir in inputDirections)
         {
             if (General.bricks.ContainsKey(GlobalMethods.GetDirV3(iDir, cordinates)))
             {
-                Bricks brick = General.bricks[GlobalMethods.GetDirV3(iDir, cordinates)];
-                if (brick.belt != null)
+                // In here it will only loop how many belts that are connected
+                Bricks brick = General.bricks[GlobalMethods.GetDirV3(iDir, cordinates)]; // connected itemhandler
+                if (brick.belt != null) // if brick is conveyor and has belt
                 {
-                    if (brick.belt.storage.Last() != null)
+                    if (brick.belt.storage.Last() != null) // if it has an item to send
                     {
-                        return false;
+                        /*
+                        if (inputDirections.Last() == iDir)
+                        {
+                            inputDirections = tempInputDirections;
+                        }//*/
+                        if (dir == iDir)
+                        {
+                            string dirToMove = tempInputDirections[0];
+                            tempInputDirections.Remove(dirToMove);
+                            tempInputDirections.Add(dirToMove);
+                            return true;
+                        } else {
+                            return false;
+                        }
                     }
                 }
             }
         }
-        
-    }
+        if (inputDirections[0] == dir)
+        {
+            string dirToMove = tempInputDirections[0];
+            tempInputDirections.Remove(dirToMove);
+            tempInputDirections.Add(dirToMove);
+            return true; // the others didnt have anything either
+        } else {
+            return false;
+        }
+    }//*/
 
     private void moveToNext(string item) {
         if (outputDirections != null)

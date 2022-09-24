@@ -562,7 +562,8 @@ public class Belt// : ScriptableObject
             }
             if (brick.inputDirections.Count > 1)
             {
-                if (brick.mergerAvailable(getEdgeDir(true)))
+                
+                if (brick.mergerAvailable(getEdgeDir(true), item))
                 {
                     brick.receiveItem(item);
                 }
