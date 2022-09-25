@@ -490,7 +490,7 @@ public class Belt// : ScriptableObject
     }
 
     public void receiveItem(string item) {
-        Debug.Log("Item received: "+item);
+        //Debug.Log("Item received: "+item);
         if (storage.Where(c => c != null).ToList().Count >= subCordinates.Count)
         {
             Debug.Log("ERROR - TO MANY ITEMS");
@@ -562,9 +562,10 @@ public class Belt// : ScriptableObject
             }
             if (brick.inputDirections.Count > 1)
             {
-                
+                Debug.Log("try pass");
                 if (brick.mergerAvailable(getEdgeDir(true), item))
                 {
+                    Debug.Log("passed");
                     brick.receiveItem(item);
                 }
             } else {
