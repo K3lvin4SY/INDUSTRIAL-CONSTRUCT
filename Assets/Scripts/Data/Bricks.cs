@@ -14,8 +14,9 @@ public class Bricks
     public Vector3Int cordinates;
     public List<string> directions;
     public List<string> inputDirections;
-    private List<string> tempInputDirections; // only for item system
+    private List<string> tempInputDirections = null; // only for item system
     private int timesRun = 0; // only for item system
+    private Dictionary<string, string> itemsToChoose = null; // only for item system
     public List<string> outputDirections;
     public Bricks linkedBrick;
 
@@ -337,18 +338,86 @@ public class Bricks
 
     
     public bool mergerAvailable(string comingFromDir, string item) {
-        timesRun += 1;
-        if (tempInputDirections != inputDirections) // if another path has passed through
+        if (tempInputDirections == null)
         {
-            return false;
+            tempInputDirections = inputDirections;
         }
+        if (itemsToChoose == null)
+        {
+            itemsToChoose = connectedPathsItems();
+        }
+        timesRun += 1;
+        /*if (tempInputDirections != inputDirections) // if another path has passed through
+        {
+            if (timesRun == connectedPaths())
+            {
+                inputDirections = tempInputDirections;
+                timesRun = 0;
+            }
+            return false;
+        }//*/
         string dir = GlobalMethods.oppositeDir(comingFromDir);
-        if (inputDirections[0] == dir && item != null) // if dir is first in place
+
+        foreach (var iDir in inputDirections)
+        {
+            if (itemsToChoose[iDir] != null) // this fixes everything when priority 1/2/3 (loop num) has an item
+            {
+                if (iDir == dir)
+                {
+                    string dirToMove = iDir;
+                    tempInputDirections.Remove(dirToMove);
+                    tempInputDirections.Add(dirToMove);
+                }
+                if (timesRun == connectedPaths())
+                {
+                    inputDirections = tempInputDirections;
+                    timesRun = 0;
+                    itemsToChoose = null;
+                }
+                if (iDir == dir)
+                {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        }
+        // should only run if all itemsToChoose is null
+        if (dir == inputDirections[0])
         {
             string dirToMove = tempInputDirections[0];
             tempInputDirections.Remove(dirToMove);
             tempInputDirections.Add(dirToMove);
+        }
+        if (timesRun == connectedPaths())
+        {
+            inputDirections = tempInputDirections;
+            timesRun = 0;
+            itemsToChoose = null;
+        }
+        if (dir == inputDirections[0])
+        {
             return true;
+        } else {
+            return false;
+        }
+
+        /*if (inputDirections[0] == dir && item != null) // if dir is first in place
+        {
+            string dirToMove = tempInputDirections[0];
+            tempInputDirections.Remove(dirToMove);
+            tempInputDirections.Add(dirToMove);
+            if (timesRun == connectedPaths())
+            {
+                inputDirections = tempInputDirections;
+                timesRun = 0;
+            }
+            return true;
+        }
+        if (timesRun == connectedPaths())
+        {
+            inputDirections = tempInputDirections;
+            timesRun = 0;
         }
         return false;
         /*
@@ -414,6 +483,18 @@ public class Bricks
         return amount;
     }
 
+    private List<Bricks> connectedOutputPaths() {
+        List<Bricks> amount = new List<Bricks>();
+        foreach (var dir in outputDirections)
+        {
+            if (General.bricks.ContainsKey(GlobalMethods.GetDirV3(dir, cordinates)) && General.bricks[GlobalMethods.GetDirV3(dir, cordinates)].directions != null && General.bricks[GlobalMethods.GetDirV3(dir, cordinates)].directions.Contains(GlobalMethods.oppositeDir(dir))) // if brick exist & it is connected to this brick
+            {
+                amount.Add(General.bricks[GlobalMethods.GetDirV3(dir, cordinates)]);
+            }
+        }
+        return amount;
+    }
+
     private Dictionary<string, string> connectedPathsItems() {
         Dictionary<string, string> amount = new Dictionary<string, string>();
         foreach (var dir in inputDirections)
@@ -452,11 +533,31 @@ public class Bricks
                     outputDirections.Remove(outputDir); // remove from output dirs
                     outputDirections.Add(outputDir); // add the removed to the end of list - why? because: that way it will rotate and not send everything though only one way untill full
                     itemHandler.receiveItem(item);
+                    foreach (var brick in connectedOutputPaths())
+                    {
+                        if (brick != itemHandler)
+                        {
+                            brick.receiveItem(null);
+                        }
+                    }
+                    break;
+                } else if (outputDirections.Contains(outputDir)) {
+                    //Debug.Log("2");
+                    outputDirections.Remove(outputDir); // remove from output dirs
+                    outputDirections.Add(outputDir); // add the removed to the end of list - why? because: that way it will rotate and not send everything though only one way untill full
+                    itemHandler.receiveItem(item);
+                    foreach (var brick in connectedOutputPaths())
+                    {
+                        if (brick != itemHandler)
+                        {
+                            brick.receiveItem(null);
+                        }
+                    }
                     break;
                 } else {
                     itemHandler.receiveItem(null);
                 }
-            } 
+            }
         } else {
             Debug.Log("!!!ERROR!!! - FIX ME");
         }
