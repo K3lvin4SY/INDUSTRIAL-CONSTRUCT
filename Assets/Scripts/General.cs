@@ -680,6 +680,7 @@ public class General : MonoBehaviour
             if (!map.GetTile(selectorLocation).name.Contains("SelectorRedBox")) {
 
                 map.SetTile(selectorLocation, General.tile);
+                Map.updateColumn(selectorLocation);
                 new Bricks(General.tile, selectorLocation, GlobalMethods.GetDirections(General.tile.name), GlobalMethods.GetInputDirections(General.tile.name, selectorLocation), GlobalMethods.GetOutputDirections(General.tile.name, selectorLocation), GlobalMethods.GetBelt(General.tile.name, selectorLocation));
 
                 if (!Input.GetKey(KeyCode.LeftControl)) {

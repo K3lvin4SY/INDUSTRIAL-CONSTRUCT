@@ -10,6 +10,7 @@ public class GlobalMethods : MonoBehaviour
 {
 
     private static Dictionary<string, Tile> tiles = new Dictionary<string, Tile>();
+    private static Dictionary<string, Tile> flatTiles = new Dictionary<string, Tile>();
     private static Dictionary<string, Sprite> sprites = new Dictionary<string, Sprite>();
     private static Dictionary<string, AnimatedTile> aTiles = new Dictionary<string, AnimatedTile>();
     
@@ -130,6 +131,29 @@ public class GlobalMethods : MonoBehaviour
             }
         }
         return tiles[key];
+    }
+
+    public static Tile GetFlatTileByName(string key) {
+        key = key.ToLower();
+        if (!flatTiles.ContainsKey(key))
+        {
+            string[] assetFiles = Directory.GetFiles("Assets/Tiles/flat Assets/"); // Gets string array of the tile assets file path
+            assetFiles = assetFiles.Select(s => s.ToLowerInvariant()).ToArray(); // to lowercase
+            
+            string asset = "Assets/Tiles/flat Assets/"+key+".asset";
+
+            Tile assetTile = (Tile)AssetDatabase.LoadAssetAtPath(asset, typeof(Tile)); // loads the tile asset from path
+            if (assetTile == null)
+            {
+                Debug.Log("null assetTile");
+                return null;
+            }
+            string assetTileName = assetTile.name.ToLower(); // gets the name of the tile
+            flatTiles[assetTileName] = assetTile; // inserts the data into a dictionary
+            //Debug.Log(assetTile.name);
+           
+        }
+        return flatTiles[key];
     }
 
     public static AnimatedTile GetAnimatedTileByName(string key) {
