@@ -50,6 +50,8 @@ public class General : MonoBehaviour
     
 
     private void tick() {
+        float time1 = Time.time;
+        Debug.Log(Time.time);
         foreach (var (cord, brick) in General.bricks)
         {
             if (brick.tile != null && brick.tile.name.ToLower().Contains("miner"))
@@ -57,6 +59,8 @@ public class General : MonoBehaviour
                 brick.GenerateItem();
             }
         }
+        Debug.Log(Time.time);
+        Debug.Log("--------------");
     }
 
 

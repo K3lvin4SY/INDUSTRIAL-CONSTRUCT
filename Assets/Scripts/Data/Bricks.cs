@@ -288,6 +288,7 @@ public class Bricks
         }
     }
 
+    // can i use async here??? last time i tried it the entire unity program crashed.
     public void GenerateItem() {
         string item;
         if (powerOn)
@@ -299,7 +300,9 @@ public class Bricks
             item = null;
             //Debug.Log("update sequence");
         }
+        //float time1 = Time.time;
         moveToNext(item);
+        //Debug.Log(Time.time-time1);
     }
 
     public string GetItem(bool raw = false) {
