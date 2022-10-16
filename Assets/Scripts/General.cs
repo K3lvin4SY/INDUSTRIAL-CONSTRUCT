@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.IO;
 using System.Linq;
@@ -50,8 +51,8 @@ public class General : MonoBehaviour
     
 
     private void tick() {
-        float time1 = Time.time;
-        Debug.Log(Time.time);
+        //var watch = new System.Diagnostics.Stopwatch();
+        //watch.Start();
         foreach (var (cord, brick) in General.bricks)
         {
             if (brick.tile != null && brick.tile.name.ToLower().Contains("miner"))
@@ -59,7 +60,8 @@ public class General : MonoBehaviour
                 brick.GenerateItem();
             }
         }
-        Debug.Log(Time.time);
+        //watch.Stop();
+        //Debug.Log($"Execution Time: {watch.ElapsedMilliseconds} ms");
         Debug.Log("--------------");
     }
 
