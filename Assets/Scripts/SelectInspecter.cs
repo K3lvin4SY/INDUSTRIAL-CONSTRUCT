@@ -123,6 +123,13 @@ public class SelectInspecter : MonoBehaviour
 
         /* Checking if the brick type is a belt. */
         if (SelectInspecter.brickType == "belt") {
+            string temptext = "";
+            foreach (var item in brickSelected.belt.storage)
+            {
+                temptext += item+", ";
+            }
+            brickBeltPlace.text = temptext;
+
             beltBtn.SetActive(false);
             backBtn.SetActive(true);
             NextBtn.SetActive(NextBtnChecker());

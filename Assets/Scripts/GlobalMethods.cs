@@ -275,7 +275,7 @@ public class GlobalMethods : MonoBehaviour
 
     public static Vector3Int GetDirV3(string dir, Vector3Int coords, int distance = 1) {
         GlobalMethods.calc +=1;
-        Debug.Log("Times Run: "+GlobalMethods.calc);
+        //Debug.Log("Times Run: "+GlobalMethods.calc);
         Vector3Int combineCoords = coords + GlobalMethods.dirConvertDic[dir[0].ToString()];
         foreach (var dirChar in dir)
         {
@@ -287,6 +287,15 @@ public class GlobalMethods : MonoBehaviour
         }
         return combineCoords;
     }
+
+    /*
+    static List<string> elipDirections = new List<string>() { "U", "D" };
+    static List<string> eliDirections = new List<string>() { "no", "U", "D" };
+    static List<string> straightDirections = new List<string>() { "no", "op" };
+    static List<string> slantDirections = new List<string>() { "no", "op"+"U" };
+    static List<string> bendDirections = new List<string>() { "no", "nn" };
+    static List<string> minerDirections = new List<string>() { "no" };
+    static List<string> fullBlockDirections = new List<string>() { "W", "E", "N", "S" };*/
 
     public static List<string> GetDirections(string tileName) {
         if (tileName.ToLower().Contains("elip"))

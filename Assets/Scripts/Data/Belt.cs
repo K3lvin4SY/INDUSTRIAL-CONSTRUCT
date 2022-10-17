@@ -509,7 +509,7 @@ public class Belt// : ScriptableObject
                 if (!getNextItemHandler().ifStorageFull()) // next storage is not full
                 {
                     moveToNext(storage.Last());
-                    storage.RemoveAt(storage.Count-1);
+                    //storage.RemoveAt(storage.Count-1);
                 } else {
                     // next is full and connot pass
                     removeEmptyStorageSpace();
@@ -545,6 +545,10 @@ public class Belt// : ScriptableObject
     }
 
     private void removeEmptyStorageSpace() {
+        if (!(storage.Count > subCordinates.Count))
+        {
+            return;
+        }
         for (int i = storage.Count-1; i >= 0; i--)
         {
             if (storage[i] == null)
@@ -555,26 +559,33 @@ public class Belt// : ScriptableObject
         }
     }
     private void moveToNext(string item) { // send the item to the connected brick
-        Bricks brick = getConnectingEdgeBrick(true, true); // if some error may look inte the second true - note
+        Bricks brick = getConnectingEdgeBrick(true, true, true); // if some error may look inte the second true - note
         if (brick != null)
         {
             if (brick.belt != null)
             {
+                storage.RemoveAt(storage.Count-1);
                 brick.belt.receiveItem(item);
                 return;
             }
             if (brick.inputDirections != null && brick.inputDirections.Count > 1)
             {
                 Debug.Log("try pass");
-                if (brick.mergerAvailable(getEdgeDir(true), item))
+                if (brick.mergerAvailable())
                 {
                     Debug.Log("passed");
-                    brick.receiveItem(item);
+                    //storage.RemoveAt(storage.Count-1);
+                    //brick.receiveItem(item);
+                } else {
+                    Debug.Log("Empty");
                 }
             } else {
+                storage.RemoveAt(storage.Count-1);
                 brick.receiveItem(item);
             }
         }
+        removeEmptyStorageSpace();
+        Debug.Log(storage.Count - subCordinates.Count);
     }
 
     /*
@@ -591,11 +602,11 @@ public class Belt// : ScriptableObject
     }//*/
 
     private Bricks getNextItemHandler() { // send the item to the connected brick
-        return getConnectingEdgeBrick(true, true); // if some error may look inte the second true - note
+        return getConnectingEdgeBrick(true, true, true); // if some error may look inte the second true - note
     }
 
     private bool moveToNextCheck() { // check if there is a brick to move item to
-        Bricks brick = getConnectingEdgeBrick(true, true); // if some error may look inte the second true - note
+        Bricks brick = getConnectingEdgeBrick(true, true, true); // if some error may look inte the second true - note
         if (brick != null)
         {
             return true;

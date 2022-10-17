@@ -14,7 +14,6 @@ public class Bricks
     public Vector3Int cordinates;
     public List<string> directions;
     public List<string> inputDirections;
-    private List<string> tempInputDirections = null; // only for item system
     private int timesRun = 0; // only for item system
     private Dictionary<string, string> itemsToChoose = null; // only for item system
     public List<string> outputDirections;
@@ -340,16 +339,42 @@ public class Bricks
     }
 
     
-    public bool mergerAvailable(string comingFromDir, string item) {
-        if (tempInputDirections == null)
-        {
-            tempInputDirections = inputDirections;
-        }
+    public bool mergerAvailable() {
+        //return false;
         if (itemsToChoose == null)
         {
             itemsToChoose = connectedPathsItems();
         }
         timesRun += 1;
+
+
+        if (timesRun == connectedPaths())
+        {
+            if (itemsToChoose[inputDirections[0]] != null) // if priority one has an item
+            {
+                removeItemFromBelt(inputDirections[0]);
+                receiveItem(itemsToChoose[inputDirections[0]]);
+            } else if (itemsToChoose[inputDirections[1]] != null) // if priority two has an item
+            {
+                removeItemFromBelt(inputDirections[1]);
+                receiveItem(itemsToChoose[inputDirections[1]]);
+            } else if (itemsToChoose[inputDirections[2]] != null) // if priority three has an item
+            {
+                removeItemFromBelt(inputDirections[2]);
+                receiveItem(itemsToChoose[inputDirections[2]]);
+            } else {
+                receiveItem(null);
+            }
+            itemsToChoose = null;
+            timesRun = 0;
+            return true;
+        } else {
+            return false;
+        }
+
+
+
+
         /*if (tempInputDirections != inputDirections) // if another path has passed through
         {
             if (timesRun == connectedPaths())
@@ -359,6 +384,7 @@ public class Bricks
             }
             return false;
         }//*/
+        /*
         string dir = GlobalMethods.oppositeDir(comingFromDir);
 
         foreach (var iDir in inputDirections)
@@ -403,7 +429,7 @@ public class Bricks
             return true;
         } else {
             return false;
-        }
+        }*/
 
         /*if (inputDirections[0] == dir && item != null) // if dir is first in place
         {
@@ -505,9 +531,30 @@ public class Bricks
             if (General.bricks.ContainsKey(GlobalMethods.GetDirV3(dir, cordinates)) && General.bricks[GlobalMethods.GetDirV3(dir, cordinates)].directions != null && General.bricks[GlobalMethods.GetDirV3(dir, cordinates)].directions.Contains(GlobalMethods.oppositeDir(dir))) // if brick exist & it is connected to this brick
             {
                 amount[dir] = General.bricks[GlobalMethods.GetDirV3(dir, cordinates)].GetItem(true);
+            } else {
+                amount[dir] = null;
             }
         }
         return amount;
+    }
+
+    private void removeItemFromBelt(string dir) {
+        if (General.bricks.ContainsKey(GlobalMethods.GetDirV3(dir, cordinates)) && General.bricks[GlobalMethods.GetDirV3(dir, cordinates)].directions != null && General.bricks[GlobalMethods.GetDirV3(dir, cordinates)].directions.Contains(GlobalMethods.oppositeDir(dir))) // if brick exist & it is connected to this brick
+        {
+            Belt belt = General.bricks[GlobalMethods.GetDirV3(dir, cordinates)].belt;
+            Debug.Log("Removed:");
+            Debug.Log(belt.storage.Count-1);
+            Debug.Log(belt.storage[belt.storage.Count-1]);
+            
+            Debug.Log("start:");
+            foreach (var item in belt.storage)
+            {
+                Debug.Log(item);
+            }
+            Debug.Log("end:");
+
+            belt.storage.RemoveAt(belt.storage.Count-1/*-1*/); // the last -1 is added because one null came at the end for some rreason
+        }
     }
 
     private void moveToNext(string item) {
