@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityToolbag;
 using UnityEngine.Tilemaps;
 
 public class General : MonoBehaviour
@@ -51,17 +52,21 @@ public class General : MonoBehaviour
     
 
     private void tick() {
-        //var watch = new System.Diagnostics.Stopwatch();
-        //watch.Start();
+        var watch = new System.Diagnostics.Stopwatch();
+        var watch2 = new System.Diagnostics.Stopwatch();
+        watch.Start();
         foreach (var (cord, brick) in General.bricks)
         {
             if (brick.tile != null && brick.tile.name.ToLower().Contains("miner"))
             {
+                watch2.Start();
                 brick.GenerateItem();
+                watch2.Stop();
+                Debug.Log($"Execution Time2: {watch2.ElapsedMilliseconds} ms");
             }
         }
-        //watch.Stop();
-        //Debug.Log($"Execution Time: {watch.ElapsedMilliseconds} ms");
+        watch.Stop();
+        Debug.Log($"Execution Time: {watch.ElapsedMilliseconds} ms");
         Debug.Log("--------------");
     }
 

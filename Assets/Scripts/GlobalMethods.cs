@@ -13,8 +13,18 @@ public class GlobalMethods : MonoBehaviour
     private static Dictionary<string, Tile> flatTiles = new Dictionary<string, Tile>();
     private static Dictionary<string, Sprite> sprites = new Dictionary<string, Sprite>();
     private static Dictionary<string, AnimatedTile> aTiles = new Dictionary<string, AnimatedTile>();
+    public static int calc = 0;
     
     static string[] directions = new string[4]{"N", "E", "S", "W"};
+
+    static Dictionary<string, Vector3Int> dirConvertDic = new Dictionary<string, Vector3Int>() {
+        {"N", new Vector3Int(0, 1, 0)},
+        {"E", new Vector3Int(1, 0, 0)},
+        {"S", new Vector3Int(0, -1, 0)},
+        {"W", new Vector3Int(-1, 0, 0)},
+        {"U", new Vector3Int(0, 0, 1)},
+        {"D", new Vector3Int(0, 0, -1)}
+    };
     public static string AddTagToBlockName(string blockName, string tag)
     {
         if (doesBlockNameHaveTag(blockName))
@@ -264,21 +274,16 @@ public class GlobalMethods : MonoBehaviour
     }
 
     public static Vector3Int GetDirV3(string dir, Vector3Int coords, int distance = 1) {
-        Dictionary<string, Vector3Int> dirConvertDic = new Dictionary<string, Vector3Int>();
-        dirConvertDic.Add("N", makeV3Int(0, 1*distance, 0));
-        dirConvertDic.Add("E", makeV3Int(1*distance, 0, 0));
-        dirConvertDic.Add("S", makeV3Int(0, -1*distance, 0));
-        dirConvertDic.Add("W", makeV3Int(-1*distance, 0, 0));
-        dirConvertDic.Add("U", makeV3Int(0, 0, 1*distance)); // Up
-        dirConvertDic.Add("D", makeV3Int(0, 0, -1*distance)); // Down
-        Vector3Int combineCoords = coords + dirConvertDic[dir[0].ToString()];
+        GlobalMethods.calc +=1;
+        Debug.Log("Times Run: "+GlobalMethods.calc);
+        Vector3Int combineCoords = coords + GlobalMethods.dirConvertDic[dir[0].ToString()];
         foreach (var dirChar in dir)
         {
             if (dirChar == dir[0])
             {
                 continue;
             }
-            combineCoords += dirConvertDic[dirChar.ToString()];
+            combineCoords += GlobalMethods.dirConvertDic[dirChar.ToString()];
         }
         return combineCoords;
     }

@@ -12,6 +12,7 @@ public class Belt// : ScriptableObject
     public List<string> storage = new List<string>();
     
     public bool selected = false;
+    static public int calc = 0;
 
     
 
@@ -355,6 +356,8 @@ public class Belt// : ScriptableObject
     }
 
     public Bricks getConnectingEdgeBrick(bool end, bool next = false, bool manual = false) {
+        Belt.calc +=1;
+        //Debug.Log("Times Run: "+Belt.calc);
         if (subCordinates.Count == 1)
         {
             if (manual && subCordinates[0].inputDirections != null)
