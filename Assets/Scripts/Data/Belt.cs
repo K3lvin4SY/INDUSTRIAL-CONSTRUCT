@@ -508,7 +508,7 @@ public class Belt// : ScriptableObject
             {
                 if (!getNextItemHandler().ifStorageFull()) // next storage is not full
                 {
-                    moveToNext(storage.Last());
+                    moveToNext(storage[storage.Count-1]);
                     //storage.RemoveAt(storage.Count-1);
                 } else {
                     // next is full and connot pass
@@ -520,7 +520,7 @@ public class Belt// : ScriptableObject
                 //}
             }
             // temp code for seeing items passing through
-            for (int i = 0; i < subCordinates.Count; i++)
+            for (int i = 0; i < subCordinates.Count-1; i++)
             {
                 if (storage[i] != null)
                 {
@@ -544,17 +544,22 @@ public class Belt// : ScriptableObject
         return false;
     }
 
-    private void removeEmptyStorageSpace() {
+    public void removeEmptyStorageSpace() {
         if (!(storage.Count > subCordinates.Count))
         {
             return;
         }
+        int removable = storage.Count - subCordinates.Count;
         for (int i = storage.Count-1; i >= 0; i--)
         {
             if (storage[i] == null)
             {
                 storage.RemoveAt(i);
-                return;
+                removable-=1;
+                if (removable == 0)
+                {
+                    return;
+                }
             }
         }
     }
@@ -562,10 +567,14 @@ public class Belt// : ScriptableObject
         Bricks brick = getConnectingEdgeBrick(true, true, true); // if some error may look inte the second true - note
         if (brick != null)
         {
+            removeEmptyStorageSpace();
+            
+            Debug.Log("Name: "+brick.tile.name);
             if (brick.belt != null)
             {
                 storage.RemoveAt(storage.Count-1);
                 brick.belt.receiveItem(item);
+                removeEmptyStorageSpace();
                 return;
             }
             if (brick.inputDirections != null && brick.inputDirections.Count > 1)
