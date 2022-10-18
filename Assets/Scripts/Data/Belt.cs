@@ -520,8 +520,14 @@ public class Belt// : ScriptableObject
                 //}
             }
             // temp code for seeing items passing through
-            for (int i = 0; i < subCordinates.Count-1; i++)
+            for (int i = 0; i < subCordinates.Count/*-1*/; i++)
             {
+                foreach (var item in storage)
+                {
+                    Debug.Log(item);
+                }
+                Debug.Log(storage.Count);
+                Debug.Log(subCordinates.Count);
                 if (storage[i] != null)
                 {
                     subCordinates[i].changeTileTag("selected", true);
@@ -556,6 +562,7 @@ public class Belt// : ScriptableObject
             {
                 storage.RemoveAt(i);
                 removable-=1;
+                return;
                 if (removable == 0)
                 {
                     return;
@@ -579,7 +586,12 @@ public class Belt// : ScriptableObject
             }
             if (brick.inputDirections != null && brick.inputDirections.Count > 1)
             {
+                /*
+                storage.RemoveAt(storage.Count-1);
+                brick.receiveItem(item);//*/
+
                 Debug.Log("try pass");
+                //*
                 if (brick.mergerAvailable())
                 {
                     Debug.Log("passed");
@@ -587,7 +599,7 @@ public class Belt// : ScriptableObject
                     //brick.receiveItem(item);
                 } else {
                     Debug.Log("Empty");
-                }
+                }//*/
             } else {
                 storage.RemoveAt(storage.Count-1);
                 brick.receiveItem(item);

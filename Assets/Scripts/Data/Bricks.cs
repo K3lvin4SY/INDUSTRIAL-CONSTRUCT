@@ -339,8 +339,8 @@ public class Bricks
     }
 
     
-    public bool mergerAvailable() {
-        //return false;
+    public bool mergerAvailable() { // fix this one
+        return false;
         if (itemsToChoose == null)
         {
             itemsToChoose = connectedPathsItems();
