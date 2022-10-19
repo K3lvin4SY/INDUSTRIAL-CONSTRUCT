@@ -304,17 +304,21 @@ public class Bricks
         //Debug.Log(Time.time-time1);
     }
 
-    public string GetItem(bool raw = false) {
+    public string GetItem(bool raw = false, int offset = 0) {
         if (belt != null)
         {
             int index = belt.subCordinates.IndexOf(this);
-            if (belt.storage[index] != null)
+            if (index+offset > belt.storage.Count-1)
+            {
+                offset = 0;
+            }
+            if (belt.storage[index+offset] != null)
             {
                 if (raw)
                 {
-                    return belt.storage[index];
+                    return belt.storage[index+offset];
                 } else {
-                    return "Item: " + belt.storage[index];
+                    return "Item: " + belt.storage[index+offset];
                 }
             }
         }
@@ -339,16 +343,43 @@ public class Bricks
     }
 
     
-    public bool mergerAvailable(string item) { // fix this one
-        Debug.Log(item);
-        return false;
+    public bool mergerAvailable(string item) {
         if (itemsToChoose == null)
         {
             itemsToChoose = connectedPathsItems();
         }
+        /*
+        if (item == null)
+        {
+            item = "none";
+        }//*/
+        //Debug.Log("Item: "+item);
+        /*
+        foreach (var item2 in General.bricks[GlobalMethods.GetDirV3("N", cordinates)].belt.storage)
+        {
+            string item3;
+            if (item2 == null)
+            {
+                item3 = "none";
+            } else {
+                item3 = item2;
+            }
+            Debug.Log("I: "+item3);
+        }//*/
+        /*
+        foreach (var (dir2, item2) in itemsToChoose)
+        {
+            Debug.Log("Item2: "+item2);
+            if (item2 == item)
+            {
+                Debug.Log("Dir2: "+dir2);
+            }
+        }//*/
+        //itemsToChoose = null;
+        //return false;
         timesRun += 1;
 
-
+        // add so that all directrions get removed (emptybelt) (including null)
         if (timesRun == connectedPaths())
         {
             if (itemsToChoose[inputDirections[0]] != null) // if priority one has an item
@@ -531,7 +562,10 @@ public class Bricks
         {
             if (General.bricks.ContainsKey(GlobalMethods.GetDirV3(dir, cordinates)) && General.bricks[GlobalMethods.GetDirV3(dir, cordinates)].directions != null && General.bricks[GlobalMethods.GetDirV3(dir, cordinates)].directions.Contains(GlobalMethods.oppositeDir(dir))) // if brick exist & it is connected to this brick
             {
-                amount[dir] = General.bricks[GlobalMethods.GetDirV3(dir, cordinates)].GetItem(true);
+                amount[dir] = General.bricks[GlobalMethods.GetDirV3(dir, cordinates)].GetItem(true, 1);
+                //Debug.Log("BeltLast: "+General.bricks[GlobalMethods.GetDirV3(dir, cordinates)].belt.storage[General.bricks[GlobalMethods.GetDirV3(dir, cordinates)].belt.storage.Count-1]);
+                //Debug.Log("BeltLast: "+General.bricks[GlobalMethods.GetDirV3(dir, cordinates)].belt.subCordinates.Last().GetItem(true, 1));
+                //Debug.Log("Brickitem: "+amount[dir]);
             } else {
                 amount[dir] = null;
             }

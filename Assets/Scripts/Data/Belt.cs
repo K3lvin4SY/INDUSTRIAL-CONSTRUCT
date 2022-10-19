@@ -496,7 +496,7 @@ public class Belt// : ScriptableObject
         //Debug.Log("Item received: "+item);
         if (storage.Where(c => c != null).ToList().Count >= subCordinates.Count)
         {
-            Debug.Log("ERROR - TO MANY ITEMS");
+            Debug.Log("ERROR - TO MANY ITEMS"); // remove this one?
         }
         storage.Insert(0, item);
         tickMoveStorage();
@@ -520,14 +520,15 @@ public class Belt// : ScriptableObject
                 //}
             }
             // temp code for seeing items passing through
+            Debug.Log(storage.Count);
+            Debug.Log(subCordinates.Count);
             for (int i = 0; i < subCordinates.Count/*-1*/; i++)
             {
+                /*
                 foreach (var item in storage)
                 {
                     Debug.Log(item);
-                }
-                Debug.Log(storage.Count);
-                Debug.Log(subCordinates.Count);
+                }//*/
                 if (storage[i] != null)
                 {
                     subCordinates[i].changeTileTag("selected", true);
@@ -570,7 +571,7 @@ public class Belt// : ScriptableObject
         Bricks brick = getConnectingEdgeBrick(true, true, true); // if some error may look inte the second true - note
         if (brick != null)
         {
-            removeEmptyStorageSpace();
+            //removeEmptyStorageSpace();
             
             Debug.Log("Name: "+brick.tile.name);
             if (brick.belt != null)
