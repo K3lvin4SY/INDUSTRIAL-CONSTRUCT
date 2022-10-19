@@ -563,10 +563,6 @@ public class Belt// : ScriptableObject
                 storage.RemoveAt(i);
                 removable-=1;
                 return;
-                if (removable == 0)
-                {
-                    return;
-                }
             }
         }
     }
@@ -592,7 +588,7 @@ public class Belt// : ScriptableObject
 
                 Debug.Log("try pass");
                 //*
-                if (brick.mergerAvailable())
+                if (brick.mergerAvailable(item))
                 {
                     Debug.Log("passed");
                     //storage.RemoveAt(storage.Count-1);

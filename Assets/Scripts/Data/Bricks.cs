@@ -339,7 +339,8 @@ public class Bricks
     }
 
     
-    public bool mergerAvailable() { // fix this one
+    public bool mergerAvailable(string item) { // fix this one
+        Debug.Log(item);
         return false;
         if (itemsToChoose == null)
         {
