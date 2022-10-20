@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13b75c95f34a00d4e8c04f76b73312e6, type: 3}
+  m_Name: W-smelter_animated+shutdown_block
+  m_EditorClassIdentifier: 
+  m_AnimatedSprites:
+  - {fileID: 21300000, guid: 11e07b30a2364be48963959c9c5c27c3, type: 3}
+  - {fileID: 21300000, guid: 8de62f2da7bc80e4684f819f21cde434, type: 3}
+  - {fileID: 21300000, guid: 31d48865d04bc604891c0405332158e1, type: 3}
+  - {fileID: 21300000, guid: a89c16a8ddffa87499a8941167aa248d, type: 3}
+  - {fileID: 21300000, guid: bb2b0e0cf06ef564c8400934ea687907, type: 3}
+  - {fileID: 21300000, guid: 01cc98981e33f494e87bb5622a8f6fcf, type: 3}
+  - {fileID: 21300000, guid: a49519b54ee5ca54a8486dd30152bb4e, type: 3}
+  - {fileID: 21300000, guid: 2f97ddd9860282348be96361a407b1e6, type: 3}
+  - {fileID: 21300000, guid: f5fa64e86bdacf54b9ff2f67e95f89e7, type: 3}
+  - {fileID: 21300000, guid: 45fa008f3440dda4eb3a1e1a2f2feb75, type: 3}
+  m_MinSpeed: 12
+  m_MaxSpeed: 12
+  m_AnimationStartTime: 0
+  m_AnimationStartFrame: 0
+  m_TileColliderType: 0

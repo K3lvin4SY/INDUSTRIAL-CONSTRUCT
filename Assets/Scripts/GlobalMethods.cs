@@ -61,7 +61,7 @@ public class GlobalMethods : MonoBehaviour
 
     public static bool isPlayerEditable(string blockName)
     {
-        string[] playerEditable = new string[] {"conveyor", "splitter", "merger", "machine", "miner"};
+        string[] playerEditable = new string[] {"conveyor", "splitter", "merger", "machine", "miner", "smelter", "constructer"};
         foreach (string editableBlock in playerEditable) {
             if (blockName.ToLower().Contains(editableBlock))
             {
@@ -73,7 +73,7 @@ public class GlobalMethods : MonoBehaviour
 
     public static bool isBrickNotExcludedType(string brickName, string excludeType)
     {
-        string[] brickTypes = new string[] {"conveyor", "splitter", "merger", "machine", "miner"};
+        string[] brickTypes = new string[] {"conveyor", "splitter", "merger", "machine", "miner", "smelter", "constructer"};
         excludeType = excludeType.ToLower();
         if (brickTypes.Contains(excludeType))
         {
@@ -304,7 +304,7 @@ public class GlobalMethods : MonoBehaviour
         } else if (tileName.ToLower().Contains("eli"))
         {
             return new List<string>() { tileName[0].ToString(), "U", "D" };
-        } else if (tileName.ToLower().Contains("straight"))
+        } else if (tileName.ToLower().Contains("straight") || tileName.ToLower().Contains("smelter") || tileName.ToLower().Contains("constructer"))
         {
             return new List<string>() { tileName[0].ToString(), oppositeDir(tileName[0].ToString()) };
         } else if (tileName.ToLower().Contains("slant"))
@@ -508,6 +508,8 @@ public class GlobalMethods : MonoBehaviour
             return GetDirections(tileName).Where(c => c != tileName[0].ToString()).ToList();
         } else if (tileName.ToLower().Contains("splitter")) {
             return new List<string>() { tileName[0].ToString() };
+        } else if (tileName.ToLower().Contains("smelter") || tileName.ToLower().Contains("constructer")) {
+            return new List<string>() { oppositeDir(tileName[0].ToString()) };
         }
         foreach (var dir in dirs) // for each direction
         {
@@ -567,7 +569,7 @@ public class GlobalMethods : MonoBehaviour
         }
         if (tileName.ToLower().Contains("splitter")) {
             return GetDirections(tileName).Where(c => c != tileName[0].ToString()).ToList();
-        } else if (tileName.ToLower().Contains("merger")) {
+        } else if (tileName.ToLower().Contains("merger") || tileName.ToLower().Contains("smelter") || tileName.ToLower().Contains("constructer")) {
             return new List<string>() { tileName[0].ToString() };
         }
         foreach (var dir in dirs)
@@ -616,7 +618,7 @@ public class GlobalMethods : MonoBehaviour
 
     public static Belt GetBelt(string tileName, Vector3Int loc, bool overRule = false, List<string> dirs = null) {
         //Debug.Log(loc);
-        if (!overRule && (tileName.ToLower().Contains("splitter") || tileName.ToLower().Contains("merger"))) {
+        if (!overRule && (tileName.ToLower().Contains("splitter") || tileName.ToLower().Contains("merger") || tileName.ToLower().Contains("smelter") || tileName.ToLower().Contains("constructer") || tileName.ToLower().Contains("miner"))) {
             return null;
         }
         if (dirs == null) {

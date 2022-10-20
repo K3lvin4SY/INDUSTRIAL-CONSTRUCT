@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13b75c95f34a00d4e8c04f76b73312e6, type: 3}
+  m_Name: E-smelter_animated+fireup_block
+  m_EditorClassIdentifier: 
+  m_AnimatedSprites:
+  - {fileID: 21300000, guid: 6931465d121779a4bbe93b63e9adf51f, type: 3}
+  - {fileID: 21300000, guid: ff010b895c7325f479c7a04e8b4c6053, type: 3}
+  - {fileID: 21300000, guid: 3e1a120de0c9d784996721ca7f377c94, type: 3}
+  - {fileID: 21300000, guid: 64d5f4e56cde7d84a80387abd4df364b, type: 3}
+  - {fileID: 21300000, guid: 265e32b50523c1a4ebdec6cf4961eea4, type: 3}
+  - {fileID: 21300000, guid: ca5a02f6042937148ab1b001d2abaecf, type: 3}
+  - {fileID: 21300000, guid: e27bfaf39a9f98f4a8dcce7fdaa50f2e, type: 3}
+  - {fileID: 21300000, guid: 479631884368f62458aa8b474e9f1cab, type: 3}
+  - {fileID: 21300000, guid: 0aacb1ea622d6d74883aace93b9902b5, type: 3}
+  - {fileID: 21300000, guid: 7bedd147d7a641540bebd852fd1087a6, type: 3}
+  m_MinSpeed: 12
+  m_MaxSpeed: 12
+  m_AnimationStartTime: 0
+  m_AnimationStartFrame: 0
+  m_TileColliderType: 0

@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13b75c95f34a00d4e8c04f76b73312e6, type: 3}
+  m_Name: S-smelter_animated+on_block
+  m_EditorClassIdentifier: 
+  m_AnimatedSprites:
+  - {fileID: 21300000, guid: 030cc5be96b22fe449b54071117de2bb, type: 3}
+  - {fileID: 21300000, guid: c50c21e8547ce7f4292191614eb3d4cb, type: 3}
+  - {fileID: 21300000, guid: afb1130a560e6374b8cea7f9f71ec6f6, type: 3}
+  - {fileID: 21300000, guid: 227548e7806651343afb961fac28a73d, type: 3}
+  - {fileID: 21300000, guid: e10ba32687fe55b41ad6318a3f361983, type: 3}
+  - {fileID: 21300000, guid: 8dd2e7a01413cd749a8c2e35a80eb776, type: 3}
+  - {fileID: 21300000, guid: d1017c6c7f7ca9f438703e9629321b8b, type: 3}
+  - {fileID: 21300000, guid: 976e19d51b52ffe44b774ea95db9c67b, type: 3}
+  - {fileID: 21300000, guid: 9c4da7e1024400948b8155a09007f090, type: 3}
+  - {fileID: 21300000, guid: 1857ea66c129edc458ac5087821c24ec, type: 3}
+  m_MinSpeed: 12
+  m_MaxSpeed: 12
+  m_AnimationStartTime: 0
+  m_AnimationStartFrame: 0
+  m_TileColliderType: 0
