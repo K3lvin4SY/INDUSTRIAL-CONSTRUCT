@@ -64,12 +64,19 @@ public class SelectInspecter : MonoBehaviour
         if (SelectInspecter.brickType == "miner")
         {
             brickBeltPlace.text = "";
+        } else if (SelectInspecter.brickType == "converter")
+        {
+            brickBeltPlace.text = "Storage1: "+SelectInspecter.brickSelected.inStorage.Count.ToString();
+            brickStorage.text = "Storage2: "+SelectInspecter.brickSelected.outStorage.Count.ToString();
         }
         if (SelectInspecter.brickType == "conveyor")
         {
             brickStorage.text = SelectInspecter.brickSelected.GetItem();
         } else {
-            brickStorage.text = "";
+            if (SelectInspecter.brickType != "converter")
+            {
+                brickStorage.text = "";
+            }
         }
         brickCordiante.text = SelectInspecter.brickCordianteSelected;
 
@@ -89,13 +96,13 @@ public class SelectInspecter : MonoBehaviour
             brickPowerBtnImg.sprite = powerBtnOff;
         }
 
-        if (SelectInspecter.brickType == "miner")
+        if (SelectInspecter.brickType == "miner" || SelectInspecter.brickType == "converter")
         {
             int loopNum = 0;
             foreach (Transform child in craftingObject.transform) {
                 if (loopNum >= 3)
                 {
-                    if (brickSelected.crafting["output"].Count == 1)
+                    if (brickSelected.crafting["output"].Count == 1 && brickSelected.crafting["output"][0] != null)
                     {
                         child.gameObject.SetActive(true);
                         child.GetComponent<Image>().sprite = GlobalMethods.GetSpriteByName(brickSelected.crafting["output"][0]);
@@ -104,7 +111,7 @@ public class SelectInspecter : MonoBehaviour
                     }
                     
                 } else {
-                    if (brickSelected.crafting["input"].Count-1 >= loopNum)
+                    if (brickSelected.crafting["input"].Count-1 >= loopNum && brickSelected.crafting["input"][0] != null)
                     {
                         child.gameObject.SetActive(true);
                         child.GetComponent<Image>().sprite = GlobalMethods.GetSpriteByName(brickSelected.crafting["input"][loopNum]);
@@ -186,6 +193,18 @@ public class SelectInspecter : MonoBehaviour
             SouthBtn.SetActive(false);
             WestBtn.SetActive(false);
             brickPowerObject.SetActive(true);
+            craftingObject.SetActive(true);
+        } else if (SelectInspecter.brickType == "converter") {
+            beltBtn.SetActive(false);
+            backBtn.SetActive(false);
+            NextBtn.SetActive(false);
+            PrevBtn.SetActive(false);
+
+            NorthBtn.SetActive(false);
+            EastBtn.SetActive(false);
+            SouthBtn.SetActive(false);
+            WestBtn.SetActive(false);
+            brickPowerObject.SetActive(false);
             craftingObject.SetActive(true);
         } else {
             beltBtn.SetActive(false);
@@ -273,6 +292,10 @@ public class SelectInspecter : MonoBehaviour
             newBrickName += "Splitter";
         } else if (brickName.Contains("miner")) {
             newBrickName += "Miner";
+        } else if (brickName.Contains("constructor")) {
+            newBrickName += "Constructor";
+        } else if (brickName.Contains("smelter")) {
+            newBrickName += "Smelter";
         } else {
             newBrickName += "Unknown";
         }
@@ -339,6 +362,9 @@ public class SelectInspecter : MonoBehaviour
         } else if (brick.tile.name.ToLower().Contains("miner"))
         {
             brickType = "miner";
+        } else if (brick.tile.name.ToLower().Contains("smelter") || brick.tile.name.ToLower().Contains("constructor"))
+        {
+            brickType = "converter";
         } else {
             brickType = "brick";
         }

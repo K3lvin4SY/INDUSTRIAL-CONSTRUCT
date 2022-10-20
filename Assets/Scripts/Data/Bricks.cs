@@ -31,8 +31,8 @@ public class Bricks
         }
     };
 
-    public List<string> inStorage; // only for converters and other machines
-    public List<string> outStorage; // only for miners, converters and other machines
+    public List<string> inStorage = new List<string>(); // only for converters and other machines
+    public List<string> outStorage = new List<string>(); // only for miners, converters and other machines
 
     private string currentTag;
 

@@ -92,6 +92,10 @@ public class GlobalMethods : MonoBehaviour
     }
 
     public static Sprite GetSpriteByName(string key) {
+        if (key == null)
+        {
+            return null;
+        }
         key = key.ToLower();
         if (!tiles.ContainsKey(key))
         {
