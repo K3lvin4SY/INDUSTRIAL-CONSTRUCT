@@ -506,7 +506,7 @@ public class Belt// : ScriptableObject
         //if (storage.Where(c => c != null).ToList().Count > 0) { // if statement for seeing if belt is empty
             if (moveToNextCheck()) // if path continues
             {
-                if (!getNextItemHandler().ifStorageFull()) // next storage is not full
+                if (!getNextItemHandler().ifStorageFull(storage[storage.Count-1])) // next storage is not full
                 {
                     moveToNext(storage[storage.Count-1]);
                     //storage.RemoveAt(storage.Count-1);
@@ -539,11 +539,11 @@ public class Belt// : ScriptableObject
         //}
     }
 
-    public bool ifStorageFull() {
+    public bool ifStorageFull(string item) {
         if (storage.Where(c => c != null).ToList().Count >= subCordinates.Count) // if storage full
         {
             if (moveToNextCheck()) { // if there is a connection brick (the path leads forward and doesnt end)
-                return getNextItemHandler().ifStorageFull();
+                return getNextItemHandler().ifStorageFull(item);
             } else {
                 return true;
             }

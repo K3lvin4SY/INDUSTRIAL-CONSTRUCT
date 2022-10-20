@@ -23,11 +23,11 @@ public class Bricks
     {
         {
             "input",
-            new List<string>()
+            new List<string>() {null}
         },
         {
             "output",
-            new List<string>()
+            new List<string>() {null}
         }
     };
 
@@ -337,11 +337,40 @@ public class Bricks
         if (belt != null)
         {
             belt.receiveItem(item);
+        } else if (tile != null && (tile.name.ToLower().Contains("smelter") || tile.name.ToLower().Contains("constructer"))) {
+            processConvertion(item);
         } else {
             moveToNext(item);
         }
     }
 
+    private void processConvertion(string item) {
+        if (item != null)
+        {
+            collectItem(item);
+        }
+        convertItem();
+        if (outStorage.Count >= 1)
+        {
+            string newItem = outStorage[outStorage.Count-1];
+            outStorage.RemoveAt(outStorage.Count-1);
+            moveToNext(newItem);
+        } else {
+            moveToNext(null);
+        }
+    }
+    private void collectItem(string item) {
+        inStorage.Add(item);
+    }
+
+    private void convertItem() {
+        if (inStorage.Count == 0)
+        {
+            return;
+        }
+        inStorage.RemoveAt(inStorage.Count-1);
+        outStorage.Add(crafting["output"][0]);
+    }
     
     public bool mergerAvailable(string item) {
         if (itemsToChoose == null)
@@ -443,7 +472,7 @@ public class Bricks
             {
                 //Debug.Log(outputDir);
                 var itemHandler = GlobalMethods.GetBrickByDirCord(outputDir, cordinates);
-                if (itemHandler == null || itemHandler.ifStorageFull()) // if path is full or if there is no path at all
+                if (itemHandler == null || itemHandler.ifStorageFull(item)) // if path is full or if there is no path at all
                 {
                     //Debug.Log("1");
                     if (outputDirections.Last() == outputDir && itemHandler != null)
@@ -492,17 +521,34 @@ public class Bricks
         }
     }
 
-    public bool ifStorageFull() {
+    public bool ifStorageFull(string item) {
         if (belt != null)
         {
-            return belt.ifStorageFull();
+            return belt.ifStorageFull(item);
+        } else if (tile != null && (tile.name.ToLower().Contains("smelter") || tile.name.ToLower().Contains("constructer"))) {
+            if (item == null)
+            {
+                return false;
+            }
+            if (crafting["input"][0] == item)
+            {
+                if (inStorage.Count >= 100)
+                {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return true;
+            }
+            
         }
         if (outputDirections != null)
         {
             foreach (string outputDir in outputDirections)
             {
                 var itemHandler = GlobalMethods.GetBrickByDirCord(outputDir, cordinates);
-                if (itemHandler == null || itemHandler.ifStorageFull()) // if path is full or if there is no path at all
+                if (itemHandler == null || itemHandler.ifStorageFull(item)) // if path is full or if there is no path at all
                 {
                     if (outputDirections.Last() == outputDir)
                     {
