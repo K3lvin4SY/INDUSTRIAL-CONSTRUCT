@@ -282,7 +282,7 @@ public class Bricks
                 {
                     dir = GlobalMethods.oppositeDir(inputDirections[0]);
                 }
-                changeTileTag("animated"+dir);
+                changeTileTag("animated+"+dir);
             }
         }
     }

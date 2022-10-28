@@ -531,7 +531,15 @@ public class Belt// : ScriptableObject
                 }//*/
                 if (storage[i] != null)
                 {
-                    subCordinates[i].changeTileTag("selected", true);
+                    if (subCordinates[i].outputDirections != null)
+                    {
+                        string dir = subCordinates[i].outputDirections[0][0].ToString();
+                        if (dir == "D" || dir == "U")
+                        {
+                            dir = GlobalMethods.oppositeDir(subCordinates[i].inputDirections[0]);
+                        }
+                        subCordinates[i].changeTileTag("animated+"+dir+"+"+subCordinates[i].GetItem(true).Replace("_", ""), true);
+                    }
                 } else {
                     subCordinates[i].resetTileTag();
                 }
