@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13b75c95f34a00d4e8c04f76b73312e6, type: 3}
+  m_Name: SWNE-Fabricator_1x-1x1_animated_slab
+  m_EditorClassIdentifier: 
+  m_AnimatedSprites:
+  - {fileID: 21300000, guid: 58f7bb767dc553c459d5bb86d7772f56, type: 3}
+  - {fileID: 21300000, guid: 5d8d670c4ef8c284c8946314acdd5eea, type: 3}
+  - {fileID: 21300000, guid: 8465794ee93d63f4191306377209db9e, type: 3}
+  - {fileID: 21300000, guid: c1f6965abe2c18c45b2a993c40e370ef, type: 3}
+  - {fileID: 21300000, guid: 8b3960d00580d0440acc101e163136f3, type: 3}
+  - {fileID: 21300000, guid: 9f2d463d5b85fd74a873c4cfa59b8be5, type: 3}
+  - {fileID: 21300000, guid: 837167af6059490498959367c2b92779, type: 3}
+  - {fileID: 21300000, guid: 98fd364d3bab8c9488f80d258baff54d, type: 3}
+  - {fileID: 21300000, guid: 59ca9a36d80b6074f9ac139d58200737, type: 3}
+  - {fileID: 21300000, guid: bde66aec0ec587747a4e53857156b8a5, type: 3}
+  - {fileID: 21300000, guid: bd0aaf0d0f08ce547b5affc6f05b384d, type: 3}
+  - {fileID: 21300000, guid: e696053675b4b8142b8adb425be356a5, type: 3}
+  - {fileID: 21300000, guid: f1f75854d8bf08d41a3fc8325c98b6a2, type: 3}
+  - {fileID: 21300000, guid: 39a6792bcc337b64e874932329d7c913, type: 3}
+  m_MinSpeed: 15
+  m_MaxSpeed: 15
+  m_AnimationStartTime: 0
+  m_AnimationStartFrame: 0
+  m_TileColliderType: 0

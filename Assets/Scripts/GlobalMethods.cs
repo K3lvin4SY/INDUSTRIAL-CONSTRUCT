@@ -147,6 +147,84 @@ public class GlobalMethods : MonoBehaviour
         return tiles[key];
     }
 
+    public static Tile GetTileByNameAndDir(string key, string dir) {
+        key = key.ToLower();
+        foreach (var (name, tile) in tiles)
+        {
+            if (name.Contains(key))
+            {
+                if (name.Contains(dir))
+                {
+                    return tile;
+                }
+            }
+        }
+        string[] assetFiles = Directory.GetFiles("Assets/Tiles/Assets/"); // Gets string array of the tile assets file path
+        assetFiles = assetFiles.Select(s => s.ToLowerInvariant()).ToArray(); // to lowercase
+
+        string asset = null;
+        foreach (var assetFile in assetFiles)
+        {
+            if (assetFile.Contains(key) && assetFile.Contains(dir))
+            {
+                asset = assetFile;
+            }
+        }
+
+        if (asset == null) {
+            return null;
+        }
+        Tile assetTile = (Tile)AssetDatabase.LoadAssetAtPath(asset, typeof(Tile)); // loads the tile asset from path
+        if (assetTile == null)
+        {
+            Debug.Log("null assetTile");
+            return null;
+        }
+        string assetTileName = assetTile.name.ToLower(); // gets the name of the tile
+        tiles[assetTileName] = assetTile; // inserts the data into a dictionary
+        //Debug.Log(assetTile.name);
+        return assetTile;
+    }
+
+    public static AnimatedTile GetAnimatedTileByNameAndDir(string key, string dir) {
+        key = key.ToLower();
+        foreach (var (name, tile) in aTiles)
+        {
+            if (name.Contains(key))
+            {
+                if (name.Contains(dir))
+                {
+                    return tile;
+                }
+            }
+        }
+        string[] assetFiles = Directory.GetFiles("Assets/Tiles/Assets/"); // Gets string array of the tile assets file path
+        assetFiles = assetFiles.Select(s => s.ToLowerInvariant()).ToArray(); // to lowercase
+
+        string asset = null;
+        foreach (var assetFile in assetFiles)
+        {
+            if (assetFile.Contains(key) && assetFile.Contains(dir))
+            {
+                asset = assetFile;
+            }
+        }
+
+        if (asset == null) {
+            return null;
+        }
+        AnimatedTile assetTile = (AnimatedTile)AssetDatabase.LoadAssetAtPath(asset, typeof(AnimatedTile)); // loads the tile asset from path
+        if (assetTile == null)
+        {
+            Debug.Log("null assetTile");
+            return null;
+        }
+        string assetTileName = assetTile.name.ToLower(); // gets the name of the tile
+        aTiles[assetTileName] = assetTile; // inserts the data into a dictionary
+        //Debug.Log(assetTile.name);
+        return assetTile;
+    }
+
     public static Tile GetFlatTileByName(string key) {
         key = key.ToLower();
         if (!flatTiles.ContainsKey(key))
