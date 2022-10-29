@@ -504,11 +504,13 @@ public class Belt// : ScriptableObject
 
     private void tickMoveStorage() {
         //if (storage.Where(c => c != null).ToList().Count > 0) { // if statement for seeing if belt is empty
+            bool moveing = false;
             if (moveToNextCheck()) // if path continues
             {
                 if (!getNextItemHandler().ifStorageFull(storage[storage.Count-1])) // next storage is not full
                 {
                     moveToNext(storage[storage.Count-1]);
+                    moveing = true;
                     //storage.RemoveAt(storage.Count-1);
                 } else {
                     // next is full and connot pass
@@ -542,6 +544,27 @@ public class Belt// : ScriptableObject
                     }
                 } else {
                     subCordinates[i].resetTileTag();
+                }
+            }
+            
+            if (!moveing)
+            {
+                for (int i = subCordinates.Count-1; i >= 0; i--)
+                {
+                    if (storage[i] != null)
+                    {
+                        if (subCordinates[i].outputDirections != null)
+                        {
+                            string dir = subCordinates[i].outputDirections[0][0].ToString();
+                            if (dir == "D" || dir == "U")
+                            {
+                                dir = GlobalMethods.oppositeDir(subCordinates[i].inputDirections[0]);
+                            }
+                            subCordinates[i].changeTileTag("still+"+dir+"+"+subCordinates[i].GetItem(true).Replace("_", ""), true);
+                        }
+                    } else {
+                        break;
+                    }
                 }
             }
         //}
