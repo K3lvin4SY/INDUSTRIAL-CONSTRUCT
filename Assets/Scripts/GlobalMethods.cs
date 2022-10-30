@@ -61,7 +61,7 @@ public class GlobalMethods : MonoBehaviour
 
     public static bool isPlayerEditable(string blockName)
     {
-        string[] playerEditable = new string[] {"conveyor", "splitter", "merger", "machine", "miner", "smelter", "constructer"};
+        string[] playerEditable = new string[] {"conveyor", "splitter", "merger", "machine", "miner", "smelter", "constructer", "fabricator"};
         foreach (string editableBlock in playerEditable) {
             if (blockName.ToLower().Contains(editableBlock))
             {
@@ -73,7 +73,7 @@ public class GlobalMethods : MonoBehaviour
 
     public static bool isBrickNotExcludedType(string brickName, string excludeType)
     {
-        string[] brickTypes = new string[] {"conveyor", "splitter", "merger", "machine", "miner", "smelter", "constructer"};
+        string[] brickTypes = new string[] {"conveyor", "splitter", "merger", "machine", "miner", "smelter", "constructer", "fabricator"};
         excludeType = excludeType.ToLower();
         if (brickTypes.Contains(excludeType))
         {
@@ -133,6 +133,7 @@ public class GlobalMethods : MonoBehaviour
                 Tile assetTile = (Tile)AssetDatabase.LoadAssetAtPath(asset, typeof(Tile)); // loads the tile asset from path
                 if (assetTile == null)
                 {
+                    Debug.Log(key);
                     Debug.Log("null assetTile");
                     return null;
                 }
@@ -370,6 +371,10 @@ public class GlobalMethods : MonoBehaviour
         return combineCoords;
     }
 
+    public static Vector3Int CombineCoords(Vector3Int c1, Vector3Int c2) {
+        return c1 + c2;
+    }
+
     /*
     static List<string> elipDirections = new List<string>() { "U", "D" };
     static List<string> eliDirections = new List<string>() { "no", "U", "D" };
@@ -401,6 +406,9 @@ public class GlobalMethods : MonoBehaviour
         } else if (tileName.ToLower().Contains("merger") || tileName.ToLower().Contains("splitter"))
         {
             return new List<string>() { "W", "E", "N", "S" };
+        } else if (tileName.ToLower().Contains("fabricator"))
+        {
+            return new List<string>() { tileName[0].ToString()+tileName[0].ToString(), oppositeDir(tileName[0].ToString())+oppositeDir(tileName[0].ToString()), oppositeDir(tileName[0].ToString())+oppositeDir(tileName[0].ToString())+nextDir(tileName[0].ToString()), oppositeDir(tileName[0].ToString())+oppositeDir(tileName[0].ToString())+prevDir(tileName[0].ToString()) };
         }
         return null;
     }
@@ -592,6 +600,9 @@ public class GlobalMethods : MonoBehaviour
             return new List<string>() { tileName[0].ToString() };
         } else if (tileName.ToLower().Contains("smelter") || tileName.ToLower().Contains("constructer")) {
             return new List<string>() { oppositeDir(tileName[0].ToString()) };
+        } else if (tileName.ToLower().Contains("fabricator"))
+        {
+            return new List<string>() { oppositeDir(tileName[0].ToString())+oppositeDir(tileName[0].ToString()), oppositeDir(tileName[0].ToString())+oppositeDir(tileName[0].ToString())+nextDir(tileName[0].ToString()), oppositeDir(tileName[0].ToString())+oppositeDir(tileName[0].ToString())+prevDir(tileName[0].ToString()) };
         }
         foreach (var dir in dirs) // for each direction
         {
@@ -653,6 +664,9 @@ public class GlobalMethods : MonoBehaviour
             return GetDirections(tileName).Where(c => c != tileName[0].ToString()).ToList();
         } else if (tileName.ToLower().Contains("merger") || tileName.ToLower().Contains("smelter") || tileName.ToLower().Contains("constructer")) {
             return new List<string>() { tileName[0].ToString() };
+        } else if (tileName.ToLower().Contains("fabricator"))
+        {
+            return new List<string>() { tileName[0].ToString()+tileName[0].ToString() };
         }
         foreach (var dir in dirs)
         {

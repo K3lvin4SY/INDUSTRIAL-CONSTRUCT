@@ -38,7 +38,7 @@ public class Bricks
 
     public bool powerOn = false;
 
-    public Bricks(Tile cTile, Vector3Int coords, List<string> dir, List<string> inputDir, List<string> outputDir, Belt cBelt = null, Bricks linkBrick = null)
+    public Bricks(Tile cTile, Vector3Int coords, List<string> dir, List<string> inputDir, List<string> outputDir, Belt cBelt = null, Bricks linkBrick = null, bool fabricator = false)
     {
         tile = cTile;
         cordinates = coords;
@@ -47,7 +47,10 @@ public class Bricks
         directions = dir;
         belt = cBelt;
         linkedBrick = linkBrick;
-        General.bricks[cordinates] = this;
+        if (!fabricator)
+        {
+            General.bricks[cordinates] = this;
+        }
 
         if (tile != null)
         {

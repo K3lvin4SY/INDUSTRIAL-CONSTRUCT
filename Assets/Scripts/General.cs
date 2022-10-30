@@ -690,10 +690,15 @@ public class General : MonoBehaviour
         {
             if (!map.GetTile(selectorLocation).name.Contains("SelectorRedBox")) {
 
-                map.SetTile(selectorLocation, General.tile);
-                Map.updateColumn(selectorLocation);
-                new Bricks(General.tile, selectorLocation, GlobalMethods.GetDirections(General.tile.name), GlobalMethods.GetInputDirections(General.tile.name, selectorLocation), GlobalMethods.GetOutputDirections(General.tile.name, selectorLocation), GlobalMethods.GetBelt(General.tile.name, selectorLocation));
-
+                if (map.GetTile(selectorLocation).name.ToLower().Contains("fabricator"))
+                {
+                    new Fabricator(General.tile, selectorLocation, GlobalMethods.GetDirections(General.tile.name), GlobalMethods.GetInputDirections(General.tile.name, selectorLocation), GlobalMethods.GetOutputDirections(General.tile.name, selectorLocation));
+                } else {
+                    map.SetTile(selectorLocation, General.tile);
+                    Map.updateColumn(selectorLocation);
+                    new Bricks(General.tile, selectorLocation, GlobalMethods.GetDirections(General.tile.name), GlobalMethods.GetInputDirections(General.tile.name, selectorLocation), GlobalMethods.GetOutputDirections(General.tile.name, selectorLocation), GlobalMethods.GetBelt(General.tile.name, selectorLocation));
+                }
+                
                 if (!Input.GetKey(KeyCode.LeftControl)) {
                     placeSelectorBox(true); // for updating the solector box on top of the place object
                 }
