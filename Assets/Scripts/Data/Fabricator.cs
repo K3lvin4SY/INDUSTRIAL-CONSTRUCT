@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class Fabricator : Bricks
+public class Fabricator
 {
     Dictionary<Vector3Int, Bricks> components = new Dictionary<Vector3Int, Bricks>();
-    public Fabricator(Tile cTile, Vector3Int coords, List<string> dir, List<string> inputDir, List<string> outputDir, Belt cBelt = null, Bricks linkBrick = null) : base(cTile, coords, dir, inputDir, outputDir, cBelt, linkBrick)
+    public Fabricator(Tile cTile, Vector3Int coords, List<string> dir, List<string> inputDir, List<string> outputDir, Belt cBelt = null, Bricks linkBrick = null)
     {
         string masterDir = cTile.name[0].ToString();
         for (int x = -1; x <= 1; x++)
@@ -21,6 +21,7 @@ public class Fabricator : Bricks
                         hideCoord = true;
                     }
                     Tile tile = GlobalMethods.GetTileByNameAndDir("-fabricator_"+x+"x"+y+"x"+z+"_", masterDir);
+                    Debug.Log(tile);
                     Vector3Int innerCoord = new Vector3Int(x, y, z*2);
 
                     List<string> componentInputDir = null;
@@ -50,7 +51,7 @@ public class Fabricator : Bricks
                     } else {
                         componentDirs = componentOutputDir;
                     }
-
+                    General.Instance.map.SetTile(GlobalMethods.CombineCoords(innerCoord, coords), tile);
                     Bricks component = new FabricatorComponent(tile, GlobalMethods.CombineCoords(innerCoord, coords), /*dirs*/componentDirs, /*input*/componentInputDir, /*output*/componentOutputDir, hideCoord: hideCoord, fab: this);
                     components[innerCoord] = component;
                 }

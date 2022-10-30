@@ -150,6 +150,7 @@ public class GlobalMethods : MonoBehaviour
 
     public static Tile GetTileByNameAndDir(string key, string dir) {
         key = key.ToLower();
+        dir = dir.ToLower();
         foreach (var (name, tile) in tiles)
         {
             if (name.Contains(key))
@@ -164,13 +165,20 @@ public class GlobalMethods : MonoBehaviour
         assetFiles = assetFiles.Select(s => s.ToLowerInvariant()).ToArray(); // to lowercase
 
         string asset = null;
+        Debug.Log(key);
+        Debug.Log(dir);
+        Debug.Log("-----asetfaile---------");
         foreach (var assetFile in assetFiles)
         {
+            Debug.Log(assetFile);
             if (assetFile.Contains(key) && assetFile.Contains(dir))
             {
+                Debug.Log(assetFile);
                 asset = assetFile;
+                break;
             }
         }
+        Debug.Log("-----asetfaile---------");
 
         if (asset == null) {
             return null;
