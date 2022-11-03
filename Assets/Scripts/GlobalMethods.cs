@@ -155,38 +155,41 @@ public class GlobalMethods : MonoBehaviour
         {
             if (name.Contains(key))
             {
-                if (name.Contains(dir))
+                if (name.Split("-")[0].Contains(dir))
                 {
                     return tile;
                 }
             }
         }
+        Debug.Log("Searching for lost Tile");
         string[] assetFiles = Directory.GetFiles("Assets/Tiles/Assets/"); // Gets string array of the tile assets file path
         assetFiles = assetFiles.Select(s => s.ToLowerInvariant()).ToArray(); // to lowercase
+        assetFiles = assetFiles.Where(s => !s.Contains("animated")).ToArray(); // remove animated tiles
 
         string asset = null;
-        Debug.Log(key);
-        Debug.Log(dir);
-        Debug.Log("-----asetfaile---------");
+        //Debug.Log(key);
+        //Debug.Log(dir);
+        //Debug.Log("-----asetfaile---------");
         foreach (var assetFile in assetFiles)
         {
-            Debug.Log(assetFile);
-            if (assetFile.Contains(key) && assetFile.Contains(dir))
+            //Debug.Log(assetFile);
+            if (assetFile.Contains(key) && assetFile.Split("-")[0].Contains(dir))
             {
-                Debug.Log(assetFile);
+                Debug.Log("Found Tile: "+assetFile);
                 asset = assetFile;
                 break;
             }
         }
-        Debug.Log("-----asetfaile---------");
+        //Debug.Log("-----asetfaile---------");
 
         if (asset == null) {
+            Debug.Log("null assetTile1");
             return null;
         }
         Tile assetTile = (Tile)AssetDatabase.LoadAssetAtPath(asset, typeof(Tile)); // loads the tile asset from path
         if (assetTile == null)
         {
-            Debug.Log("null assetTile");
+            Debug.Log("null assetTile2");
             return null;
         }
         string assetTileName = assetTile.name.ToLower(); // gets the name of the tile
@@ -201,7 +204,7 @@ public class GlobalMethods : MonoBehaviour
         {
             if (name.Contains(key))
             {
-                if (name.Contains(dir))
+                if (name.Split("-")[0].Contains(dir))
                 {
                     return tile;
                 }
@@ -209,11 +212,12 @@ public class GlobalMethods : MonoBehaviour
         }
         string[] assetFiles = Directory.GetFiles("Assets/Tiles/Assets/"); // Gets string array of the tile assets file path
         assetFiles = assetFiles.Select(s => s.ToLowerInvariant()).ToArray(); // to lowercase
+        assetFiles = assetFiles.Where(s => s.Contains("animated")).ToArray(); // keep animated tiles, remove everything else
 
         string asset = null;
         foreach (var assetFile in assetFiles)
         {
-            if (assetFile.Contains(key) && assetFile.Contains(dir))
+            if (assetFile.Contains(key) && assetFile.Split("-")[0].Contains(dir))
             {
                 asset = assetFile;
             }
@@ -722,7 +726,7 @@ public class GlobalMethods : MonoBehaviour
 
     public static Belt GetBelt(string tileName, Vector3Int loc, bool overRule = false, List<string> dirs = null) {
         //Debug.Log(loc);
-        if (!overRule && (tileName.ToLower().Contains("splitter") || tileName.ToLower().Contains("merger") || tileName.ToLower().Contains("smelter") || tileName.ToLower().Contains("constructer") || tileName.ToLower().Contains("miner"))) {
+        if (!overRule && (tileName.ToLower().Contains("splitter") || tileName.ToLower().Contains("merger") || tileName.ToLower().Contains("smelter") || tileName.ToLower().Contains("constructer") || tileName.ToLower().Contains("miner") || tileName.ToLower().Contains("fabricator"))) {
             return null;
         }
         if (dirs == null) {
@@ -735,12 +739,12 @@ public class GlobalMethods : MonoBehaviour
         
         foreach (var dir in dirs)
         {
-            Debug.Log(dir);
+            //Debug.Log(dir);
             if (General.bricks.ContainsKey(GetDirV3(dir, loc)))
             {
                 Debug.Log("Found a belt");
                 Bricks brick = General.bricks[GetDirV3(dir, loc)];
-                if (brick.directions.Contains(oppositeDir(dir[0].ToString())) && (brick.tile == null || brick.tile.name.ToLower().Contains("conveyor")))
+                if (brick.directions != null && brick.directions.Contains(oppositeDir(dir[0].ToString())) && (brick.tile == null || brick.tile.name.ToLower().Contains("conveyor")))
                 {
                     Debug.Log("Found a connection possible belt");
                     return brick.belt;

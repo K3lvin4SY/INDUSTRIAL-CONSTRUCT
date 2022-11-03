@@ -8,12 +8,13 @@ public class Fabricator
     Dictionary<Vector3Int, Bricks> components = new Dictionary<Vector3Int, Bricks>();
     public Fabricator(Tile cTile, Vector3Int coords, List<string> dir, List<string> inputDir, List<string> outputDir, Belt cBelt = null, Bricks linkBrick = null)
     {
+        Debug.Log(" - NEW Fabricator - ");
         string masterDir = cTile.name[0].ToString();
-        for (int x = -1; x <= 1; x++)
+        for (int z = 0; z <= 1; z++)
         {
             for (int y = -1; y <= 1; y++)
             {
-                for (int z = 0; z <= 1; z++)
+                for (int x = -1; x <= 1; x++)
                 {
                     bool hideCoord = false;
                     if (x == 0 && y == 0 && z == 0)
