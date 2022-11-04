@@ -6,6 +6,18 @@ using UnityEngine.Tilemaps;
 public class Fabricator
 {
     Dictionary<Vector3Int, FabricatorComponent> components = new Dictionary<Vector3Int, FabricatorComponent>();
+
+    public Dictionary<string, List<string>> crafting = new Dictionary<string, List<string>>()
+    {
+        {
+            "input",
+            new List<string>() {null}
+        },
+        {
+            "output",
+            new List<string>() {null}
+        }
+    };
     public Fabricator(Tile cTile, Vector3Int coords, List<string> dir, List<string> inputDir, List<string> outputDir, Belt cBelt = null, Bricks linkBrick = null)
     {
         Debug.Log(" - NEW Fabricator - ");
