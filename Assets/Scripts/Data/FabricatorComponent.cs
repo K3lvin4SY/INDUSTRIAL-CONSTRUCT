@@ -5,8 +5,9 @@ using UnityEngine.Tilemaps;
 
 public class FabricatorComponent : Bricks
 {
+    public Fabricator fabricator;
     public FabricatorComponent(Tile cTile, Vector3Int coords, List<string> dir, List<string> inputDir, List<string> outputDir, Belt cBelt = null, Bricks linkBrick = null, bool hideCoord = false, Fabricator fab = null) : base(cTile, coords, dir, inputDir, outputDir, cBelt, linkBrick, fabricator:true) {
-        Fabricator fabricator = fab;
+        fabricator = fab;
         if (!hideCoord)
         {
             General.bricks[coords] = this;

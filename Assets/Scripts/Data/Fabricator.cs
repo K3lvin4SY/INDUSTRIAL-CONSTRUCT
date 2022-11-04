@@ -5,7 +5,7 @@ using UnityEngine.Tilemaps;
 
 public class Fabricator
 {
-    Dictionary<Vector3Int, Bricks> components = new Dictionary<Vector3Int, Bricks>();
+    Dictionary<Vector3Int, FabricatorComponent> components = new Dictionary<Vector3Int, FabricatorComponent>();
     public Fabricator(Tile cTile, Vector3Int coords, List<string> dir, List<string> inputDir, List<string> outputDir, Belt cBelt = null, Bricks linkBrick = null)
     {
         Debug.Log(" - NEW Fabricator - ");
@@ -53,10 +53,24 @@ public class Fabricator
                         componentDirs = componentOutputDir;
                     }
                     General.Instance.map.SetTile(GlobalMethods.CombineCoords(innerCoord, coords), tile);
-                    Bricks component = new FabricatorComponent(tile, GlobalMethods.CombineCoords(innerCoord, coords), /*dirs*/componentDirs, /*input*/componentInputDir, /*output*/componentOutputDir, hideCoord: hideCoord, fab: this);
+                    FabricatorComponent component = new FabricatorComponent(tile, GlobalMethods.CombineCoords(innerCoord, coords), /*dirs*/componentDirs, /*input*/componentInputDir, /*output*/componentOutputDir, hideCoord: hideCoord, fab: this);
                     components[innerCoord] = component;
                 }
             }
+        }
+    }
+
+    public void select() {
+        foreach ((Vector3Int coord, Bricks fc) in components)
+        {
+            fc.changeTileTag("selected", temp: true);
+        }
+    }
+
+    public void deSelect() {
+        foreach ((Vector3Int coord, Bricks fc) in components)
+        {
+            fc.resetTileTag();
         }
     }
 

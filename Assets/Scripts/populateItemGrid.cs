@@ -30,25 +30,6 @@ public class populateItemGrid : MonoBehaviour
                     new Dictionary<string, List<string>>()
                     {
                         {
-                            "input",
-                            new List<string>()
-                            {
-                                "Iron_Ore",
-                                "Copper_Wire",
-                                "Gold_Rod"
-                            }
-                        },
-                        {
-                            "output",
-                            new List<string>()
-                            {
-                                "Iron_Bar"
-                            }
-                        }
-                    },
-                    new Dictionary<string, List<string>>()
-                    {
-                        {
                             "output",
                             new List<string>()
                             {
@@ -107,6 +88,139 @@ public class populateItemGrid : MonoBehaviour
                         }
                     }
                 }
+            },
+            {
+                "constructer",
+                new List<Dictionary<string, List<string>>>()
+                {
+                    new Dictionary<string, List<string>>()
+                    {
+                        {
+                            "input",
+                            new List<string>()
+                            {
+                                "Iron_Bar"
+                            }
+                        },
+                        {
+                            "output",
+                            new List<string>()
+                            {
+                                "Iron_Plate"
+                            }
+                        }
+                    },
+                    new Dictionary<string, List<string>>()
+                    {
+                        {
+                            "input",
+                            new List<string>()
+                            {
+                                "Gold_Bar"
+                            }
+                        },
+                        {
+                            "output",
+                            new List<string>()
+                            {
+                                "Gold_Plate"
+                            }
+                        }
+                    },
+                    new Dictionary<string, List<string>>()
+                    {
+                        {
+                            "input",
+                            new List<string>()
+                            {
+                                "Iron_Bar"
+                            }
+                        },
+                        {
+                            "output",
+                            new List<string>()
+                            {
+                                "Iron_Rod"
+                            }
+                        }
+                    },
+                    new Dictionary<string, List<string>>()
+                    {
+                        {
+                            "input",
+                            new List<string>()
+                            {
+                                "Gold_Bar"
+                            }
+                        },
+                        {
+                            "output",
+                            new List<string>()
+                            {
+                                "Gold_Rod"
+                            }
+                        }
+                    },
+                    new Dictionary<string, List<string>>()
+                    {
+                        {
+                            "input",
+                            new List<string>()
+                            {
+                                "Iron_Bar"
+                            }
+                        },
+                        {
+                            "output",
+                            new List<string>()
+                            {
+                                "Spikes"
+                            }
+                        }
+                    },
+                    new Dictionary<string, List<string>>()
+                    {
+                        {
+                            "input",
+                            new List<string>()
+                            {
+                                "Copper_Bar"
+                            }
+                        },
+                        {
+                            "output",
+                            new List<string>()
+                            {
+                                "Copper_Wire"
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                "fabricator",
+                new List<Dictionary<string, List<string>>>()
+                {
+                    new Dictionary<string, List<string>>()
+                    {
+                        {
+                            "input",
+                            new List<string>()
+                            {
+                                "Iron_Plate",
+                                "Copper_Wire",
+                                "Spikes"
+                            }
+                        },
+                        {
+                            "output",
+                            new List<string>()
+                            {
+                                "Processor"
+                            }
+                        }
+                    }
+                }
             }
         };
 
@@ -127,6 +241,12 @@ public class populateItemGrid : MonoBehaviour
         } else if (SelectInspecter.brickSelected.tile.name.ToLower().Contains("smelter"))
         {
             type = "smelter";
+        } else if (SelectInspecter.brickSelected.tile.name.ToLower().Contains("constructer"))
+        {
+            type = "constructer";
+        } else if (SelectInspecter.brickSelected.tile.name.ToLower().Contains("fabricator"))
+        {
+            type = "fabricator";
         } else {
             type = "miner";
         }

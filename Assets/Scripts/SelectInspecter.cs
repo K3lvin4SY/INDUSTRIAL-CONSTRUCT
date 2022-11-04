@@ -41,6 +41,7 @@ public class SelectInspecter : MonoBehaviour
     private static Sprite brickSpriteSelected;
     private static string brickType;
     public static Bricks brickSelected;
+    public static Fabricator fabricatorSelected;
 
     public Sprite powerLblOn;
     public Sprite powerLblOff;
@@ -206,6 +207,18 @@ public class SelectInspecter : MonoBehaviour
             WestBtn.SetActive(false);
             brickPowerObject.SetActive(false);
             craftingObject.SetActive(true);
+        } else if (SelectInspecter.brickType == "fabricator") {
+            beltBtn.SetActive(false);
+            backBtn.SetActive(false);
+            NextBtn.SetActive(false);
+            PrevBtn.SetActive(false);
+
+            NorthBtn.SetActive(false);
+            EastBtn.SetActive(false);
+            SouthBtn.SetActive(false);
+            WestBtn.SetActive(false);
+            brickPowerObject.SetActive(false);
+            craftingObject.SetActive(true);
         } else {
             beltBtn.SetActive(false);
             backBtn.SetActive(false);
@@ -296,6 +309,8 @@ public class SelectInspecter : MonoBehaviour
             newBrickName += "Constructor";
         } else if (brickName.Contains("smelter")) {
             newBrickName += "Smelter";
+        } else if (brickName.Contains("fabricator")) {
+            newBrickName += "Fabricator";
         } else {
             newBrickName += "Unknown";
         }
@@ -303,7 +318,7 @@ public class SelectInspecter : MonoBehaviour
         return newBrickName;
     }
 
-    private static void LoadBrick(Bricks brick) {
+    private static void LoadBrick(dynamic brick) {
         // if try to load tile empty brick
         if (brick.tile == null)
         {
@@ -351,7 +366,8 @@ public class SelectInspecter : MonoBehaviour
         brickPlaceSelected = "";
         if (brick.belt != null)
         {
-            brickPlaceSelected = "Belt Placement: "+(brick.belt.subCordinates.FindIndex(x => x == brick)+1).ToString();
+            List<Bricks> tmpSubCordinates = brick.belt.subCordinates;
+            brickPlaceSelected = "Belt Placement: "+(tmpSubCordinates.FindIndex(x => x == brick)+1).ToString();
         }
         
         brickSpriteSelected = brick.tile.sprite;
@@ -359,6 +375,9 @@ public class SelectInspecter : MonoBehaviour
         if (brick.tile.name.ToLower().Contains("conveyor"))
         {
             brickType = "conveyor";
+        } else if (brick.tile.name.ToLower().Contains("fabricator"))
+        {
+            brickType = "fabricator";
         } else if (brick.tile.name.ToLower().Contains("miner"))
         {
             brickType = "miner";

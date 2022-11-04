@@ -165,6 +165,7 @@ public class GlobalMethods : MonoBehaviour
         string[] assetFiles = Directory.GetFiles("Assets/Tiles/Assets/"); // Gets string array of the tile assets file path
         assetFiles = assetFiles.Select(s => s.ToLowerInvariant()).ToArray(); // to lowercase
         assetFiles = assetFiles.Where(s => !s.Contains("animated")).ToArray(); // remove animated tiles
+        assetFiles = assetFiles.Where(s => !s.Contains("selected")).ToArray(); // remove selected tiles
 
         string asset = null;
         //Debug.Log(key);
@@ -173,9 +174,9 @@ public class GlobalMethods : MonoBehaviour
         foreach (var assetFile in assetFiles)
         {
             //Debug.Log(assetFile);
-            if (assetFile.Contains(key) && assetFile.Split("-")[0].Contains(dir))
+            if (assetFile.Contains(key) && assetFile.Replace("assets/tiles/assets/", "").Split("-")[0].Contains(dir))
             {
-                Debug.Log("Found Tile: "+assetFile);
+                //Debug.Log(key.Split("_").Last()+": "+assetFile);
                 asset = assetFile;
                 break;
             }
@@ -371,13 +372,9 @@ public class GlobalMethods : MonoBehaviour
     public static Vector3Int GetDirV3(string dir, Vector3Int coords, int distance = 1) {
         GlobalMethods.calc +=1;
         //Debug.Log("Times Run: "+GlobalMethods.calc);
-        Vector3Int combineCoords = coords + GlobalMethods.dirConvertDic[dir[0].ToString()];
+        Vector3Int combineCoords = coords;
         foreach (var dirChar in dir)
         {
-            if (dirChar == dir[0])
-            {
-                continue;
-            }
             combineCoords += GlobalMethods.dirConvertDic[dirChar.ToString()];
         }
         return combineCoords;

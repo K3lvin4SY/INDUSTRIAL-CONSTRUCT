@@ -11,7 +11,7 @@ public class General : MonoBehaviour
 {
 
     public static General Instance;
-    public static Dictionary<Vector3Int, Bricks> bricks = new Dictionary<Vector3Int, Bricks>();
+    public static Dictionary<Vector3Int, dynamic> bricks = new Dictionary<Vector3Int, dynamic>();
     public Vector3Int location;
     private int controlZ; // the z value of the height when control is held down
     public Sprite selectedSprite;
@@ -201,7 +201,10 @@ public class General : MonoBehaviour
                 if (map.GetTile(selectorLocation).name.Contains("selected")) { // if tile has selected tag
                     if (General.bricks.ContainsKey(selectorLocation)) // temporary if statement for brick not in bricks dictionary - REMOVE WHEN GAME SAVE is finished or WHEN ALL BRICKS IS in the bricks dictionary
                     {
-                        if (General.bricks[selectorLocation].belt != null)
+                        if (General.bricks[selectorLocation].tile.name.ToLower().Contains("fabricator"))
+                        {
+                            General.bricks[selectorLocation].fabricator.deSelect();
+                        } else if (General.bricks[selectorLocation].belt != null)
                         {
                             General.bricks[selectorLocation].belt.Deselect();
                             General.bricks[selectorLocation].resetTileTag(); // turn back to original tile
@@ -222,12 +225,18 @@ public class General : MonoBehaviour
             updateZ();
 
             if (map.HasTile(location)) {
-                Tile tmpTile = GlobalMethods.GetTileByName(GlobalMethods.AddTagToBlockName(map.GetTile(location).name, "selected"));
+                TileBase tile = map.GetTile(location);
+                Tile tmpTile = GlobalMethods.GetTileByName(GlobalMethods.AddTagToBlockName(tile.name, "selected"));
                 if (GlobalMethods.isPlayerEditable(tmpTile.name)) {
                     if (General.bricks.ContainsKey(location))
                     {
                         // add tag via bricks class
                         General.bricks[location].changeTileTag("selected", temp: true);
+                        if (tile.name.ToLower().Contains("fabricator"))
+                        {
+                            FabricatorComponent fc = General.bricks[location];
+                            fc.fabricator.select();
+                        }
                     } else {
                         map.SetTile(location, tmpTile); // set tile to selected
                     }
