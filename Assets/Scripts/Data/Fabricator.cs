@@ -18,10 +18,27 @@ public class Fabricator
             new List<string>() {null}
         }
     };
-    public Fabricator(Tile cTile, Vector3Int coords, List<string> dir, List<string> inputDir, List<string> outputDir, Belt cBelt = null, Bricks linkBrick = null)
+
+    string masterDir;
+    public Tile tile;
+    public List<string> directions;
+    public List<string> inputDirections;
+    public List<string> outputDirections;
+    public Vector3Int cordinates;
+    public Dictionary<string, List<string>> storage = new Dictionary<string, List<string>>();
+    public Fabricator(Tile cTile, Vector3Int coords, List<string> dirs, List<string> inputDir, List<string> outputDir, Belt cBelt = null, Bricks linkBrick = null)
     {
         Debug.Log(" - NEW Fabricator - ");
-        string masterDir = cTile.name[0].ToString();
+        this.masterDir = cTile.name[0].ToString();
+        this.tile = cTile;
+        this.directions = dirs;
+        this.inputDirections = inputDir;
+        this.outputDirections = outputDir;
+        this.cordinates = coords;
+        foreach (var dir in dirs)
+        {
+            storage[dir] = new List<string>();
+        }
         for (int z = 0; z <= 1; z++)
         {
             for (int y = -1; y <= 1; y++)

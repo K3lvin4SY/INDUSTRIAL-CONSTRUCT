@@ -86,6 +86,23 @@ public class populateItemGrid : MonoBehaviour
                                 "Gold_Bar"
                             }
                         }
+                    },
+                    new Dictionary<string, List<string>>()
+                    {
+                        {
+                            "input",
+                            new List<string>()
+                            {
+                                "Copper_Ore"
+                            }
+                        },
+                        {
+                            "output",
+                            new List<string>()
+                            {
+                                "Copper_Bar"
+                            }
+                        }
                     }
                 }
             },
@@ -288,17 +305,24 @@ public class populateItemGrid : MonoBehaviour
 
     public void ChooseMethod(Dictionary<string, List<string>> recepie)
     {
+        dynamic machine;
+        if (SelectInspecter.brickSelected.tile.name.ToLower().Contains("fabricator"))
+        {
+            machine = SelectInspecter.fabricatorSelected;
+        } else {
+            machine = SelectInspecter.brickSelected;
+        }
         if (recepie.ContainsKey("output"))
         {
-            SelectInspecter.brickSelected.crafting["output"] = recepie["output"];
+            machine.crafting["output"] = recepie["output"];
         } else {
-            SelectInspecter.brickSelected.crafting["output"] = new List<string>();
+            machine.crafting["output"] = new List<string>();
         }
         if (recepie.ContainsKey("input"))
         {
-            SelectInspecter.brickSelected.crafting["input"] = recepie["input"];
+            machine.crafting["input"] = recepie["input"];
         } else {
-            SelectInspecter.brickSelected.crafting["input"] = new List<string>();
+            machine.crafting["input"] = new List<string>();
         }
 
         Controller.Instance.UseWindow(Controller.Instance.selectInspector);

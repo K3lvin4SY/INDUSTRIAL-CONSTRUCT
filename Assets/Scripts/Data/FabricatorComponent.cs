@@ -13,4 +13,8 @@ public class FabricatorComponent : Bricks
             General.bricks[coords] = this;
         }
     }
+
+    public void reciveItem(string item) {
+        
+    }
 }
