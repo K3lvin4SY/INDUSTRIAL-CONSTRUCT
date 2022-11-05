@@ -35,6 +35,7 @@ public class Fabricator
         this.inputDirections = inputDir;
         this.outputDirections = outputDir;
         this.cordinates = coords;
+        General.tickers[cordinates] = this;
         foreach (var dir in dirs)
         {
             storage[dir] = new List<string>();
@@ -57,6 +58,7 @@ public class Fabricator
                     List<string> componentInputDir = null;
                     List<string> componentOutputDir = null;
                     List<string> componentDirs = null;
+                    string realDir = null;
                     foreach (var iDir in inputDir)
                     {
                         Vector3Int coordDiffrence = GlobalMethods.GetDirV3(iDir, Vector3Int.zero) - innerCoord;
@@ -64,6 +66,7 @@ public class Fabricator
                         if (dirDiffrence.Length == 1)
                         {
                             componentInputDir = new List<string>() { dirDiffrence };
+                            realDir = iDir;
                         }
                     }
                     foreach (var oDir in outputDir)
@@ -73,6 +76,7 @@ public class Fabricator
                         if (dirDiffrence.Length == 1)
                         {
                             componentOutputDir = new List<string>() { dirDiffrence };
+                            realDir = oDir;
                         }
                     }
                     if (componentInputDir != null)
@@ -82,9 +86,106 @@ public class Fabricator
                         componentDirs = componentOutputDir;
                     }
                     General.Instance.map.SetTile(GlobalMethods.CombineCoords(innerCoord, coords), tile);
-                    FabricatorComponent component = new FabricatorComponent(tile, GlobalMethods.CombineCoords(innerCoord, coords), /*dirs*/componentDirs, /*input*/componentInputDir, /*output*/componentOutputDir, hideCoord: hideCoord, fab: this);
+                    FabricatorComponent component = new FabricatorComponent(tile, GlobalMethods.CombineCoords(innerCoord, coords), /*dirs*/componentDirs, /*input*/componentInputDir, /*output*/componentOutputDir, hideCoord: hideCoord, fab: this, realDir: realDir);
                     components[innerCoord] = component;
                 }
+            }
+        }
+    }
+
+    public bool ifStorageFull(string item, string fromDir) {
+        if (item == null)
+        {
+            return false;
+        }
+        if (crafting["input"].Contains(item))
+        {
+            if (storage[fromDir].Count >= 100)
+            {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    public void processConvertion(string item, string fromDir) {
+        if (item != null)
+        {
+            collectItem(item, fromDir);
+        }
+    }
+
+    private void collectItem(string item, string FromDir) {
+        storage[FromDir].Add(item);
+    }
+
+    private void convertItem() {
+        // check
+        List<string> itemsAvailable = new List<string>();
+        foreach (var iDir in inputDirections)
+        {
+            if (storage[iDir].Count >= 1)
+            {
+                itemsAvailable.Add(storage[iDir][0]);
+            }
+        }
+        foreach (var item in itemsAvailable)
+        {
+            if (!crafting["input"].Contains(item))
+            {
+                return; // does not convert
+            }
+        }
+        itemsAvailable = crafting["input"]; // updating the list to be exactlyy to what is needed.
+        // Begin convert
+
+        // Remove ingredients
+        foreach (var iDir in inputDirections)
+        {
+            if (storage[iDir].Count >= 1)
+            {
+                string itemToBeRemoved = storage[iDir][storage[iDir].Count-1];
+                foreach (var item in itemsAvailable)
+                {
+                    if (item == itemToBeRemoved)
+                    {
+                        storage[iDir].RemoveAt(storage[iDir].Count-1);
+                        itemsAvailable.Remove(item);
+                        break;
+                    }
+                }
+            }
+        }
+
+        // Generate Produced item
+        foreach (var item in crafting["output"])
+        {
+            storage[outputDirections[0]].Add(item);
+        }
+    }
+
+
+    private void moveToNext() {
+        // get item to move
+        string item;
+        if (storage[outputDirections[0]].Count >= 1)
+        {
+            item = storage[outputDirections[0]][storage[outputDirections[0]].Count-1];
+        } else {
+            item = null;
+        }
+
+        // begin move
+        var itemHandler = GlobalMethods.GetBrickByDirCord(outputDirections[0], cordinates);
+        if (itemHandler != null)
+        {
+            if (!itemHandler.ifStorageFull(item))
+            {
+                storage[outputDirections[0]].RemoveAt(storage[outputDirections[0]].Count-1);
+                itemHandler.receiveItem(item);
             }
         }
     }

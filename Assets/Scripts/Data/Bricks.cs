@@ -54,6 +54,10 @@ public class Bricks
 
         if (tile != null)
         {
+            if (tile.name.ToLower().Contains("miner"))
+            {
+                General.tickers[cordinates] = this;
+            }
             
             if (tile.name.ToLower().Contains("slant")) // creates an invicibale brick if it is a slant brick
             {
@@ -356,7 +360,7 @@ public class Bricks
         if (outStorage.Count >= 1)
         {
             string newItem = outStorage[outStorage.Count-1];
-            outStorage.RemoveAt(outStorage.Count-1);
+            outStorage.RemoveAt(outStorage.Count-1); // cant remove here
             moveToNext(newItem);
         } else {
             moveToNext(null);
@@ -372,7 +376,11 @@ public class Bricks
             return;
         }
         inStorage.RemoveAt(inStorage.Count-1);
-        outStorage.Add(crafting["output"][0]);
+        // Generate Produced item
+        foreach (var item in crafting["output"])
+        {
+            outStorage.Add(item);
+        }
     }
     
     public bool mergerAvailable(string item) {
@@ -524,7 +532,7 @@ public class Bricks
         }
     }
 
-    public bool ifStorageFull(string item) {
+    public virtual bool ifStorageFull(string item) {
         if (belt != null)
         {
             return belt.ifStorageFull(item);

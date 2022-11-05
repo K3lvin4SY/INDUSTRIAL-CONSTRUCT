@@ -6,8 +6,10 @@ using UnityEngine.Tilemaps;
 public class FabricatorComponent : Bricks
 {
     public Fabricator fabricator;
-    public FabricatorComponent(Tile cTile, Vector3Int coords, List<string> dir, List<string> inputDir, List<string> outputDir, Belt cBelt = null, Bricks linkBrick = null, bool hideCoord = false, Fabricator fab = null) : base(cTile, coords, dir, inputDir, outputDir, cBelt, linkBrick, fabricator:true) {
-        fabricator = fab;
+    private string realDir;
+    public FabricatorComponent(Tile cTile, Vector3Int coords, List<string> dir, List<string> inputDir, List<string> outputDir, Belt cBelt = null, Bricks linkBrick = null, bool hideCoord = false, Fabricator fab = null, string realDir = null) : base(cTile, coords, dir, inputDir, outputDir, cBelt, linkBrick, fabricator:true) {
+        this.fabricator = fab;
+        this.realDir = realDir;
         if (!hideCoord)
         {
             General.bricks[coords] = this;
@@ -15,6 +17,10 @@ public class FabricatorComponent : Bricks
     }
 
     public void reciveItem(string item) {
-        
+        fabricator.processConvertion(item, realDir);
+    }
+
+    public override bool ifStorageFull(string item) {
+        return fabricator.ifStorageFull(item, realDir);
     }
 }

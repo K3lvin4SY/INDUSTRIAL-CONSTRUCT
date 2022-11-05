@@ -12,6 +12,7 @@ public class General : MonoBehaviour
 
     public static General Instance;
     public static Dictionary<Vector3Int, dynamic> bricks = new Dictionary<Vector3Int, dynamic>();
+    public static Dictionary<Vector3Int, dynamic> tickers = new Dictionary<Vector3Int, dynamic>();
     public Vector3Int location;
     private int controlZ; // the z value of the height when control is held down
     public Sprite selectedSprite;
@@ -55,12 +56,18 @@ public class General : MonoBehaviour
         var watch = new System.Diagnostics.Stopwatch();
         var watch2 = new System.Diagnostics.Stopwatch();
         watch.Start();
-        foreach (var (cord, brick) in General.bricks)
+        foreach (var (cord, ticker) in General.tickers)
         {
-            if (brick.tile != null && brick.tile.name.ToLower().Contains("miner"))
+            if (ticker.tile != null && ticker.tile.name.ToLower().Contains("miner"))
             {
                 watch2.Start();
-                brick.GenerateItem();
+                ticker.GenerateItem();
+                watch2.Stop();
+                Debug.Log($"Execution Time2: {watch2.ElapsedMilliseconds} ms");
+            } else if (ticker.tile != null && ticker.tile.name.ToLower().Contains("fabricator"))
+            {
+                watch2.Start();
+                ticker.convertItem();
                 watch2.Stop();
                 Debug.Log($"Execution Time2: {watch2.ElapsedMilliseconds} ms");
             }

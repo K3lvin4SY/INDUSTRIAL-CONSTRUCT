@@ -540,7 +540,13 @@ public class Belt// : ScriptableObject
                         {
                             dir = GlobalMethods.oppositeDir(subCordinates[i].inputDirections[0]);
                         }
-                        subCordinates[i].changeTileTag("animated+"+dir+"+"+subCordinates[i].GetItem(true).Replace("_", ""), true);
+                        if (subCordinates[i].GetItem(true) == "Iron_Ore") // temp
+                        {
+                            subCordinates[i].changeTileTag("animated+"+dir+"+"+subCordinates[i].GetItem(true).Replace("_", ""), true);
+                        } else {
+                            subCordinates[i].changeTileTag("selected", true);
+                        }
+                        
                     }
                 } else {
                     subCordinates[i].resetTileTag();
@@ -560,7 +566,13 @@ public class Belt// : ScriptableObject
                             {
                                 dir = GlobalMethods.oppositeDir(subCordinates[i].inputDirections[0]);
                             }
-                            subCordinates[i].changeTileTag("still+"+dir+"+"+subCordinates[i].GetItem(true).Replace("_", ""), true);
+                            
+                            if (subCordinates[i].GetItem(true) == "Iron_Ore") // temp
+                            {
+                                subCordinates[i].changeTileTag("still+"+dir+"+"+subCordinates[i].GetItem(true).Replace("_", ""), true);
+                            } else {
+                                subCordinates[i].changeTileTag("selected", true);
+                            }
                         }
                     } else {
                         break;
