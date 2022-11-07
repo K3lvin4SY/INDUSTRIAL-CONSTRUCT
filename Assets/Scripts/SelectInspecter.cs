@@ -404,7 +404,7 @@ public class SelectInspecter : MonoBehaviour
         }
 
         // cordiantes
-        brickCordianteSelected = "X: " + brick.cordinates.x.ToString() + "\nY: " + brick.cordinates.y.ToString() + "\nZ: " + brick.cordinates.z.ToString();
+        brickCordianteSelected = brick.cordinates.x.ToString() + " :X\n" + brick.cordinates.y.ToString() + " :Y\n" + brick.cordinates.z.ToString() + " :Z";
         
         // update brickSelected
         brickSelected = orginalBrick;

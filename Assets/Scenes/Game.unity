@@ -2153,7 +2153,7 @@ TilemapRenderer:
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
   m_MaxChunkCount: 16
   m_MaxFrameAge: 16
-  m_SortOrder: 0
+  m_SortOrder: 2
   m_Mode: 0
   m_DetectChunkCullingBounds: 0
   m_MaskInteraction: 1
@@ -8742,6 +8742,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1536840515}
   - component: {fileID: 1536840516}
+  - component: {fileID: 1536840517}
   m_Layer: 0
   m_Name: Grid
   m_TagString: Untagged
@@ -8782,6 +8783,17 @@ Grid:
   m_CellGap: {x: 0, y: 0, z: 0}
   m_CellLayout: 0
   m_CellSwizzle: 0
+--- !u!210 &1536840517
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1536840514}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
 --- !u!1 &1563504132
 GameObject:
   m_ObjectHideFlags: 0
@@ -14911,7 +14923,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -262, y: -491}
+  m_AnchoredPosition: {x: 349, y: 39.788}
   m_SizeDelta: {x: 168.184, y: 130.425}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2102361484
@@ -14941,13 +14953,17 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 0
     m_MaxSize: 75
-    m_Alignment: 0
+    m_Alignment: 2
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "X: \nY: \nZ: "
+  m_Text: ':X
+
+    :Y
+
+    :Z'
 --- !u!222 &2102361485
 CanvasRenderer:
   m_ObjectHideFlags: 0
