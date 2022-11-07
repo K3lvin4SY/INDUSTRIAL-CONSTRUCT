@@ -454,7 +454,7 @@ public class GlobalMethods : MonoBehaviour
         cord = GetDirV3(dir, cord);
         if (General.bricks.ContainsKey(cord))
         {
-            if (General.bricks[cord].belt != null)
+            if (General.bricks[cord] is Conveyor)
             {
                 return General.bricks[cord].belt;
             }
@@ -747,7 +747,7 @@ public class GlobalMethods : MonoBehaviour
             if (General.bricks.ContainsKey(GetDirV3(dir, loc)))
             {
                 Debug.Log("Found a belt");
-                Bricks brick = General.bricks[GetDirV3(dir, loc)];
+                dynamic brick = General.bricks[GetDirV3(dir, loc)];
                 if (brick.directions != null && brick.directions.Contains(oppositeDir(dir[0].ToString())) && (brick.tile == null || brick.tile.name.ToLower().Contains("conveyor")))
                 {
                     Debug.Log("Found a connection possible belt");

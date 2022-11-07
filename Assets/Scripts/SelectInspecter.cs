@@ -40,7 +40,7 @@ public class SelectInspecter : MonoBehaviour
     private static string brickPlaceSelected;
     private static Sprite brickSpriteSelected;
     private static string brickType;
-    public static Bricks brickSelected;
+    public static dynamic brickSelected;
     public static Fabricator fabricatorSelected;
 
     public Sprite powerLblOn;
@@ -277,8 +277,8 @@ public class SelectInspecter : MonoBehaviour
         Debug.Log("Inspecting at " + cordinate);
         if (General.bricks.ContainsKey(cordinate))
         {
-            Bricks inspectedBrick = General.bricks[cordinate];
-            if (inspectedBrick.belt != null)
+            dynamic inspectedBrick = General.bricks[cordinate];
+            if (inspectedBrick is Conveyor)
             {
                 if (inspectedBrick.belt.selected)
                 {
@@ -394,9 +394,9 @@ public class SelectInspecter : MonoBehaviour
 
         // Belt place
         brickPlaceSelected = "";
-        if (!isFabricator && brick.belt != null)
+        if (!isFabricator && brick is Conveyor)
         {
-            List<Bricks> tmpSubCordinates = brick.belt.subCordinates;
+            List<Conveyor> tmpSubCordinates = brick.belt.subCordinates;
             brickPlaceSelected = "Belt Placement: "+(tmpSubCordinates.FindIndex(x => x == brick)+1).ToString();
         }
         
@@ -456,7 +456,7 @@ public class SelectInspecter : MonoBehaviour
 
     public static void NextBtnTrigger() {
         if (brickType == "brick" || brickType == "conveyor") {
-            if (brickSelected.belt != null) {
+            if (brickSelected is Conveyor) {
                 Debug.Log("belt1");
                 if (brickSelected.tile.name.ToLower().Contains("slant") && brickSelected.belt.subCordinates[brickSelected.belt.subCordinates.Count-2] == brickSelected && brickSelected.belt.subCordinates[brickSelected.belt.subCordinates.Count-1] == brickSelected.linkedBrick)
                 {
@@ -471,7 +471,8 @@ public class SelectInspecter : MonoBehaviour
                 } else if (brickSelected.belt.subCordinates/*.Where(b => b.tile != null).ToList()*/.Last() != brickSelected)
                 {
                     Debug.Log("p2");
-                    Bricks nextBrick = brickSelected.belt.subCordinates.Where(b => b.tile != null).ToList()[brickSelected.belt.subCordinates.Where(b => b.tile != null).ToList().FindIndex(x => x == brickSelected) + 1];
+                    Conveyor tmpBrickSelected = brickSelected;
+                    Conveyor nextBrick = tmpBrickSelected.belt.subCordinates.Where(b => b.tile != null).ToList()[tmpBrickSelected.belt.subCordinates.Where(b => b.tile != null).ToList().FindIndex(x => x == brickSelected) + 1];
                     LoadBrick(nextBrick);
                 } else {
                     Debug.Log("p3");
@@ -487,8 +488,8 @@ public class SelectInspecter : MonoBehaviour
         } else if (brickType == "belt") {
             if (brickSelected.belt.getConnectingEdgeBrick(true, true, true) != null)
             {
-                Bricks connectedBrick = brickSelected.belt.getConnectingEdgeBrick(true, true, true);
-                if (connectedBrick.belt != null)
+                Conveyor connectedBrick = brickSelected.belt.getConnectingEdgeBrick(true, true, true);
+                if (connectedBrick is Conveyor)
                 {
                     if (connectedBrick.tile == null)
                     {
@@ -507,7 +508,7 @@ public class SelectInspecter : MonoBehaviour
 
     public static void PrevBtnTrigger() {
         if (brickType == "brick" || brickType == "conveyor") {
-            if (brickSelected.belt != null) {
+            if (brickSelected is Conveyor) {
                 if (brickSelected.tile.name.ToLower().Contains("slant") && brickSelected.belt.subCordinates[1] == brickSelected && brickSelected.belt.subCordinates[0] == brickSelected.linkedBrick)
                 {
                     //go to next brick
@@ -519,7 +520,8 @@ public class SelectInspecter : MonoBehaviour
                     }
                 } else if (brickSelected.belt.subCordinates/*.Where(b => b.tile != null).ToList()*/.First() != brickSelected)
                 {
-                    Bricks prevBrick = brickSelected.belt.subCordinates.Where(b => b.tile != null).ToList()[brickSelected.belt.subCordinates.Where(b => b.tile != null).ToList().FindIndex(x => x == brickSelected) - 1];
+                    Conveyor tmpBrickSelected = brickSelected;
+                    Conveyor prevBrick = tmpBrickSelected.belt.subCordinates.Where(b => b.tile != null).ToList()[tmpBrickSelected.belt.subCordinates.Where(b => b.tile != null).ToList().FindIndex(x => x == brickSelected) - 1];
                     LoadBrick(prevBrick);
                     Debug.Log("1p");
                 } else {
@@ -535,8 +537,8 @@ public class SelectInspecter : MonoBehaviour
         } else if (brickType == "belt") {
             if (brickSelected.belt.getConnectingEdgeBrick(false, false, true) != null)
             {
-                Bricks connectedBrick = brickSelected.belt.getConnectingEdgeBrick(false, false, true);
-                if (connectedBrick.belt != null)
+                Conveyor connectedBrick = brickSelected.belt.getConnectingEdgeBrick(false, false, true);
+                if (connectedBrick is Conveyor)
                 {
                     if (connectedBrick.tile == null)
                     {
@@ -554,7 +556,8 @@ public class SelectInspecter : MonoBehaviour
 
     private bool PrevBtnChecker() {
         if (brickType == "brick" || brickType == "conveyor") {
-            if (brickSelected.belt != null) {
+            if (brickSelected is Conveyor) {
+                Conveyor tmpBrickSelected = brickSelected;
                 if (brickSelected.tile.name.ToLower().Contains("slant") && brickSelected.belt.subCordinates[1] == brickSelected && brickSelected.belt.subCordinates[0] == brickSelected.linkedBrick)
                 {
                     //go to next brick
@@ -568,7 +571,7 @@ public class SelectInspecter : MonoBehaviour
                             return true;
                         }
                     }
-                } else if (brickSelected.belt.subCordinates.Where(b => b.tile != null).ToList().First() != brickSelected)
+                } else if (tmpBrickSelected.belt.subCordinates.Where(b => b.tile != null).ToList().First() != brickSelected)
                 {
                     return true;
                 } else {
@@ -593,7 +596,8 @@ public class SelectInspecter : MonoBehaviour
 
     private bool NextBtnChecker() {
         if (brickType == "brick" || brickType == "conveyor") {
-            if (brickSelected.belt != null) {
+            if (brickSelected is Conveyor) {
+                Conveyor tmpBrickSelected = brickSelected;
                 if (brickSelected.tile.name.ToLower().Contains("slant") && brickSelected.belt.subCordinates[brickSelected.belt.subCordinates.Count-2] == brickSelected && brickSelected.belt.subCordinates[brickSelected.belt.subCordinates.Count-1] == brickSelected.linkedBrick)
                 {
                     //go to next brick
@@ -607,7 +611,7 @@ public class SelectInspecter : MonoBehaviour
                             return true;
                         }
                     }
-                } else if (brickSelected.belt.subCordinates.Where(b => b.tile != null).ToList().Last() != brickSelected)
+                } else if (tmpBrickSelected.belt.subCordinates.Where(b => b.tile != null).ToList().Last() != brickSelected)
                 {
                     return true;
                 } else {

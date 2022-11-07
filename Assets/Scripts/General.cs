@@ -211,7 +211,7 @@ public class General : MonoBehaviour
                         if (General.bricks[selectorLocation].tile.name.ToLower().Contains("fabricator"))
                         {
                             General.bricks[selectorLocation].fabricator.deSelect();
-                        } else if (General.bricks[selectorLocation].belt != null)
+                        } else if (General.bricks[selectorLocation] is Conveyor)
                         {
                             General.bricks[selectorLocation].belt.Deselect();
                             General.bricks[selectorLocation].resetTileTag(); // turn back to original tile
@@ -251,7 +251,7 @@ public class General : MonoBehaviour
                     {
                         if (General.bricks.ContainsKey(location)) // temporary if statement for brick not in bricks dictionary - REMOVE WHEN GAME SAVE is finished or WHEN ALL BRICKS IS in the bricks dictionary
                         {
-                            if (General.bricks[location].belt != null)
+                            if (General.bricks[location] is Conveyor)
                             {
                                 General.bricks[location].belt.Select();
                             }
@@ -712,8 +712,25 @@ public class General : MonoBehaviour
                 } else {
                     map.SetTile(selectorLocation, General.tile);
                     Map.updateColumn(selectorLocation);
-                    new Bricks(General.tile, selectorLocation, GlobalMethods.GetDirections(General.tile.name), GlobalMethods.GetInputDirections(General.tile.name, selectorLocation), GlobalMethods.GetOutputDirections(General.tile.name, selectorLocation), GlobalMethods.GetBelt(General.tile.name, selectorLocation));
+                    if (map.GetTile(selectorLocation).name.ToLower().Contains("conveyor"))
+                    {
+                        new Conveyor(General.tile, selectorLocation, GlobalMethods.GetDirections(General.tile.name), GlobalMethods.GetInputDirections(General.tile.name, selectorLocation), GlobalMethods.GetOutputDirections(General.tile.name, selectorLocation), GlobalMethods.GetBelt(General.tile.name, selectorLocation));
+                    } else if (map.GetTile(selectorLocation).name.ToLower().Contains("splitter"))
+                    {
+                        new Splitter(General.tile, selectorLocation, GlobalMethods.GetDirections(General.tile.name), GlobalMethods.GetInputDirections(General.tile.name, selectorLocation), GlobalMethods.GetOutputDirections(General.tile.name, selectorLocation), GlobalMethods.GetBelt(General.tile.name, selectorLocation));
+                    } else if (map.GetTile(selectorLocation).name.ToLower().Contains("merger"))
+                    {
+                        new Merger(General.tile, selectorLocation, GlobalMethods.GetDirections(General.tile.name), GlobalMethods.GetInputDirections(General.tile.name, selectorLocation), GlobalMethods.GetOutputDirections(General.tile.name, selectorLocation), GlobalMethods.GetBelt(General.tile.name, selectorLocation));
+                    } else if (map.GetTile(selectorLocation).name.ToLower().Contains("miner"))
+                    {
+                        new Miner(General.tile, selectorLocation, GlobalMethods.GetDirections(General.tile.name), GlobalMethods.GetInputDirections(General.tile.name, selectorLocation), GlobalMethods.GetOutputDirections(General.tile.name, selectorLocation), GlobalMethods.GetBelt(General.tile.name, selectorLocation));
+                    } else if (map.GetTile(selectorLocation).name.ToLower().Contains("smelter") || map.GetTile(selectorLocation).name.ToLower().Contains("constructer"))
+                    {
+                        new Converter(General.tile, selectorLocation, GlobalMethods.GetDirections(General.tile.name), GlobalMethods.GetInputDirections(General.tile.name, selectorLocation), GlobalMethods.GetOutputDirections(General.tile.name, selectorLocation), GlobalMethods.GetBelt(General.tile.name, selectorLocation));
+                    }
                 }
+
+                
                 
                 if (!Input.GetKey(KeyCode.LeftControl)) {
                     placeSelectorBox(true); // for updating the solector box on top of the place object

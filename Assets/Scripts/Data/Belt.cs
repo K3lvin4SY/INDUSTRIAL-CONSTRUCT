@@ -7,7 +7,7 @@ using UnityEngine.Tilemaps;
 
 public class Belt// : ScriptableObject
 {
-    public List<Bricks> subCordinates;
+    public List<Conveyor> subCordinates;
     //public Dictionary<int, Bricks> subCordinates;
     public List<string> storage = new List<string>();
     
@@ -22,8 +22,8 @@ public class Belt// : ScriptableObject
     /// It Creates the belt from a given dictionary of Vector3Ints and Tiles
     /// </summary>
     /// <param name="path">The path that the player is currently on.</param>
-    public Belt(List<Bricks> path) {
-        subCordinates = new List<Bricks>();
+    public Belt(List<Conveyor> path) {
+        subCordinates = new List<Conveyor>();
         foreach (var brick in path)
         {
             subCordinates.Add(brick);
@@ -31,7 +31,7 @@ public class Belt// : ScriptableObject
         }
     }
 
-    public void AddToBelt(Bricks brick)
+    public void AddToBelt(Conveyor brick)
     {
         if (subCordinates[0] == subCordinates.Last())
         {
@@ -228,9 +228,9 @@ public class Belt// : ScriptableObject
 
     public void fixFaltyDirection() { // not completed
         int loopNum = -1;
-        Bricks brickToBeFixed = null;
-        Bricks brickToUseFixing = null;
-        foreach (var brick in subCordinates)
+        Conveyor brickToBeFixed = null;
+        Conveyor brickToUseFixing = null;
+        foreach (Conveyor brick in subCordinates)
         {
             loopNum += 1;
             if (brick.inputDirections == null || brick.outputDirections == null) {
@@ -308,7 +308,7 @@ public class Belt// : ScriptableObject
             {
                 return subCordinates[0].directions[0];
             }
-            Bricks brick = subCordinates.Last();
+            Conveyor brick = subCordinates.Last();
             foreach (var dir in brick.directions)
             {
                 if (!(GlobalMethods.GetDirV3(dir, brick.cordinates) == subCordinates[subCordinates.Count-2].cordinates)) // if the brick is connected to the next brick in belt
@@ -321,7 +321,7 @@ public class Belt// : ScriptableObject
             {
                 return subCordinates[0].directions[0];
             }
-            Bricks brick = subCordinates[0];
+            Conveyor brick = subCordinates[0];
             foreach (var dir in brick.directions)
             {
                 if (!(GlobalMethods.GetDirV3(dir, brick.cordinates) == subCordinates[1].cordinates)) // if the brick is connected to the next brick in belt
@@ -334,7 +334,7 @@ public class Belt// : ScriptableObject
         return null;
     }
 
-    public string isBrick(Bricks brick) {
+    public string isBrick(Conveyor brick) {
         if (subCordinates.Last() == brick && subCordinates[0] == brick)
         {
             return "first&last";
@@ -347,7 +347,7 @@ public class Belt// : ScriptableObject
         return null;
     }
 
-    public bool isBrickLast(Bricks brick) {
+    public bool isBrickLast(Conveyor brick) {
         if (isBrick(brick) == "last")
         {
             return true;
@@ -355,7 +355,7 @@ public class Belt// : ScriptableObject
         return false;
     }
 
-    public Bricks getConnectingEdgeBrick(bool end, bool next = false, bool manual = false) {
+    public dynamic getConnectingEdgeBrick(bool end, bool next = false, bool manual = false) {
         Belt.calc +=1;
         //Debug.Log("Times Run: "+Belt.calc);
         if (subCordinates.Count == 1)
@@ -611,13 +611,13 @@ public class Belt// : ScriptableObject
         }
     }
     private void moveToNext(string item) { // send the item to the connected brick
-        Bricks brick = getConnectingEdgeBrick(true, true, true); // if some error may look inte the second true - note
+        dynamic brick = getConnectingEdgeBrick(true, true, true); // if some error may look inte the second true - note
         if (brick != null)
         {
             //removeEmptyStorageSpace();
             
             Debug.Log("Name: "+brick.tile.name);
-            if (brick.belt != null)
+            if (brick is Conveyor)
             {
                 storage.RemoveAt(storage.Count-1);
                 brick.belt.receiveItem(item);
@@ -654,7 +654,7 @@ public class Belt// : ScriptableObject
         Bricks brick = getConnectingEdgeBrick(true, true); // if some error may look inte the second true - note
         if (brick != null)
         {
-            if (brick.belt != null)
+            if (brick is Conveyor)
             {
                 return brick.belt;
             }
@@ -662,12 +662,12 @@ public class Belt// : ScriptableObject
         return brick;
     }//*/
 
-    private Bricks getNextItemHandler() { // send the item to the connected brick
+    private Conveyor getNextItemHandler() { // send the item to the connected brick
         return getConnectingEdgeBrick(true, true, true); // if some error may look inte the second true - note
     }
 
     private bool moveToNextCheck() { // check if there is a brick to move item to
-        Bricks brick = getConnectingEdgeBrick(true, true, true); // if some error may look inte the second true - note
+        dynamic brick = getConnectingEdgeBrick(true, true, true); // if some error may look inte the second true - note
         if (brick != null)
         {
             return true;
