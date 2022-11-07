@@ -540,7 +540,7 @@ public class Belt// : ScriptableObject
                         {
                             dir = GlobalMethods.oppositeDir(subCordinates[i].inputDirections[0]);
                         }
-                        if (subCordinates[i].GetItem(true) == "Iron_Ore") // temp
+                        if (false && subCordinates[i].GetItem(true) == "Iron_Ore") // temp
                         {
                             subCordinates[i].changeTileTag("animated+"+dir+"+"+subCordinates[i].GetItem(true).Replace("_", ""), true);
                         } else {
@@ -567,7 +567,7 @@ public class Belt// : ScriptableObject
                                 dir = GlobalMethods.oppositeDir(subCordinates[i].inputDirections[0]);
                             }
                             
-                            if (subCordinates[i].GetItem(true) == "Iron_Ore") // temp
+                            if (false && subCordinates[i].GetItem(true) == "Iron_Ore") // temp
                             {
                                 subCordinates[i].changeTileTag("still+"+dir+"+"+subCordinates[i].GetItem(true).Replace("_", ""), true);
                             } else {

@@ -360,19 +360,24 @@ public class Bricks
         if (outStorage.Count >= 1)
         {
             string newItem = outStorage[outStorage.Count-1];
-            outStorage.RemoveAt(outStorage.Count-1); // cant remove here
-            moveToNext(newItem);
+            if (moveToNextCheck(item))
+            {
+                outStorage.RemoveAt(outStorage.Count-1); // cant remove here
+                moveToNext(newItem);
+            }
         } else {
             moveToNext(null);
         }
     }
     private void collectItem(string item) {
         inStorage.Add(item);
+        Debug.Log("InItem: " + item);
     }
 
     private void convertItem() {
         if (inStorage.Count == 0)
         {
+            Debug.Log("Nothing to convert");
             return;
         }
         inStorage.RemoveAt(inStorage.Count-1);
@@ -380,6 +385,7 @@ public class Bricks
         foreach (var item in crafting["output"])
         {
             outStorage.Add(item);
+            Debug.Log("OutItem: " + item);
         }
     }
     
@@ -530,6 +536,22 @@ public class Bricks
         } else {
             Debug.Log("!!!ERROR!!! - FIX ME");
         }
+    }
+
+    private bool moveToNextCheck(string item) {
+        if (outputDirections != null)
+        {
+            foreach (var oDir in outputDirections)
+            {
+                var itemHandler = GlobalMethods.GetBrickByDirCord(oDir, cordinates);
+                if (itemHandler == null || itemHandler.ifStorageFull(item)) // if path is full or if there is no path at all
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
     }
 
     public virtual bool ifStorageFull(string item) {
