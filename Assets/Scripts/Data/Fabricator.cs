@@ -122,7 +122,7 @@ public class Fabricator
         storage[FromDir].Add(item);
     }
 
-    private void convertItem() {
+    public void convertItem() {
         // check
         List<string> itemsAvailable = new List<string>();
         foreach (var iDir in inputDirections)
