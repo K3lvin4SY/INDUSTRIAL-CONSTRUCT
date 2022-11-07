@@ -208,10 +208,26 @@ public class SelectInspecter : MonoBehaviour
             NextBtn.SetActive(false);
             PrevBtn.SetActive(false);
 
-            NorthBtn.SetActive(false);
-            EastBtn.SetActive(false);
-            SouthBtn.SetActive(false);
-            WestBtn.SetActive(false);
+            if (brickSelected.directions.Contains("N")) {
+                NorthBtn.SetActive(DirBtnChecker("N"));
+            } else {
+                NorthBtn.SetActive(false);
+            }
+            if (brickSelected.directions.Contains("E")) {
+                EastBtn.SetActive(DirBtnChecker("E"));
+            } else {
+                EastBtn.SetActive(false);
+            }
+            if (brickSelected.directions.Contains("S")) {
+                SouthBtn.SetActive(DirBtnChecker("S"));
+            } else {
+                SouthBtn.SetActive(false);
+            }
+            if (brickSelected.directions.Contains("W")) {
+                WestBtn.SetActive(DirBtnChecker("W"));
+            } else {
+                WestBtn.SetActive(false);
+            }
             brickPowerObject.SetActive(false);
             craftingObject.SetActive(true);
         } else if (SelectInspecter.brickType == "fabricator") {
