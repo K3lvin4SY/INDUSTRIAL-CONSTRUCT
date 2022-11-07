@@ -522,8 +522,8 @@ public class Belt// : ScriptableObject
                 //}
             }
             // temp code for seeing items passing through
-            Debug.Log(storage.Count);
-            Debug.Log(subCordinates.Count);
+            //Debug.Log(storage.Count);
+            //Debug.Log(subCordinates.Count);
             for (int i = 0; i < subCordinates.Count/*-1*/; i++)
             {
                 /*

@@ -31,6 +31,13 @@ public class GlobalMethods : MonoBehaviour
         {
             blockName = RemoveTagFromBlockName(blockName);
         }
+        /*if (blockName.ToLower().Contains("smelter"))
+        {
+            Debug.Log("---");
+            Debug.Log(blockName);
+            Debug.Log(tag);
+            Debug.Log("---");
+        }*/
         if (getBrickType(blockName) == "block") // chooses which type of block selector to use
         {
             /* Replacing the word "block" with "SelectorBox_block" in the tile name. */

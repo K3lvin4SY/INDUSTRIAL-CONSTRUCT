@@ -254,6 +254,27 @@ public class Bricks
         
     }
 
+    public string getTileTag() {
+        string blockName = getTileName();
+        if (doesHaveTag())
+        {
+            List<string> name = blockName.Split('_').ToList();
+            //Debug.Log(name[name.Count - 2]);
+            return name[name.Count - 2];
+        }
+        return null;
+    }
+
+    private bool doesHaveTag() {
+        string blockName = getTileName();
+        //Debug.Log("TTT: "+blockName);
+        if (blockName.Contains("selected") || blockName.Contains("selectorredbox") || blockName.Contains("selectorbox") || blockName.Contains("animated"))
+        {
+            return true;
+        }
+        return false;
+    }
+
     public void resetTileTag() {
         if (tile != null)
         {
@@ -345,6 +366,7 @@ public class Bricks
         {
             belt.receiveItem(item);
         } else if (tile != null && (tile.name.ToLower().Contains("smelter") || tile.name.ToLower().Contains("constructer"))) {
+            //Debug.Log("Item-Re: "+item);
             processConvertion(item);
         } else {
             moveToNext(item);
@@ -371,22 +393,75 @@ public class Bricks
     }
     private void collectItem(string item) {
         inStorage.Add(item);
-        Debug.Log("InItem: " + item);
+        //Debug.Log("InItem: " + item);
     }
 
     private void convertItem() {
-        if (inStorage.Count == 0)
+        string tag;
+        if (inStorage.Count == 0 || outStorage.Count >= 100)
         {
-            Debug.Log("Nothing to convert");
+            //Debug.Log("Nothing to convert or cant");
+            if (getName().Contains("smelter"))
+            {
+                tag = getTileTag();
+                if (tag == null)
+                {
+                    tag = null;
+                } else if (tag == "animated+fireup")
+                {
+                    tag = "animated+shutdown";
+                } else if (tag == "animated+shutdown")
+                {
+                    tag = null;
+                } else if (tag == "animated+on")
+                {
+                    tag = "animated+shutdown";
+                } else {
+                    tag = null;
+                }
+            } else {
+                tag = null;
+            }
+            //Debug.Log("off: "+tag);
+            changeTileTag(tag, true);
             return;
         }
         inStorage.RemoveAt(inStorage.Count-1);
         // Generate Produced item
+        if (getName().Contains("smelter"))
+        {
+            tag = getTileTag();
+            if (tag == null)
+            {
+                tag = "animated+fireup";
+            } else if (tag == "animated+fireup")
+            {
+                tag = "animated+on";
+            } else if (tag == "animated+shutdown")
+            {
+                tag = "animated+fireup";
+            } else if (tag == "animated+on")
+            {
+                tag = "animated+on";
+            }
+        } else {
+            tag = "animated";
+        }
+        //Debug.Log("on: "+tag);
+        changeTileTag(tag, true);
         foreach (var item in crafting["output"])
         {
             outStorage.Add(item);
-            Debug.Log("OutItem: " + item);
+            //Debug.Log("OutItem: " + item);
         }
+    }
+
+    public string getName() {
+        return tile.name.ToLower();
+    }
+
+    public string getTileName() {
+        return General.Instance.map.GetTile(cordinates).name.ToLower();
     }
     
     public bool mergerAvailable(string item) {
