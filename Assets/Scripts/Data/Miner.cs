@@ -5,7 +5,7 @@ using UnityEngine.Tilemaps;
 
 public class Miner : Bricks
 {
-    private List<string> outStorage = new List<string>(); // only for miners, converters and other machines
+    public List<string> outStorage = new List<string>(); // only for miners, converters and other machines
 
     public bool powerOn = false;
     public Miner(Tile cTile, Vector3Int coords, List<string> dir, List<string> inputDir, List<string> outputDir, Belt cBelt = null, Bricks linkBrick = null) : base(cTile, coords, dir, inputDir, outputDir) {

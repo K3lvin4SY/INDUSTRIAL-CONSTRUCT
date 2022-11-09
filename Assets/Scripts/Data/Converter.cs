@@ -6,8 +6,8 @@ using UnityEngine.Tilemaps;
 public class Converter : Bricks
 {
 
-    private List<string> inStorage = new List<string>(); // only for converters and other machines
-    private List<string> outStorage = new List<string>(); // only for miners, converters and other machines
+    public List<string> inStorage = new List<string>(); // only for converters and other machines
+    public List<string> outStorage = new List<string>(); // only for miners, converters and other machines
     public Converter(Tile cTile, Vector3Int coords, List<string> dir, List<string> inputDir, List<string> outputDir, Belt cBelt = null, Bricks linkBrick = null) : base(cTile, coords, dir, inputDir, outputDir) {
         General.bricks[coords] = this;
         General.tickers[coords] = this;

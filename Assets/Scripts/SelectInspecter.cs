@@ -88,14 +88,18 @@ public class SelectInspecter : MonoBehaviour
             SelectedBrickImgBg.SetActive(false);
         }
 
-        if (brickSelected.powerOn)
+        if (brickSelected is Miner)
         {
-            brickPowerLblImg.sprite = powerLblOn;
-            brickPowerBtnImg.sprite = powerBtnOn;
-        } else {
-            brickPowerLblImg.sprite = powerLblOff;
-            brickPowerBtnImg.sprite = powerBtnOff;
+            if (brickSelected.powerOn)
+            {
+                brickPowerLblImg.sprite = powerLblOn;
+                brickPowerBtnImg.sprite = powerBtnOn;
+            } else {
+                brickPowerLblImg.sprite = powerLblOff;
+                brickPowerBtnImg.sprite = powerBtnOff;
+            }
         }
+        
 
         if (SelectInspecter.brickType == "miner" || SelectInspecter.brickType == "converter" || SelectInspecter.brickType == "fabricator")
         {
@@ -468,7 +472,7 @@ public class SelectInspecter : MonoBehaviour
                         LoadBrick(connectionBrick);
                         Debug.Log("2n2");
                     }
-                } else if (brickSelected.belt.subCordinates/*.Where(b => b.tile != null).ToList()*/.Last() != brickSelected)
+                } else if (brickSelected.belt.subCordinates/*.Where(b => b.tile != null).ToList()*/[brickSelected.belt.subCordinates.Count-1] != brickSelected)
                 {
                     Debug.Log("p2");
                     Conveyor tmpBrickSelected = brickSelected;
@@ -488,7 +492,7 @@ public class SelectInspecter : MonoBehaviour
         } else if (brickType == "belt") {
             if (brickSelected.belt.getConnectingEdgeBrick(true, true, true) != null)
             {
-                Conveyor connectedBrick = brickSelected.belt.getConnectingEdgeBrick(true, true, true);
+                dynamic connectedBrick = brickSelected.belt.getConnectingEdgeBrick(true, true, true);
                 if (connectedBrick is Conveyor)
                 {
                     if (connectedBrick.tile == null)
@@ -518,7 +522,7 @@ public class SelectInspecter : MonoBehaviour
                         LoadBrick(connectionBrick);
                         Debug.Log("2n");
                     }
-                } else if (brickSelected.belt.subCordinates/*.Where(b => b.tile != null).ToList()*/.First() != brickSelected)
+                } else if (brickSelected.belt.subCordinates/*.Where(b => b.tile != null).ToList()*/[0] != brickSelected)
                 {
                     Conveyor tmpBrickSelected = brickSelected;
                     Conveyor prevBrick = tmpBrickSelected.belt.subCordinates.Where(b => b.tile != null).ToList()[tmpBrickSelected.belt.subCordinates.Where(b => b.tile != null).ToList().FindIndex(x => x == brickSelected) - 1];
@@ -537,7 +541,7 @@ public class SelectInspecter : MonoBehaviour
         } else if (brickType == "belt") {
             if (brickSelected.belt.getConnectingEdgeBrick(false, false, true) != null)
             {
-                Conveyor connectedBrick = brickSelected.belt.getConnectingEdgeBrick(false, false, true);
+                dynamic connectedBrick = brickSelected.belt.getConnectingEdgeBrick(false, false, true);
                 if (connectedBrick is Conveyor)
                 {
                     if (connectedBrick.tile == null)

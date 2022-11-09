@@ -223,6 +223,7 @@ public class Bricks
                     outputDirections.Remove(outputDir); // remove from output dirs
                     outputDirections.Add(outputDir); // add the removed to the end of list - why? because: that way it will rotate and not send everything though only one way untill full
                     itemHandler.receiveItem(item);
+                    break;
                 }
             }
         } else {

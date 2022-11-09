@@ -662,7 +662,7 @@ public class Belt// : ScriptableObject
         return brick;
     }//*/
 
-    private Conveyor getNextItemHandler() { // send the item to the connected brick
+    private dynamic getNextItemHandler() { // send the item to the connected brick
         return getConnectingEdgeBrick(true, true, true); // if some error may look inte the second true - note
     }
 
