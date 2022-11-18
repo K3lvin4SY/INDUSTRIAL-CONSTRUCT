@@ -46,6 +46,16 @@ public class populateItemGrid : MonoBehaviour
                                 "Gold_Ore"
                             }
                         }
+                    },
+                    new Dictionary<string, List<string>>()
+                    {
+                        {
+                            "output",
+                            new List<string>()
+                            {
+                                "Copper_Ore"
+                            }
+                        }
                     }
                 }
             },
