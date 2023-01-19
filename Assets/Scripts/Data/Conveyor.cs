@@ -161,6 +161,7 @@ public class Conveyor : Bricks
 
 
     public string GetItem(bool raw = false, int offset = 0) {
+        // raw means the returned string doesn't start with "Item: "
         if (belt != null)
         {
             int index = belt.subCordinates.IndexOf(this);

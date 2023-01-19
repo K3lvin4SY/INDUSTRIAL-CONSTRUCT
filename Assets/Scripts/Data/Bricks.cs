@@ -55,6 +55,7 @@ public class Bricks
             
 
             //*
+            // if statement is for adjusting direction on nearby belt if not conveyor
             if (GlobalMethods.isBrickNotExcludedType(this.tile.name, "conveyor"))
             {
                 if (GlobalMethods.GetBelt(this.tile.name, cordinates, true) != null)
@@ -148,8 +149,6 @@ public class Bricks
     
 
 
-    // below is only methods for splitter & merger
-
     public virtual void receiveItem(string item) {
         moveToNext(item);
     }
@@ -169,46 +168,7 @@ public class Bricks
     
     
 
-    private protected int connectedPaths() {
-        int amount = 0;
-        foreach (var dir in inputDirections)
-        {
-            if (General.bricks.ContainsKey(GlobalMethods.GetDirV3(dir, cordinates)) && General.bricks[GlobalMethods.GetDirV3(dir, cordinates)].directions != null && General.bricks[GlobalMethods.GetDirV3(dir, cordinates)].directions.Contains(GlobalMethods.oppositeDir(dir))) // if brick exist & it is connected to this brick
-            {
-                amount += 1;
-            }
-        }
-        return amount;
-    }
-
-    private protected List<Bricks> connectedOutputPaths() {
-        List<Bricks> amount = new List<Bricks>();
-        foreach (var dir in outputDirections)
-        {
-            if (General.bricks.ContainsKey(GlobalMethods.GetDirV3(dir, cordinates)) && General.bricks[GlobalMethods.GetDirV3(dir, cordinates)].directions != null && General.bricks[GlobalMethods.GetDirV3(dir, cordinates)].directions.Contains(GlobalMethods.oppositeDir(dir))) // if brick exist & it is connected to this brick
-            {
-                amount.Add(General.bricks[GlobalMethods.GetDirV3(dir, cordinates)]);
-            }
-        }
-        return amount;
-    }
-
-    private protected Dictionary<string, string> connectedPathsItems() {
-        Dictionary<string, string> amount = new Dictionary<string, string>();
-        foreach (var dir in inputDirections)
-        {
-            if (General.bricks.ContainsKey(GlobalMethods.GetDirV3(dir, cordinates)) && General.bricks[GlobalMethods.GetDirV3(dir, cordinates)].directions != null && General.bricks[GlobalMethods.GetDirV3(dir, cordinates)].directions.Contains(GlobalMethods.oppositeDir(dir))) // if brick exist & it is connected to this brick
-            {
-                amount[dir] = General.bricks[GlobalMethods.GetDirV3(dir, cordinates)].GetItem(true, 1);
-                //Debug.Log("BeltLast: "+General.bricks[GlobalMethods.GetDirV3(dir, cordinates)].belt.storage[General.bricks[GlobalMethods.GetDirV3(dir, cordinates)].belt.storage.Count-1]);
-                //Debug.Log("BeltLast: "+General.bricks[GlobalMethods.GetDirV3(dir, cordinates)].belt.subCordinates.Last().GetItem(true, 1));
-                //Debug.Log("Brickitem: "+amount[dir]);
-            } else {
-                amount[dir] = null;
-            }
-        }
-        return amount;
-    }
+    
 
     
 

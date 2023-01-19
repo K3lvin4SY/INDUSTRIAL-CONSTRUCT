@@ -456,6 +456,7 @@ public class Belt// : ScriptableObject
         updateConnectionBelt(inBrick);
     }
 
+    // for updating next belt in following path - i think?
     private void updateConnectionBelt(Bricks brick) {
         Vector3Int connectionBrickCordinates = GlobalMethods.GetDirV3(subCordinates.Last().outputDirections[0], subCordinates.Last().cordinates);
         Bricks beltBrick = subCordinates.Last();

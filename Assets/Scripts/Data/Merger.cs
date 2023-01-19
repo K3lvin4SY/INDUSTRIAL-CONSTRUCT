@@ -11,6 +11,18 @@ public class Merger : Bricks
         General.bricks[coords] = this;
     }
 
+    private protected int connectedPaths() {
+        int amount = 0;
+        foreach (var dir in inputDirections)
+        {
+            if (General.bricks.ContainsKey(GlobalMethods.GetDirV3(dir, cordinates)) && General.bricks[GlobalMethods.GetDirV3(dir, cordinates)].directions != null && General.bricks[GlobalMethods.GetDirV3(dir, cordinates)].directions.Contains(GlobalMethods.oppositeDir(dir))) // if brick exist & it is connected to this brick
+            {
+                amount += 1;
+            }
+        }
+        return amount;
+    }
+
     public bool mergerAvailable(string item) {
         if (itemsToChoose == null)
         {
