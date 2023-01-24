@@ -26,7 +26,7 @@ public class Fabricator
     public List<string> outputDirections;
     public Vector3Int cordinates;
     public Dictionary<string, List<string>> storage = new Dictionary<string, List<string>>();
-    public Fabricator(Tile cTile, Vector3Int coords, List<string> dirs, List<string> inputDir, List<string> outputDir, Belt cBelt = null, Bricks linkBrick = null)
+    public Fabricator(Tile cTile, Vector3Int coords, List<string> dirs, List<string> inputDir, List<string> outputDir)
     {
         Debug.Log(" - NEW Fabricator - ");
         this.masterDir = cTile.name[0].ToString();
