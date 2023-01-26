@@ -570,7 +570,7 @@ public class General : MonoBehaviour
         
     }
 
-    public void ScrollWheelZPos(int direction) {
+    public void scrollWheelZPos(int direction) {
         if (gameState == "build")
         {
             if (!minimumZ(location) || direction == 1)
@@ -630,7 +630,7 @@ public class General : MonoBehaviour
         
     }
 
-    public void MouseClick() {
+    public void mouseClick() {
         if (gameState == "build")
         {
             buildPath();
@@ -655,7 +655,7 @@ public class General : MonoBehaviour
                 {
                     if (Input.GetMouseButtonDown(0))
                     {
-                        SelectInspecter.InspectAtCordiante(selectorLocation);
+                        SelectInspecter.inspectAtCordiante(selectorLocation);
                     }
                 }
             }

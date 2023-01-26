@@ -122,11 +122,11 @@ public class Controller : MonoBehaviour
         //*
         if (Input.GetAxis("Mouse ScrollWheel") > 0f ) // scroll up z pos
         {
-            General.Instance.ScrollWheelZPos(1);
+            General.Instance.scrollWheelZPos(1);
         }
         else if (Input.GetAxis("Mouse ScrollWheel") < 0f ) // scroll down z pos
         {   
-            General.Instance.ScrollWheelZPos(-1);
+            General.Instance.scrollWheelZPos(-1);
         }
 
 
@@ -135,7 +135,7 @@ public class Controller : MonoBehaviour
             if (main.activeSelf)
             {
                 //Debug.Log(currentWin);
-                General.Instance.MouseClick();
+                General.Instance.mouseClick();
             }
         }//*/
     }

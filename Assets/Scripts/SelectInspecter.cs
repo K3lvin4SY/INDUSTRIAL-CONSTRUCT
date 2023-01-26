@@ -276,7 +276,7 @@ public class SelectInspecter : MonoBehaviour
             }
         }
     }
-    public static void InspectAtCordiante(Vector3Int cordinate) // move this to other file, maybe
+    public static void inspectAtCordiante(Vector3Int cordinate) // move this to other file, maybe
     {
         Debug.Log("Inspecting at " + cordinate);
         if (General.bricks.ContainsKey(cordinate))
@@ -297,7 +297,7 @@ public class SelectInspecter : MonoBehaviour
             //Display Brick Info
             //brickName.text = inspectedBrick.tile.name;
             
-            LoadBrick(inspectedBrick);
+            loadBrick(inspectedBrick);
             Controller.Instance.UseWindow(Controller.Instance.selectInspector);
             return;
         }
@@ -307,7 +307,7 @@ public class SelectInspecter : MonoBehaviour
         }
     }
 
-    private static string GetName(string brickName) {
+    private static string getName(string brickName) {
         brickName = brickName.ToLower();
         string newBrickName = "";
         if (brickName.Contains("conveyor"))
@@ -345,7 +345,7 @@ public class SelectInspecter : MonoBehaviour
         return newBrickName;
     }
 
-    private static void LoadBrick(dynamic brick) {
+    private static void loadBrick(dynamic brick) {
         Bricks orginalBrick = brick;
         bool isFabricator = false;
         // if try to load tile empty brick
@@ -360,7 +360,7 @@ public class SelectInspecter : MonoBehaviour
             isFabricator = true;
         }
         // Name
-        brickNameSelected = GetName(brick.tile.name);
+        brickNameSelected = getName(brick.tile.name);
 
         // Input
         brickInputsSelected = "";
@@ -454,7 +454,7 @@ public class SelectInspecter : MonoBehaviour
 
     public static void BackBtnTrigger() {
         if (brickType == "belt") {
-            LoadBrick(brickSelected);
+            loadBrick(brickSelected);
         }
     }
 
@@ -469,7 +469,7 @@ public class SelectInspecter : MonoBehaviour
                     if (brickSelected.belt.isBrick(brickSelected.linkedBrick) != null)
                     {
                         Bricks connectionBrick = brickSelected.linkedBrick.belt.getConnectingEdgeBrick(brickSelected.linkedBrick.belt.isBrickLast(brickSelected.linkedBrick), true, true);
-                        LoadBrick(connectionBrick);
+                        loadBrick(connectionBrick);
                         Debug.Log("2n2");
                     }
                 } else if (brickSelected.belt.subCordinates/*.Where(b => b.tile != null).ToList()*/[brickSelected.belt.subCordinates.Count-1] != brickSelected)
@@ -477,14 +477,14 @@ public class SelectInspecter : MonoBehaviour
                     Debug.Log("p2");
                     Conveyor tmpBrickSelected = brickSelected;
                     Conveyor nextBrick = tmpBrickSelected.belt.subCordinates.Where(b => b.tile != null).ToList()[tmpBrickSelected.belt.subCordinates.Where(b => b.tile != null).ToList().FindIndex(x => x == brickSelected) + 1];
-                    LoadBrick(nextBrick);
+                    loadBrick(nextBrick);
                 } else {
                     Debug.Log("p3");
                     //go to next brick
                     if (brickSelected.belt.isBrick(brickSelected) != null)
                     {
                         Bricks connectionBrick = brickSelected.belt.getConnectingEdgeBrick(brickSelected.belt.isBrickLast(brickSelected), true, true);
-                        LoadBrick(connectionBrick);
+                        loadBrick(connectionBrick);
                         Debug.Log("2n");
                     }
                 }
@@ -503,7 +503,7 @@ public class SelectInspecter : MonoBehaviour
                     }
                     LoadBelt(connectedBrick.belt);
                 } else {
-                    LoadBrick(connectedBrick);
+                    loadBrick(connectedBrick);
                 }
             }
         }
@@ -519,21 +519,21 @@ public class SelectInspecter : MonoBehaviour
                     if (brickSelected.belt.isBrick(brickSelected.linkedBrick) != null)
                     {
                         Bricks connectionBrick = brickSelected.linkedBrick.belt.getConnectingEdgeBrick(brickSelected.linkedBrick.belt.isBrickLast(brickSelected.linkedBrick), false, true);
-                        LoadBrick(connectionBrick);
+                        loadBrick(connectionBrick);
                         Debug.Log("2n");
                     }
                 } else if (brickSelected.belt.subCordinates/*.Where(b => b.tile != null).ToList()*/[0] != brickSelected)
                 {
                     Conveyor tmpBrickSelected = brickSelected;
                     Conveyor prevBrick = tmpBrickSelected.belt.subCordinates.Where(b => b.tile != null).ToList()[tmpBrickSelected.belt.subCordinates.Where(b => b.tile != null).ToList().FindIndex(x => x == brickSelected) - 1];
-                    LoadBrick(prevBrick);
+                    loadBrick(prevBrick);
                     Debug.Log("1p");
                 } else {
                     //go to previous brick
                     if (brickSelected.belt.isBrick(brickSelected) != null)
                     {
                         Bricks connectionBrick = brickSelected.belt.getConnectingEdgeBrick(brickSelected.belt.isBrickLast(brickSelected), false, true);
-                        LoadBrick(connectionBrick);
+                        loadBrick(connectionBrick);
                         Debug.Log("2p");
                     }
                 }
@@ -552,7 +552,7 @@ public class SelectInspecter : MonoBehaviour
                     }
                     LoadBelt(connectedBrick.belt);
                 } else {
-                    LoadBrick(connectedBrick);
+                    loadBrick(connectedBrick);
                 }
             }
         }
@@ -641,28 +641,28 @@ public class SelectInspecter : MonoBehaviour
     public static void NorthBtnTrigger() {
         if (General.bricks.ContainsKey(GlobalMethods.getDirV3("N", brickSelected.cordinates)))
         {
-            LoadBrick(General.bricks[GlobalMethods.getDirV3("N", brickSelected.cordinates)]);
+            loadBrick(General.bricks[GlobalMethods.getDirV3("N", brickSelected.cordinates)]);
         }
     }
 
     public static void WestBtnTrigger() {
         if (General.bricks.ContainsKey(GlobalMethods.getDirV3("W", brickSelected.cordinates)))
         {
-            LoadBrick(General.bricks[GlobalMethods.getDirV3("W", brickSelected.cordinates)]);
+            loadBrick(General.bricks[GlobalMethods.getDirV3("W", brickSelected.cordinates)]);
         }
     }
 
     public static void EastBtnTrigger() {
         if (General.bricks.ContainsKey(GlobalMethods.getDirV3("E", brickSelected.cordinates)))
         {
-            LoadBrick(General.bricks[GlobalMethods.getDirV3("E", brickSelected.cordinates)]);
+            loadBrick(General.bricks[GlobalMethods.getDirV3("E", brickSelected.cordinates)]);
         }
     }
 
     public static void SouthBtnTrigger() {
         if (General.bricks.ContainsKey(GlobalMethods.getDirV3("S", brickSelected.cordinates)))
         {
-            LoadBrick(General.bricks[GlobalMethods.getDirV3("S", brickSelected.cordinates)]);
+            loadBrick(General.bricks[GlobalMethods.getDirV3("S", brickSelected.cordinates)]);
         }
     }
 
