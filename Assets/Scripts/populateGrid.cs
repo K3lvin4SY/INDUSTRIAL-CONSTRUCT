@@ -23,7 +23,7 @@ public class populateGrid : MonoBehaviour
         Populate();
         //SelectedBrick.sprite = MousePosition2D.tile.sprite;
         /*MousePosition2D sn = gameObject.GetComponent<MousePosition2D>();
-        Debug.Log(sn.GetTileByName("simple_grass_block").name);//*/
+        Debug.Log(sn.getTileByName("simple_grass_block").name);//*/
     }
 
     private void Update() {
@@ -32,7 +32,7 @@ public class populateGrid : MonoBehaviour
         SelectedBrick.sprite = General.tile.sprite;
     }
 
-    private void GetSpriteByName() {
+    private void getSpriteByName() {
         sprites.Clear();
 
         string[] assetFiles = Directory.GetFiles("Assets/Tiles/Assets/"); // Gets string array of the tile assets file path
@@ -57,7 +57,7 @@ public class populateGrid : MonoBehaviour
     }
 
     void Populate() { //https://www.youtube.com/watch?v=kdkrjCF0KCo
-        GetSpriteByName();
+        getSpriteByName();
         GameObject newObj;
 
         foreach (var (spritei, tilei) in sprites)

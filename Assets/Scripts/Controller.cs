@@ -113,7 +113,7 @@ public class Controller : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R))
         {
             /*GameSenceHandler gmh = new GameSenceHandler();
-            BoundsInt cellBox = new BoundsInt(gmh.GetDirV3("SW", selectorLocation), gmh.makeV3Int(3, 3, 4));
+            BoundsInt cellBox = new BoundsInt(gmh.getDirV3("SW", selectorLocation), gmh.makeV3Int(3, 3, 4));
             tileBox = map.GetTilesBlock(cellBox);
             tileBoxCheck = tileBox.Select(s => s == null).ToArray();//*/
             General.Instance.rotateBrick();

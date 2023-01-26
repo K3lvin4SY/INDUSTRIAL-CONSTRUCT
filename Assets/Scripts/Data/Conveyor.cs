@@ -16,11 +16,11 @@ public class Conveyor : Bricks
         {
             if (getName().Contains("slant")) // creates an invicibale brick if it is a slant brick
             {
-                directions.Remove(GlobalMethods.NextTileDir(tile.name, tile.name[0].ToString()));
+                directions.Remove(GlobalMethods.nextTileDir(tile.name, tile.name[0].ToString()));
                 directions.Add("U");
 
-                linkedBrick = new Conveyor(null, GlobalMethods.GetDirV3("U", cordinates), new List<string>() { "D", GlobalMethods.NextTileDir(tile.name, tile.name[0].ToString())[0].ToString() }, null, null, belt, this);
-                General.bricks[GlobalMethods.GetDirV3("U", cordinates)] = linkedBrick;
+                linkedBrick = new Conveyor(null, GlobalMethods.getDirV3("U", cordinates), new List<string>() { "D", GlobalMethods.nextTileDir(tile.name, tile.name[0].ToString())[0].ToString() }, null, null, belt, this);
+                General.bricks[GlobalMethods.getDirV3("U", cordinates)] = linkedBrick;
                 //Debug.Log(inputDirections);
                 //Debug.Log(outputDirections);
                 if (inputDirections != null || outputDirections != null)
@@ -33,13 +33,13 @@ public class Conveyor : Bricks
                         outputDirections.RemoveAt(0);
                         outputDirections.Add("U");
                         linkedBrick.inputDirections.Add("D");
-                        linkedBrick.outputDirections.Add(GlobalMethods.NextTileDir(tile.name, tile.name[0].ToString())[0].ToString());
+                        linkedBrick.outputDirections.Add(GlobalMethods.nextTileDir(tile.name, tile.name[0].ToString())[0].ToString());
                     }
                     else
                     {
                         inputDirections.RemoveAt(0);
                         inputDirections.Add("U");
-                        linkedBrick.inputDirections.Add(GlobalMethods.NextTileDir(tile.name, tile.name[0].ToString())[0].ToString());
+                        linkedBrick.inputDirections.Add(GlobalMethods.nextTileDir(tile.name, tile.name[0].ToString())[0].ToString());
                         linkedBrick.outputDirections.Add("D"); // Not working ?
                     }
                 }
@@ -52,12 +52,12 @@ public class Conveyor : Bricks
                 //*
                 if (linkedBrick != null)
                 {
-                    belt.AddToBelt(linkedBrick); // adds linkedBrick to belt
+                    belt.addToBelt(linkedBrick); // adds linkedBrick to belt
                 }//*/
             } else if (belt != null) {
                 if (linkedBrick == null)
                 {
-                    belt.AddToBelt(this);
+                    belt.addToBelt(this);
                 }
 
                 if (linkedBrick != null) // if conveyor plack has a linked brick it adds the linked brick to the belt
@@ -65,23 +65,23 @@ public class Conveyor : Bricks
                     if (tile != null)
                     {
                         //Debug.Log("!!!Belt Add SUCCESS!!!");
-                        if (belt.AddToBeltCheck(this))
+                        if (belt.addToBeltCheck(this))
                         {
-                            belt.AddToBelt(this);
-                            belt.AddToBelt(linkedBrick);
+                            belt.addToBelt(this);
+                            belt.addToBelt(linkedBrick);
                         } else {
-                            belt.AddToBelt(linkedBrick);
-                            belt.AddToBelt(this);
+                            belt.addToBelt(linkedBrick);
+                            belt.addToBelt(this);
                         }
                     }
                 }
                 /*else if (linkedBrick.tile == null)
                 {
-                    belt.AddToBelt(this);
+                    belt.addToBelt(this);
                     /*
                     if (linkedBrick.tile.name.ToLower().Contains("slant"))
                     {
-                        belt.AddToBelt(this); 
+                        belt.addToBelt(this); 
                     } 
                 }*/
                 
@@ -125,9 +125,9 @@ public class Conveyor : Bricks
                     }
                 }
                 Debug.Log("!!!PASSINATION!!!");//*/
-                //Debug.Log(GlobalMethods.GetBelt("", cordinates, true, directions).subCordinates.Count.ToString());
+                //Debug.Log(GlobalMethods.getBelt("", cordinates, true, directions).subCordinates.Count.ToString());
 
-                //GlobalMethods.GetBelt("", cordinates, true, directions).assignDirection(this);
+                //GlobalMethods.getBelt("", cordinates, true, directions).assignDirection(this);
             } else {
                 Debug.Log("!!!LOOK IN TO PROBLEM!!!");
                 Debug.Log(tile);

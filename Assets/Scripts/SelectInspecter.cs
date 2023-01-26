@@ -117,7 +117,7 @@ public class SelectInspecter : MonoBehaviour
                     if (craftingHandler.crafting["output"].Count == 1 && craftingHandler.crafting["output"][0] != null)
                     {
                         child.gameObject.SetActive(true);
-                        child.GetComponent<Image>().sprite = GlobalMethods.GetSpriteByName(craftingHandler.crafting["output"][0]);
+                        child.GetComponent<Image>().sprite = GlobalMethods.getSpriteByName(craftingHandler.crafting["output"][0]);
                     } else {
                         child.gameObject.SetActive(false);
                     }
@@ -126,7 +126,7 @@ public class SelectInspecter : MonoBehaviour
                     if (craftingHandler.crafting["input"].Count-1 >= loopNum && craftingHandler.crafting["input"][0] != null)
                     {
                         child.gameObject.SetActive(true);
-                        child.GetComponent<Image>().sprite = GlobalMethods.GetSpriteByName(craftingHandler.crafting["input"][loopNum]);
+                        child.GetComponent<Image>().sprite = GlobalMethods.getSpriteByName(craftingHandler.crafting["input"][loopNum]);
                     } else {
                         child.gameObject.SetActive(false);
                     }
@@ -639,39 +639,39 @@ public class SelectInspecter : MonoBehaviour
     }
 
     public static void NorthBtnTrigger() {
-        if (General.bricks.ContainsKey(GlobalMethods.GetDirV3("N", brickSelected.cordinates)))
+        if (General.bricks.ContainsKey(GlobalMethods.getDirV3("N", brickSelected.cordinates)))
         {
-            LoadBrick(General.bricks[GlobalMethods.GetDirV3("N", brickSelected.cordinates)]);
+            LoadBrick(General.bricks[GlobalMethods.getDirV3("N", brickSelected.cordinates)]);
         }
     }
 
     public static void WestBtnTrigger() {
-        if (General.bricks.ContainsKey(GlobalMethods.GetDirV3("W", brickSelected.cordinates)))
+        if (General.bricks.ContainsKey(GlobalMethods.getDirV3("W", brickSelected.cordinates)))
         {
-            LoadBrick(General.bricks[GlobalMethods.GetDirV3("W", brickSelected.cordinates)]);
+            LoadBrick(General.bricks[GlobalMethods.getDirV3("W", brickSelected.cordinates)]);
         }
     }
 
     public static void EastBtnTrigger() {
-        if (General.bricks.ContainsKey(GlobalMethods.GetDirV3("E", brickSelected.cordinates)))
+        if (General.bricks.ContainsKey(GlobalMethods.getDirV3("E", brickSelected.cordinates)))
         {
-            LoadBrick(General.bricks[GlobalMethods.GetDirV3("E", brickSelected.cordinates)]);
+            LoadBrick(General.bricks[GlobalMethods.getDirV3("E", brickSelected.cordinates)]);
         }
     }
 
     public static void SouthBtnTrigger() {
-        if (General.bricks.ContainsKey(GlobalMethods.GetDirV3("S", brickSelected.cordinates)))
+        if (General.bricks.ContainsKey(GlobalMethods.getDirV3("S", brickSelected.cordinates)))
         {
-            LoadBrick(General.bricks[GlobalMethods.GetDirV3("S", brickSelected.cordinates)]);
+            LoadBrick(General.bricks[GlobalMethods.getDirV3("S", brickSelected.cordinates)]);
         }
     }
 
     private bool DirBtnChecker(string dir) {
-        if (General.bricks.ContainsKey(GlobalMethods.GetDirV3(dir, brickSelected.cordinates)))
+        if (General.bricks.ContainsKey(GlobalMethods.getDirV3(dir, brickSelected.cordinates)))
         {
-            foreach (var dir2 in General.bricks[GlobalMethods.GetDirV3(dir, brickSelected.cordinates)].directions)
+            foreach (var dir2 in General.bricks[GlobalMethods.getDirV3(dir, brickSelected.cordinates)].directions)
             {
-                if (GlobalMethods.GetDirV3(dir2, General.bricks[GlobalMethods.GetDirV3(dir, brickSelected.cordinates)].cordinates) == brickSelected.cordinates)
+                if (GlobalMethods.getDirV3(dir2, General.bricks[GlobalMethods.getDirV3(dir, brickSelected.cordinates)].cordinates) == brickSelected.cordinates)
                 {
                     return true;
                 }

@@ -37,7 +37,7 @@ public class General : MonoBehaviour
     private void Start() {
         InvokeRepeating("tick", 0f, 1.5f);  //0s delay, repeat every 1.5s
         Debug.Log("test1");
-        General.tile = GlobalMethods.GetTileByName("E-conveyor_Straight_slab");
+        General.tile = GlobalMethods.getTileByName("E-conveyor_Straight_slab");
         Debug.Log(General.tile.name);
         General.Instance = this;
         gameState = "select";
@@ -123,7 +123,7 @@ public class General : MonoBehaviour
     private void Update() {
         /*populateGrid pgScript = new populateGrid();
         Debug.Log(pgScript.tilePick2);
-        tile = GetTileByName(pgScript.tilePick2);//*/
+        tile = getTileByName(pgScript.tilePick2);//*/
         // update grid position
         Vector2 mouseWorldPos2 = Camera.main.ScreenToWorldPoint(Input.mousePosition); // update mouseWorld position
         Vector3 mouseWorldPos3 = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -190,7 +190,7 @@ public class General : MonoBehaviour
             if (map.GetTile(selectorLocation).name.Contains("SelectorBox") || map.GetTile(selectorLocation).name.Contains("SelectorRedBox")) { // if tile is selectorbox
                 map.SetTile(selectorLocation, null); // clear grid location
             } else if (map.GetTile(selectorLocation).name.ToLower().Contains("selected")) { // if tile is marked
-                map.SetTile(selectorLocation, GlobalMethods.GetTileByName(GlobalMethods.RemoveTagFromBlockName(map.GetTile(selectorLocation).name))); // turn back to original tile
+                map.SetTile(selectorLocation, GlobalMethods.getTileByName(GlobalMethods.removeTagFromBlockName(map.GetTile(selectorLocation).name))); // turn back to original tile
             }
         }
         if (map.GetTile(selectorLocation2)) { // if selectorLocation2 has a tile
@@ -219,7 +219,7 @@ public class General : MonoBehaviour
                             General.bricks[selectorLocation].resetTileTag(); // turn back to original tile
                         }
                     } else {
-                        map.SetTile(selectorLocation, GlobalMethods.GetTileByName(GlobalMethods.RemoveTagFromBlockName(map.GetTile(selectorLocation).name))); // turn back to original tile
+                        map.SetTile(selectorLocation, GlobalMethods.getTileByName(GlobalMethods.removeTagFromBlockName(map.GetTile(selectorLocation).name))); // turn back to original tile
                     }
                     
                         
@@ -233,8 +233,8 @@ public class General : MonoBehaviour
 
             if (map.HasTile(location)) {
                 TileBase tile = map.GetTile(location);
-                Tile tmpTile = GlobalMethods.GetTileByName(GlobalMethods.AddTagToBlockName(tile.name, "selected"));
-                if (GlobalMethods.isPlayerEditable(tmpTile.name)) {
+                Tile tmpTile = GlobalMethods.getTileByName(GlobalMethods.addTagToBlockName(tile.name, "selected"));
+                if (GlobalMethods.isBrickPlayerEditable(tmpTile.name)) {
                     if (General.bricks.ContainsKey(location))
                     {
                         // add tag via bricks class
@@ -327,14 +327,14 @@ public class General : MonoBehaviour
                     {
                         if (GlobalMethods.arePathsColliding(General.tile.name, location) || GlobalMethods.willCollitionOccur(General.tile.name, location))
                         {
-                            map.SetTile(location, GlobalMethods.GetTileByName(GlobalMethods.AddTagToBlockName(General.tile.name, "SelectorRedBox"))); // set tile to selectorredbox
+                            map.SetTile(location, GlobalMethods.getTileByName(GlobalMethods.addTagToBlockName(General.tile.name, "SelectorRedBox"))); // set tile to selectorredbox
                         } else
                         {
-                            map.SetTile(location, GlobalMethods.GetTileByName(GlobalMethods.AddTagToBlockName(General.tile.name, "SelectorBox"))); // set tile to selectorbox
+                            map.SetTile(location, GlobalMethods.getTileByName(GlobalMethods.addTagToBlockName(General.tile.name, "SelectorBox"))); // set tile to selectorbox
                         }
                         
                     } else {
-                        map.SetTile(location, GlobalMethods.GetTileByName(buildingBlock/*+"sb"*/));
+                        map.SetTile(location, GlobalMethods.getTileByName(buildingBlock/*+"sb"*/));
                     }
                 }
                 
@@ -378,7 +378,7 @@ public class General : MonoBehaviour
             tempLocation.z = i; // sets i as z value
             if (map.GetTile(tempLocation)) { // if tempLocation is not empty
                 availableZ.Add(i); // add taken Z cordiante to list
-                if (GlobalMethods.isPlayerEditable(map.GetTile(tempLocation).name)) //if tile is conveyor
+                if (GlobalMethods.isBrickPlayerEditable(map.GetTile(tempLocation).name)) //if tile is conveyor
                 {
                     occupiedZ.Add(i); // add taken Z cordiante to list
                 }
@@ -464,7 +464,7 @@ public class General : MonoBehaviour
                 {
                     tempLocation.z = i;
 
-                    BoundsInt cellBox = new BoundsInt(GlobalMethods.GetDirV3("SWD", tempLocation), GlobalMethods.makeV3Int(3, 3, 1));
+                    BoundsInt cellBox = new BoundsInt(GlobalMethods.getDirV3("SWD", tempLocation), GlobalMethods.makeV3Int(3, 3, 1));
                     TileBase[] tileBox = map.GetTilesBlock(cellBox);
                     List<bool> tileBoxCheck = new List<bool>();
                     foreach (var item in tileBox)
@@ -486,7 +486,7 @@ public class General : MonoBehaviour
                     {
                         aditionalZ.Add(i);
                     } else {
-                        cellBox = new BoundsInt(GlobalMethods.GetDirV3("SW", tempLocation), GlobalMethods.makeV3Int(3, 3, 4));
+                        cellBox = new BoundsInt(GlobalMethods.getDirV3("SW", tempLocation), GlobalMethods.makeV3Int(3, 3, 4));
                         tileBox = map.GetTilesBlock(cellBox);
                         tileBox = tileBox.Where((source, index) =>index != 16).ToArray();
                         bool[] tileBoxCheck2 = tileBox.Select(s => !(s == null)).ToArray();
@@ -695,7 +695,7 @@ public class General : MonoBehaviour
             }
             
             Debug.Log(newTileName);
-            General.tile = GlobalMethods.GetTileByName(newTileName);
+            General.tile = GlobalMethods.getTileByName(newTileName);
             placeSelectorBox(update: true);
         }
     }
@@ -708,25 +708,25 @@ public class General : MonoBehaviour
 
                 if (map.GetTile(selectorLocation).name.ToLower().Contains("fabricator"))
                 {
-                    new Fabricator(General.tile, selectorLocation, GlobalMethods.GetDirections(General.tile.name), GlobalMethods.GetInputDirections(General.tile.name, selectorLocation), GlobalMethods.GetOutputDirections(General.tile.name, selectorLocation));
+                    new Fabricator(General.tile, selectorLocation, GlobalMethods.getDirections(General.tile.name), GlobalMethods.getInputDirections(General.tile.name, selectorLocation), GlobalMethods.getOutputDirections(General.tile.name, selectorLocation));
                 } else {
                     map.SetTile(selectorLocation, General.tile);
                     Map.updateColumn(selectorLocation);
                     if (map.GetTile(selectorLocation).name.ToLower().Contains("conveyor"))
                     {
-                        new Conveyor(General.tile, selectorLocation, GlobalMethods.GetDirections(General.tile.name), GlobalMethods.GetInputDirections(General.tile.name, selectorLocation), GlobalMethods.GetOutputDirections(General.tile.name, selectorLocation), GlobalMethods.GetBelt(General.tile.name, selectorLocation));
+                        new Conveyor(General.tile, selectorLocation, GlobalMethods.getDirections(General.tile.name), GlobalMethods.getInputDirections(General.tile.name, selectorLocation), GlobalMethods.getOutputDirections(General.tile.name, selectorLocation), GlobalMethods.getBelt(General.tile.name, selectorLocation));
                     } else if (map.GetTile(selectorLocation).name.ToLower().Contains("splitter"))
                     {
-                        new Splitter(General.tile, selectorLocation, GlobalMethods.GetDirections(General.tile.name), GlobalMethods.GetInputDirections(General.tile.name, selectorLocation), GlobalMethods.GetOutputDirections(General.tile.name, selectorLocation), GlobalMethods.GetBelt(General.tile.name, selectorLocation));
+                        new Splitter(General.tile, selectorLocation, GlobalMethods.getDirections(General.tile.name), GlobalMethods.getInputDirections(General.tile.name, selectorLocation), GlobalMethods.getOutputDirections(General.tile.name, selectorLocation), GlobalMethods.getBelt(General.tile.name, selectorLocation));
                     } else if (map.GetTile(selectorLocation).name.ToLower().Contains("merger"))
                     {
-                        new Merger(General.tile, selectorLocation, GlobalMethods.GetDirections(General.tile.name), GlobalMethods.GetInputDirections(General.tile.name, selectorLocation), GlobalMethods.GetOutputDirections(General.tile.name, selectorLocation), GlobalMethods.GetBelt(General.tile.name, selectorLocation));
+                        new Merger(General.tile, selectorLocation, GlobalMethods.getDirections(General.tile.name), GlobalMethods.getInputDirections(General.tile.name, selectorLocation), GlobalMethods.getOutputDirections(General.tile.name, selectorLocation), GlobalMethods.getBelt(General.tile.name, selectorLocation));
                     } else if (map.GetTile(selectorLocation).name.ToLower().Contains("miner"))
                     {
-                        new Miner(General.tile, selectorLocation, GlobalMethods.GetDirections(General.tile.name), GlobalMethods.GetInputDirections(General.tile.name, selectorLocation), GlobalMethods.GetOutputDirections(General.tile.name, selectorLocation), GlobalMethods.GetBelt(General.tile.name, selectorLocation));
+                        new Miner(General.tile, selectorLocation, GlobalMethods.getDirections(General.tile.name), GlobalMethods.getInputDirections(General.tile.name, selectorLocation), GlobalMethods.getOutputDirections(General.tile.name, selectorLocation), GlobalMethods.getBelt(General.tile.name, selectorLocation));
                     } else if (map.GetTile(selectorLocation).name.ToLower().Contains("smelter") || map.GetTile(selectorLocation).name.ToLower().Contains("constructer"))
                     {
-                        new Converter(General.tile, selectorLocation, GlobalMethods.GetDirections(General.tile.name), GlobalMethods.GetInputDirections(General.tile.name, selectorLocation), GlobalMethods.GetOutputDirections(General.tile.name, selectorLocation), GlobalMethods.GetBelt(General.tile.name, selectorLocation));
+                        new Converter(General.tile, selectorLocation, GlobalMethods.getDirections(General.tile.name), GlobalMethods.getInputDirections(General.tile.name, selectorLocation), GlobalMethods.getOutputDirections(General.tile.name, selectorLocation), GlobalMethods.getBelt(General.tile.name, selectorLocation));
                     }
                 }
 

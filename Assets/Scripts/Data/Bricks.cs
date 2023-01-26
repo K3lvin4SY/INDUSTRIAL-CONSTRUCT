@@ -46,7 +46,7 @@ public class Bricks
 
             /*
             if (tile.name.ToLower().Contains("slant")) {
-                //linkedBrick.belt.AddToBelt(linkedBrick);
+                //linkedBrick.belt.addToBelt(linkedBrick);
                 //Debug.Log("Belt Length: "+belt.subCordinates.Count.ToString());
 
                 //Debug.Log(linkedBrick.outputDirections.Count.ToString()); // should not be 0 FIX!!!
@@ -58,9 +58,9 @@ public class Bricks
             // if statement is for adjusting direction on nearby belt if not conveyor
             if (GlobalMethods.isBrickNotExcludedType(this.tile.name, "conveyor"))
             {
-                if (GlobalMethods.GetBelt(this.tile.name, cordinates, true) != null)
+                if (GlobalMethods.getBelt(this.tile.name, cordinates, true) != null)
                 {
-                    GlobalMethods.GetBelt(this.tile.name, cordinates, true).assignDirection(this);
+                    GlobalMethods.getBelt(this.tile.name, cordinates, true).assignDirection(this);
                 }
             }//*/
         }
@@ -74,19 +74,19 @@ public class Bricks
         {
             if (tag == null)
             {
-                General.Instance.map.SetTile(cordinates, GlobalMethods.GetTileByName(GlobalMethods.RemoveTagFromBlockName(tile.name))); // Set tile to original type
+                General.Instance.map.SetTile(cordinates, GlobalMethods.getTileByName(GlobalMethods.removeTagFromBlockName(tile.name))); // Set tile to original type
                 if (!temp)
                 {
                     currentTag = tag;
                 }
                 return;
             }
-            string newBrickName = GlobalMethods.AddTagToBlockName(tile.name, tag);
+            string newBrickName = GlobalMethods.addTagToBlockName(tile.name, tag);
             if (tag.Contains("animated"))
             {
-                General.Instance.map.SetTile(cordinates, GlobalMethods.GetAnimatedTileByName(newBrickName));
+                General.Instance.map.SetTile(cordinates, GlobalMethods.getAnimatedTileByName(newBrickName));
             } else {
-                General.Instance.map.SetTile(cordinates, GlobalMethods.GetTileByName(newBrickName));
+                General.Instance.map.SetTile(cordinates, GlobalMethods.getTileByName(newBrickName));
             }
             if (!temp)
             {
@@ -122,15 +122,15 @@ public class Bricks
         {
             if (currentTag == null)
             {
-                General.Instance.map.SetTile(cordinates, GlobalMethods.GetTileByName(GlobalMethods.RemoveTagFromBlockName(tile.name))); // Set tile to original type
+                General.Instance.map.SetTile(cordinates, GlobalMethods.getTileByName(GlobalMethods.removeTagFromBlockName(tile.name))); // Set tile to original type
                 return;
             }
-            string newBrickName = GlobalMethods.AddTagToBlockName(tile.name, currentTag);
+            string newBrickName = GlobalMethods.addTagToBlockName(tile.name, currentTag);
             if (currentTag.Contains("animated"))
             {
-                General.Instance.map.SetTile(cordinates, GlobalMethods.GetAnimatedTileByName(newBrickName));
+                General.Instance.map.SetTile(cordinates, GlobalMethods.getAnimatedTileByName(newBrickName));
             } else {
-                General.Instance.map.SetTile(cordinates, GlobalMethods.GetTileByName(newBrickName));
+                General.Instance.map.SetTile(cordinates, GlobalMethods.getTileByName(newBrickName));
             }
         }
     }
@@ -177,7 +177,7 @@ public class Bricks
         {
             foreach (string outputDir in outputDirections)
             {
-                var itemHandler = GlobalMethods.GetBrickByDirCord(outputDir, cordinates);
+                var itemHandler = GlobalMethods.getBrickByDirCord(outputDir, cordinates);
                 if (!(itemHandler == null || itemHandler.ifStorageFull(item))) // if path is full or if there is no path at all
                 {
                     outputDirections.Remove(outputDir); // remove from output dirs
@@ -196,7 +196,7 @@ public class Bricks
         {
             foreach (string outputDir in outputDirections)
             {
-                var itemHandler = GlobalMethods.GetBrickByDirCord(outputDir, cordinates);
+                var itemHandler = GlobalMethods.getBrickByDirCord(outputDir, cordinates);
                 if (itemHandler == null || itemHandler.ifStorageFull(item)) // if path is full or if there is no path at all
                 {
                     if (outputDirections.Last() == outputDir)

@@ -281,7 +281,7 @@ public class populateItemGrid : MonoBehaviour
         foreach (var recepie in craftingRecepie[type])
         {
             newObj = (GameObject)Instantiate(prefab, transform);
-            newObj.GetComponent<Image>().sprite = GlobalMethods.GetSpriteByName("crafting-window");
+            newObj.GetComponent<Image>().sprite = GlobalMethods.getSpriteByName("crafting-window");
 
             if (recepie.ContainsKey("input"))
             {
@@ -290,7 +290,7 @@ public class populateItemGrid : MonoBehaviour
                 {
                     
                     newObjItem = (GameObject)Instantiate(prefab, newObj.transform);
-                    newObjItem.GetComponent<Image>().sprite = GlobalMethods.GetSpriteByName(item);
+                    newObjItem.GetComponent<Image>().sprite = GlobalMethods.getSpriteByName(item);
                     newObjItem.transform.Translate(new Vector3(-21.2f+12.2f*inputLoopNum, 3f, 0f));
                     inputLoopNum++;
                 }
@@ -299,7 +299,7 @@ public class populateItemGrid : MonoBehaviour
             {
                 var item = recepie["output"][0];
                 newObjItem = (GameObject)Instantiate(prefab, newObj.transform);
-                newObjItem.GetComponent<Image>().sprite = GlobalMethods.GetSpriteByName(item);
+                newObjItem.GetComponent<Image>().sprite = GlobalMethods.getSpriteByName(item);
                 newObjItem.transform.Translate(new Vector3(22.3f, 3f, 0f));
             }
             

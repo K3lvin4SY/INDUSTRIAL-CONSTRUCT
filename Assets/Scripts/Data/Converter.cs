@@ -47,7 +47,7 @@ public class Converter : Bricks
         {
             foreach (var oDir in outputDirections) // should only do 1 loop because outputDirections.count == 1
             {
-                var itemHandler = GlobalMethods.GetBrickByDirCord(oDir, cordinates);
+                var itemHandler = GlobalMethods.getBrickByDirCord(oDir, cordinates);
                 if (itemHandler == null || itemHandler.ifStorageFull(item)) // if path is full or if there is no path at all
                 {
                     return false;

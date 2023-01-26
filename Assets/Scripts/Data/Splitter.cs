@@ -15,9 +15,9 @@ public class Splitter : Bricks
         List<Bricks> amount = new List<Bricks>();
         foreach (var dir in outputDirections)
         {
-            if (General.bricks.ContainsKey(GlobalMethods.GetDirV3(dir, cordinates)) && General.bricks[GlobalMethods.GetDirV3(dir, cordinates)].directions != null && General.bricks[GlobalMethods.GetDirV3(dir, cordinates)].directions.Contains(GlobalMethods.oppositeDir(dir))) // if brick exist & it is connected to this brick
+            if (General.bricks.ContainsKey(GlobalMethods.getDirV3(dir, cordinates)) && General.bricks[GlobalMethods.getDirV3(dir, cordinates)].directions != null && General.bricks[GlobalMethods.getDirV3(dir, cordinates)].directions.Contains(GlobalMethods.oppositeDir(dir))) // if brick exist & it is connected to this brick
             {
-                amount.Add(General.bricks[GlobalMethods.GetDirV3(dir, cordinates)]);
+                amount.Add(General.bricks[GlobalMethods.getDirV3(dir, cordinates)]);
             }
         }
         return amount;
@@ -30,7 +30,7 @@ public class Splitter : Bricks
             foreach (string outputDir in outputDirections)
             {
                 //Debug.Log(outputDir);
-                var itemHandler = GlobalMethods.GetBrickByDirCord(outputDir, cordinates);
+                var itemHandler = GlobalMethods.getBrickByDirCord(outputDir, cordinates);
                 if (itemHandler == null || itemHandler.ifStorageFull(item)) // if path is full or if there is no path at all
                 {
                     //Debug.Log("1");

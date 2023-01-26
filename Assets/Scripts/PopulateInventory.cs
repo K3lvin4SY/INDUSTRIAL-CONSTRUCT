@@ -27,7 +27,7 @@ public class PopulateInventory : MonoBehaviour
         foreach (var (itemName, amount) in inventory)
         {
             newObj = (GameObject)Instantiate(prefab, transform);
-            newObj.GetComponent<Image>().sprite = GlobalMethods.GetSpriteByName(itemName);
+            newObj.GetComponent<Image>().sprite = GlobalMethods.getSpriteByName(itemName);
             //newObj.AddComponent<ChooseBlock>();
             // Now use the Button to run a function in ChooseBrick.
             newObj.AddComponent<Button>();

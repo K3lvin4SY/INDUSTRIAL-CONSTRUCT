@@ -76,7 +76,7 @@ public class Map : MonoBehaviour
                     flatTileName = dir+"_Smelter";
                 }
 
-                smallMap.SetTile(new Vector3Int(cord.x, cord.y, tileZ), GlobalMethods.GetFlatTileByName(flatTileName));
+                smallMap.SetTile(new Vector3Int(cord.x, cord.y, tileZ), GlobalMethods.getFlatTileByName(flatTileName));
                 tileZ++;
             }
         }

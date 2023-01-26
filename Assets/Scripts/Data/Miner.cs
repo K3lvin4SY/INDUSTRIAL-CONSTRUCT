@@ -30,7 +30,7 @@ public class Miner : Bricks
     }
 
     private protected override void moveToNext(string item) {
-        var itemHandler = GlobalMethods.GetBrickByDirCord(outputDirections[0], cordinates);
+        var itemHandler = GlobalMethods.getBrickByDirCord(outputDirections[0], cordinates);
         if (!(itemHandler == null || itemHandler.ifStorageFull(item))) // if path is full or if there is no path at all
         {
             itemHandler.receiveItem(item);

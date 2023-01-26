@@ -31,7 +31,7 @@ public class Belt// : ScriptableObject
         }
     }
 
-    public void AddToBelt(Conveyor brick)
+    public void addToBelt(Conveyor brick)
     {
         if (subCordinates[0] == subCordinates.Last())
         {
@@ -39,7 +39,7 @@ public class Belt// : ScriptableObject
             {
                 foreach (var dir in subCordinates[0].directions)
                 {
-                    if (GlobalMethods.GetDirV3(dir, subCordinates[0].cordinates) == brick.cordinates)
+                    if (GlobalMethods.getDirV3(dir, subCordinates[0].cordinates) == brick.cordinates)
                     {
                         if (subCordinates[0].inputDirections.Contains(dir))
                         {
@@ -47,7 +47,7 @@ public class Belt// : ScriptableObject
                             subCordinates.Insert(0, brick);
                             storage.Insert(0, null);
                             brick.belt = this;
-                            CheckForDirUpdate(GlobalMethods.GetDirV3(GlobalMethods.NextBrickDir(brick, GlobalMethods.oppositeDir(dir)), brick.cordinates));
+                            checkForDirUpdate(GlobalMethods.getDirV3(GlobalMethods.nextBrickDir(brick, GlobalMethods.oppositeDir(dir)), brick.cordinates));
                             return;
                         } else if (subCordinates[0].outputDirections.Contains(dir))
                         {
@@ -55,7 +55,7 @@ public class Belt// : ScriptableObject
                             subCordinates.Add(brick);
                             storage.Add(null);
                             brick.belt = this;
-                            CheckForDirUpdate(GlobalMethods.GetDirV3(GlobalMethods.NextBrickDir(brick, GlobalMethods.oppositeDir(dir)), brick.cordinates));
+                            checkForDirUpdate(GlobalMethods.getDirV3(GlobalMethods.nextBrickDir(brick, GlobalMethods.oppositeDir(dir)), brick.cordinates));
                             return;
                         } else {
                             Debug.Log("!!!ERROR!!!");
@@ -68,15 +68,15 @@ public class Belt// : ScriptableObject
         {
             /*
             Debug.Log(dir);
-            Debug.Log(GlobalMethods.GetDirV3(dir, subCordinates[0].cordinates));
+            Debug.Log(GlobalMethods.getDirV3(dir, subCordinates[0].cordinates));
             Debug.Log(brick.cordinates);//*/
-            if (GlobalMethods.GetDirV3(dir, subCordinates[0].cordinates) == brick.cordinates)
+            if (GlobalMethods.getDirV3(dir, subCordinates[0].cordinates) == brick.cordinates)
             {
                 // in begining of belt
                 subCordinates.Insert(0, brick);
                 storage.Insert(0, null);
                 brick.belt = this;
-                CheckForDirUpdate(GlobalMethods.GetDirV3(GlobalMethods.NextBrickDir(brick, GlobalMethods.oppositeDir(dir)), brick.cordinates));
+                checkForDirUpdate(GlobalMethods.getDirV3(GlobalMethods.nextBrickDir(brick, GlobalMethods.oppositeDir(dir)), brick.cordinates));
                 return;
             }
         }
@@ -85,22 +85,22 @@ public class Belt// : ScriptableObject
         {
             /*
             Debug.Log(dir);
-            Debug.Log(GlobalMethods.GetDirV3(dir, subCordinates.Last().cordinates));
+            Debug.Log(GlobalMethods.getDirV3(dir, subCordinates.Last().cordinates));
             Debug.Log(brick.cordinates);//*/
-            if (GlobalMethods.GetDirV3(dir, subCordinates.Last().cordinates) == brick.cordinates)
+            if (GlobalMethods.getDirV3(dir, subCordinates.Last().cordinates) == brick.cordinates)
             {
                 // in end of belt
                 subCordinates.Add(brick);
                 storage.Add(null);
                 brick.belt = this;
-                CheckForDirUpdate(GlobalMethods.GetDirV3(GlobalMethods.NextBrickDir(brick, GlobalMethods.oppositeDir(dir)), brick.cordinates));
+                checkForDirUpdate(GlobalMethods.getDirV3(GlobalMethods.nextBrickDir(brick, GlobalMethods.oppositeDir(dir)), brick.cordinates));
                 return;
             }
         }
         Debug.Log("!!!ERROR!!!");
     }
 
-    public void CheckForDirUpdate(Vector3Int cord) { // if placed conveyor that has been aded to the belt is connected to something with an input/output dir. the belt will get updated
+    public void checkForDirUpdate(Vector3Int cord) { // if placed conveyor that has been aded to the belt is connected to something with an input/output dir. the belt will get updated
         if (General.bricks.ContainsKey(cord))
         {
             Bricks brick = General.bricks[cord];
@@ -116,14 +116,14 @@ public class Belt// : ScriptableObject
         }
     }
 
-    public bool AddToBeltCheck(Bricks brick)
+    public bool addToBeltCheck(Bricks brick)
     {
         foreach (var dir in subCordinates[0].directions)
         {
             /*Debug.Log(dir);
-            Debug.Log(GlobalMethods.GetDirV3(dir, subCordinates[0].cordinates));
+            Debug.Log(GlobalMethods.getDirV3(dir, subCordinates[0].cordinates));
             Debug.Log(brick.cordinates);//*/
-            if (GlobalMethods.GetDirV3(dir, subCordinates[0].cordinates) == brick.cordinates)
+            if (GlobalMethods.getDirV3(dir, subCordinates[0].cordinates) == brick.cordinates)
             {
                 // in begining of belt
                 return true;
@@ -133,9 +133,9 @@ public class Belt// : ScriptableObject
         foreach (var dir in subCordinates.Last().directions)
         {
             /*Debug.Log(dir);
-            Debug.Log(GlobalMethods.GetDirV3(dir, subCordinates.Last().cordinates));
+            Debug.Log(GlobalMethods.getDirV3(dir, subCordinates.Last().cordinates));
             Debug.Log(brick.cordinates);//*/
-            if (GlobalMethods.GetDirV3(dir, subCordinates.Last().cordinates) == brick.cordinates)
+            if (GlobalMethods.getDirV3(dir, subCordinates.Last().cordinates) == brick.cordinates)
             {
                 // in end of belt
                 return true;
@@ -144,11 +144,11 @@ public class Belt// : ScriptableObject
         return false;
     }
 
-    public bool BegningOfBelt(Bricks brick)
+    public bool begningOfBelt(Bricks brick)
     {
         foreach (var dir in subCordinates[0].directions)
         {
-            if (GlobalMethods.GetDirV3(dir, subCordinates[0].cordinates) == brick.cordinates)
+            if (GlobalMethods.getDirV3(dir, subCordinates[0].cordinates) == brick.cordinates)
             {
                 // in begining of belt
                 return true;
@@ -157,7 +157,7 @@ public class Belt// : ScriptableObject
 
         foreach (var dir in subCordinates.Last().directions)
         {
-            if (GlobalMethods.GetDirV3(dir, subCordinates.Last().cordinates) == brick.cordinates)
+            if (GlobalMethods.getDirV3(dir, subCordinates.Last().cordinates) == brick.cordinates)
             {
                 // in end of belt
                 return false;
@@ -173,13 +173,13 @@ public class Belt// : ScriptableObject
         }
     }
 
-    private void Flip() {
+    private void flip() {
         if (noDirection())
         {
             subCordinates.Reverse();
             storage.Reverse();
         } else {
-            Debug.Log("!!!Could Not Flip!!!");
+            Debug.Log("!!!Could Not flip!!!");
         }
         
     }
@@ -253,7 +253,7 @@ public class Belt// : ScriptableObject
             
         }
         
-        if (GlobalMethods.GetDirV3(brickToUseFixing.outputDirections[0], brickToUseFixing.cordinates) == brickToBeFixed.cordinates)
+        if (GlobalMethods.getDirV3(brickToUseFixing.outputDirections[0], brickToUseFixing.cordinates) == brickToBeFixed.cordinates)
         {
             
         }
@@ -262,10 +262,10 @@ public class Belt// : ScriptableObject
             if (brickToUseFixing.inputDirections.Contains(GlobalMethods.oppositeDir(fDir)))
             {
                 brickToBeFixed.changeOutputDir(new List<string>() { fDir });
-                brickToBeFixed.changeInputDir(new List<string>() { GlobalMethods.NextBrickDir(brickToBeFixed, fDir) });
+                brickToBeFixed.changeInputDir(new List<string>() { GlobalMethods.nextBrickDir(brickToBeFixed, fDir) });
             } else if (brickToUseFixing.outputDirections.Contains(GlobalMethods.oppositeDir(fDir))) {
                 brickToBeFixed.changeInputDir(new List<string>() { fDir });
-                brickToBeFixed.changeOutputDir(new List<string>() { GlobalMethods.NextBrickDir(brickToBeFixed, fDir) });
+                brickToBeFixed.changeOutputDir(new List<string>() { GlobalMethods.nextBrickDir(brickToBeFixed, fDir) });
             }
         }
     }
@@ -273,9 +273,9 @@ public class Belt// : ScriptableObject
     public void assignDirection(Bricks brick) {
         if (noDirection())
         {
-            if (AddToBeltCheck(brick))
+            if (addToBeltCheck(brick))
             {
-                if (BegningOfBelt(brick))
+                if (begningOfBelt(brick))
                 {
                     // beginning of belt
                     if (brick.outputDirections.Contains(GlobalMethods.oppositeDir(getEdgeDir(false))))
@@ -283,14 +283,14 @@ public class Belt// : ScriptableObject
                         // begining is input (don't flip)
                     } else { // if something goes wrong, try using else if (brick.inputDirections.Contains(GlobalMethods.oppositeDir(getEdgeDir(false)))) - same with the one bellow, also try adding else after to see if it ever comes down there which it shouldn't
                         // begining is output (flip)
-                        Flip();
+                        flip();
                     }
                 } else {
                     // end of belt
                     if (brick.outputDirections.Contains(GlobalMethods.oppositeDir(getEdgeDir(true))))
                     {
                         // end is input (flip)
-                        Flip();
+                        flip();
                     } else {
                         // end is output (don't flip)
                     }
@@ -311,7 +311,7 @@ public class Belt// : ScriptableObject
             Conveyor brick = subCordinates.Last();
             foreach (var dir in brick.directions)
             {
-                if (!(GlobalMethods.GetDirV3(dir, brick.cordinates) == subCordinates[subCordinates.Count-2].cordinates)) // if the brick is connected to the next brick in belt
+                if (!(GlobalMethods.getDirV3(dir, brick.cordinates) == subCordinates[subCordinates.Count-2].cordinates)) // if the brick is connected to the next brick in belt
                 {
                     return dir;
                 }
@@ -324,7 +324,7 @@ public class Belt// : ScriptableObject
             Conveyor brick = subCordinates[0];
             foreach (var dir in brick.directions)
             {
-                if (!(GlobalMethods.GetDirV3(dir, brick.cordinates) == subCordinates[1].cordinates)) // if the brick is connected to the next brick in belt
+                if (!(GlobalMethods.getDirV3(dir, brick.cordinates) == subCordinates[1].cordinates)) // if the brick is connected to the next brick in belt
                 {
                     return dir;
                 }
@@ -369,13 +369,13 @@ public class Belt// : ScriptableObject
                 } else {
                     dir = subCordinates[0].outputDirections[0];
                 }
-                if (General.bricks.ContainsKey(GlobalMethods.GetDirV3(dir, subCordinates[0].cordinates)))
+                if (General.bricks.ContainsKey(GlobalMethods.getDirV3(dir, subCordinates[0].cordinates)))
                 {
-                    return General.bricks[GlobalMethods.GetDirV3(dir, subCordinates[0].cordinates)];
+                    return General.bricks[GlobalMethods.getDirV3(dir, subCordinates[0].cordinates)];
                 }
-            } else if (General.bricks.ContainsKey(GlobalMethods.GetDirV3(subCordinates[0].directions[0], subCordinates[0].cordinates)))
+            } else if (General.bricks.ContainsKey(GlobalMethods.getDirV3(subCordinates[0].directions[0], subCordinates[0].cordinates)))
             {
-                return General.bricks[GlobalMethods.GetDirV3(subCordinates[0].directions[0], subCordinates[0].cordinates)];
+                return General.bricks[GlobalMethods.getDirV3(subCordinates[0].directions[0], subCordinates[0].cordinates)];
             }
             //Debug.Log("No Brick by edge");
             return null;
@@ -386,11 +386,11 @@ public class Belt// : ScriptableObject
             Bricks brick = subCordinates.Last();
             foreach (var dir in brick.directions)
             {
-                if (!(GlobalMethods.GetDirV3(dir, brick.cordinates) == subCordinates[subCordinates.Count-2].cordinates)) // if the brick is connected to the next brick in belt
+                if (!(GlobalMethods.getDirV3(dir, brick.cordinates) == subCordinates[subCordinates.Count-2].cordinates)) // if the brick is connected to the next brick in belt
                 {
-                    if (General.bricks.ContainsKey(GlobalMethods.GetDirV3(dir, brick.cordinates)))
+                    if (General.bricks.ContainsKey(GlobalMethods.getDirV3(dir, brick.cordinates)))
                     {
-                        return General.bricks[GlobalMethods.GetDirV3(dir, brick.cordinates)];
+                        return General.bricks[GlobalMethods.getDirV3(dir, brick.cordinates)];
                     }
                 }
             }
@@ -399,11 +399,11 @@ public class Belt// : ScriptableObject
             Bricks brick = subCordinates[0];
             foreach (var dir in brick.directions)
             {
-                if (!(GlobalMethods.GetDirV3(dir, brick.cordinates) == subCordinates[1].cordinates)) // if the brick is connected to the next brick in belt
+                if (!(GlobalMethods.getDirV3(dir, brick.cordinates) == subCordinates[1].cordinates)) // if the brick is connected to the next brick in belt
                 {
-                    if (General.bricks.ContainsKey(GlobalMethods.GetDirV3(dir, brick.cordinates)))
+                    if (General.bricks.ContainsKey(GlobalMethods.getDirV3(dir, brick.cordinates)))
                     {
-                        return General.bricks[GlobalMethods.GetDirV3(dir, brick.cordinates)];
+                        return General.bricks[GlobalMethods.getDirV3(dir, brick.cordinates)];
                     }
                 }
             }
@@ -418,25 +418,25 @@ public class Belt// : ScriptableObject
         {
             if (index+1 == subCordinates.Count && subCordinates.Count != 1) {
                 // if last brick in belt
-                brick.changeOutputDir(new List<string>() { GlobalMethods.NextBrickDir(brick, brick.inputDirections[0]) });
+                brick.changeOutputDir(new List<string>() { GlobalMethods.nextBrickDir(brick, brick.inputDirections[0]) });
                 continue;
             }
             if (subCordinates.Count == 1)
             {
                 foreach (var bDir in brick.directions)
                 {
-                    Vector3Int cord = GlobalMethods.GetDirV3(bDir, brick.cordinates);
+                    Vector3Int cord = GlobalMethods.getDirV3(bDir, brick.cordinates);
                     if (General.bricks.ContainsKey(cord))
                     {
                         if (General.bricks[cord].outputDirections.Contains(GlobalMethods.oppositeDir(bDir)))
                         {
                             brick.changeInputDir(new List<string>() { bDir });
-                            brick.changeOutputDir(new List<string>() { GlobalMethods.NextBrickDir(brick, bDir) });
+                            brick.changeOutputDir(new List<string>() { GlobalMethods.nextBrickDir(brick, bDir) });
                             continue;
                         } else if (General.bricks[cord].inputDirections.Contains(GlobalMethods.oppositeDir(bDir)))
                         {
                             brick.changeOutputDir(new List<string>() { bDir });
-                            brick.changeInputDir(new List<string>() { GlobalMethods.NextBrickDir(brick, bDir) });
+                            brick.changeInputDir(new List<string>() { GlobalMethods.nextBrickDir(brick, bDir) });
                             continue;
                         }
                     }
@@ -444,9 +444,9 @@ public class Belt// : ScriptableObject
                 Debug.Log("!!!ERROR!!!");
                 continue;
             }
-            string dir = GlobalMethods.BrickToBrickConnectionDirection(brick, subCordinates[index + 1]);
+            string dir = GlobalMethods.brickToBrickConnectionDirection(brick, subCordinates[index + 1]);
             if (index == 0) {
-                brick.changeInputDir(new List<string>() { GlobalMethods.NextBrickDir(brick, dir) });
+                brick.changeInputDir(new List<string>() { GlobalMethods.nextBrickDir(brick, dir) });
             }
             subCordinates[index + 1].changeInputDir(new List<string>() { GlobalMethods.oppositeDir(dir) });
             brick.changeOutputDir(new List<string>() { dir });
@@ -458,11 +458,11 @@ public class Belt// : ScriptableObject
 
     // for updating next belt in following path - i think?
     private void updateConnectionBelt(Bricks brick) {
-        Vector3Int connectionBrickCordinates = GlobalMethods.GetDirV3(subCordinates.Last().outputDirections[0], subCordinates.Last().cordinates);
+        Vector3Int connectionBrickCordinates = GlobalMethods.getDirV3(subCordinates.Last().outputDirections[0], subCordinates.Last().cordinates);
         Bricks beltBrick = subCordinates.Last();
         if (connectionBrickCordinates == brick.cordinates)
         {
-            connectionBrickCordinates = GlobalMethods.GetDirV3(subCordinates[0].inputDirections[0], subCordinates[0].cordinates);
+            connectionBrickCordinates = GlobalMethods.getDirV3(subCordinates[0].inputDirections[0], subCordinates[0].cordinates);
             beltBrick = subCordinates[0];
         }
         if (General.bricks.ContainsKey(connectionBrickCordinates))

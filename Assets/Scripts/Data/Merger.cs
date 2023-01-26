@@ -15,7 +15,7 @@ public class Merger : Bricks
         int amount = 0;
         foreach (var dir in inputDirections)
         {
-            if (General.bricks.ContainsKey(GlobalMethods.GetDirV3(dir, cordinates)) && General.bricks[GlobalMethods.GetDirV3(dir, cordinates)].directions != null && General.bricks[GlobalMethods.GetDirV3(dir, cordinates)].directions.Contains(GlobalMethods.oppositeDir(dir))) // if brick exist & it is connected to this brick
+            if (General.bricks.ContainsKey(GlobalMethods.getDirV3(dir, cordinates)) && General.bricks[GlobalMethods.getDirV3(dir, cordinates)].directions != null && General.bricks[GlobalMethods.getDirV3(dir, cordinates)].directions.Contains(GlobalMethods.oppositeDir(dir))) // if brick exist & it is connected to this brick
             {
                 amount += 1;
             }
@@ -27,11 +27,11 @@ public class Merger : Bricks
         Dictionary<string, string> amount = new Dictionary<string, string>();
         foreach (var dir in inputDirections)
         {
-            if (General.bricks.ContainsKey(GlobalMethods.GetDirV3(dir, cordinates)) && General.bricks[GlobalMethods.GetDirV3(dir, cordinates)].directions != null && General.bricks[GlobalMethods.GetDirV3(dir, cordinates)].directions.Contains(GlobalMethods.oppositeDir(dir))) // if brick exist & it is connected to this brick
+            if (General.bricks.ContainsKey(GlobalMethods.getDirV3(dir, cordinates)) && General.bricks[GlobalMethods.getDirV3(dir, cordinates)].directions != null && General.bricks[GlobalMethods.getDirV3(dir, cordinates)].directions.Contains(GlobalMethods.oppositeDir(dir))) // if brick exist & it is connected to this brick
             {
-                amount[dir] = General.bricks[GlobalMethods.GetDirV3(dir, cordinates)].GetItem(true, 1);
-                //Debug.Log("BeltLast: "+General.bricks[GlobalMethods.GetDirV3(dir, cordinates)].belt.storage[General.bricks[GlobalMethods.GetDirV3(dir, cordinates)].belt.storage.Count-1]);
-                //Debug.Log("BeltLast: "+General.bricks[GlobalMethods.GetDirV3(dir, cordinates)].belt.subCordinates.Last().GetItem(true, 1));
+                amount[dir] = General.bricks[GlobalMethods.getDirV3(dir, cordinates)].GetItem(true, 1);
+                //Debug.Log("BeltLast: "+General.bricks[GlobalMethods.getDirV3(dir, cordinates)].belt.storage[General.bricks[GlobalMethods.getDirV3(dir, cordinates)].belt.storage.Count-1]);
+                //Debug.Log("BeltLast: "+General.bricks[GlobalMethods.getDirV3(dir, cordinates)].belt.subCordinates.Last().GetItem(true, 1));
                 //Debug.Log("Brickitem: "+amount[dir]);
             } else {
                 amount[dir] = null;
@@ -74,9 +74,9 @@ public class Merger : Bricks
     }//*/
 
     private void removeItemFromBelt(string dir) {
-        if (General.bricks.ContainsKey(GlobalMethods.GetDirV3(dir, cordinates)) && General.bricks[GlobalMethods.GetDirV3(dir, cordinates)].directions != null && General.bricks[GlobalMethods.GetDirV3(dir, cordinates)].directions.Contains(GlobalMethods.oppositeDir(dir))) // if brick exist & it is connected to this brick
+        if (General.bricks.ContainsKey(GlobalMethods.getDirV3(dir, cordinates)) && General.bricks[GlobalMethods.getDirV3(dir, cordinates)].directions != null && General.bricks[GlobalMethods.getDirV3(dir, cordinates)].directions.Contains(GlobalMethods.oppositeDir(dir))) // if brick exist & it is connected to this brick
         {
-            Belt belt = General.bricks[GlobalMethods.GetDirV3(dir, cordinates)].belt;
+            Belt belt = General.bricks[GlobalMethods.getDirV3(dir, cordinates)].belt;
             Debug.Log("Removed:");
             Debug.Log(belt.storage.Count-1);
             Debug.Log(belt.storage[belt.storage.Count-1]);

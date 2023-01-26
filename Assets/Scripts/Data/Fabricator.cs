@@ -51,7 +51,7 @@ public class Fabricator
                     {
                         hideCoord = true;
                     }
-                    Tile tile = GlobalMethods.GetTileByNameAndDir("-fabricator_"+x+"x"+y+"x"+z+"_", masterDir);
+                    Tile tile = GlobalMethods.getTileByNameAndDir("-fabricator_"+x+"x"+y+"x"+z+"_", masterDir);
                     Debug.Log(tile);
                     Vector3Int innerCoord = new Vector3Int(x, y, z*2);
 
@@ -61,7 +61,7 @@ public class Fabricator
                     string realDir = null;
                     foreach (var iDir in inputDir)
                     {
-                        Vector3Int coordDiffrence = GlobalMethods.GetDirV3(iDir, Vector3Int.zero) - innerCoord;
+                        Vector3Int coordDiffrence = GlobalMethods.getDirV3(iDir, Vector3Int.zero) - innerCoord;
                         string dirDiffrence = coordToDir(coordDiffrence);
                         if (dirDiffrence.Length == 1)
                         {
@@ -71,7 +71,7 @@ public class Fabricator
                     }
                     foreach (var oDir in outputDir)
                     {
-                        Vector3Int coordDiffrence = GlobalMethods.GetDirV3(oDir, Vector3Int.zero) - innerCoord;
+                        Vector3Int coordDiffrence = GlobalMethods.getDirV3(oDir, Vector3Int.zero) - innerCoord;
                         string dirDiffrence = coordToDir(coordDiffrence);
                         if (dirDiffrence.Length == 1)
                         {
@@ -85,8 +85,8 @@ public class Fabricator
                     } else {
                         componentDirs = componentOutputDir;
                     }
-                    General.Instance.map.SetTile(GlobalMethods.CombineCoords(innerCoord, coords), tile);
-                    FabricatorComponent component = new FabricatorComponent(tile, GlobalMethods.CombineCoords(innerCoord, coords), /*dirs*/componentDirs, /*input*/componentInputDir, /*output*/componentOutputDir, hideCoord: hideCoord, fab: this, realDir: realDir);
+                    General.Instance.map.SetTile(GlobalMethods.combineCoords(innerCoord, coords), tile);
+                    FabricatorComponent component = new FabricatorComponent(tile, GlobalMethods.combineCoords(innerCoord, coords), /*dirs*/componentDirs, /*input*/componentInputDir, /*output*/componentOutputDir, hideCoord: hideCoord, fab: this, realDir: realDir);
                     components[innerCoord] = component;
                 }
             }
@@ -179,7 +179,7 @@ public class Fabricator
         }
 
         // begin move
-        var itemHandler = GlobalMethods.GetBrickByDirCord(outputDirections[0], cordinates);
+        var itemHandler = GlobalMethods.getBrickByDirCord(outputDirections[0], cordinates);
         if (itemHandler != null)
         {
             if (!itemHandler.ifStorageFull(item))
