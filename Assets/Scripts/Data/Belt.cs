@@ -100,6 +100,11 @@ public class Belt// : ScriptableObject
         Debug.Log("!!!ERROR!!!");
     }
 
+    /// <summary>
+    /// If a conveyor is placed next to a brick that has an input or output direction, the conveyor will
+    /// get the same direction
+    /// </summary>
+    /// <param name="cord">The position of the conveyor belt</param>
     public void checkForDirUpdate(Vector3Int cord) { // if placed conveyor that has been aded to the belt is connected to something with an input/output dir. the belt will get updated
         if (General.bricks.ContainsKey(cord))
         {
@@ -155,14 +160,14 @@ public class Belt// : ScriptableObject
             }
         }
 
-        foreach (var dir in subCordinates.Last().directions)
+        /*foreach (var dir in subCordinates.Last().directions) // Unececery code
         {
             if (GlobalMethods.getDirV3(dir, subCordinates.Last().cordinates) == brick.cordinates)
             {
                 // in end of belt
                 return false;
             }
-        }
+        }*/
         return false;
     }
 
@@ -226,6 +231,9 @@ public class Belt// : ScriptableObject
         return false;
     }
 
+    /// <summary>
+    /// It's a function that fixes a conveyor belt that has a faulty direction
+    /// </summary>
     public void fixFaltyDirection() { // not completed
         int loopNum = -1;
         Conveyor brickToBeFixed = null;
@@ -583,8 +591,17 @@ public class Belt// : ScriptableObject
         //}
     }
 
+    /// <summary>
+    /// If the storage is full, check if there is a connection brick, if there is, check if the next
+    /// brick's storage is full, if it is, return true, if it isn't, return false
+    /// </summary>
+    /// <param name="item">the item to be stored</param>
+    /// <returns>
+    /// The return value is a boolean.
+    /// </returns>
     public bool ifStorageFull(string item) {
-        if (storage.Where(c => c != null).ToList().Count >= subCordinates.Count) // if storage full
+        // if (!storage.Contains(null)) // will this be more effective and faster to calculate?
+        if (storage.Where(c => c != null).ToList().Count >= subCordinates.Count) // if storage full // 
         {
             if (moveToNextCheck()) { // if there is a connection brick (the path leads forward and doesnt end)
                 return getNextItemHandler().ifStorageFull(item);

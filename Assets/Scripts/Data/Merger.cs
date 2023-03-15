@@ -43,12 +43,13 @@ public class Merger : Bricks
     public bool mergerAvailable(string item) {
         if (itemsToChoose == null)
         {
+            // This only runs first in the first wave
             itemsToChoose = connectedPathsItems();
         }
-        timesRun += 1;
+        timesRun += 1; // adds wave to count
 
-        // add so that all directrions get removed (emptybelt) (including null)
-        if (timesRun == connectedPaths())
+        // Checks if the amount of recieved waves equals the amount of total waves it will receive
+        if (timesRun == connectedPaths()) // In other words, This will run in the last wave
         {
             if (itemsToChoose[inputDirections[0]] != null) // if priority one has an item
             {
@@ -62,11 +63,11 @@ public class Merger : Bricks
             {
                 removeItemFromBelt(inputDirections[2]);
                 receiveItem(itemsToChoose[inputDirections[2]]);
-            } else {
+            } else { // None of the paths has an item
                 receiveItem(null);
             }
-            itemsToChoose = null;
-            timesRun = 0;
+            itemsToChoose = null; // reset
+            timesRun = 0; // reset
             return true;
         } else {
             return false;
