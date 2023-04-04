@@ -562,7 +562,7 @@ public class Belt// : ScriptableObject
                 }
             }
             
-            if (!moveing && false)
+            if (!moveing /*&& false*/)
             {
                 for (int i = subCordinates.Count-1; i >= 0; i--)
                 {
@@ -576,7 +576,7 @@ public class Belt// : ScriptableObject
                                 dir = GlobalMethods.oppositeDir(subCordinates[i].inputDirections[0]);
                             }
                             
-                            if (false && subCordinates[i].GetItem(true) == "Iron_Ore") // temp
+                            if (/*false && */subCordinates[i].GetItem(true) == "Iron_Ore") // temp
                             {
                                 subCordinates[i].changeTileTag("still+"+dir+"+"+subCordinates[i].GetItem(true).Replace("_", ""), true);
                             } else {
