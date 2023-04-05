@@ -481,10 +481,10 @@ public class Belt// : ScriptableObject
         }
     }
 
-    public void Select() {
+    public void Select(string tag) {
         foreach (var brick in subCordinates)
         {
-            brick.changeTileTag("selected", temp: true);
+            brick.changeTileTag(tag, temp: true);
         }
         selected = true;
     }
@@ -562,7 +562,7 @@ public class Belt// : ScriptableObject
                 }
             }
             
-            if (!moveing && false)
+            if (!moveing/* && false*/)
             {
                 for (int i = subCordinates.Count-1; i >= 0; i--)
                 {

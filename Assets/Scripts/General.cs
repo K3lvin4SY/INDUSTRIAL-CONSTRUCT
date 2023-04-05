@@ -156,7 +156,7 @@ public class General : MonoBehaviour
             placeSelectorBox();
         }
 
-        if (gameState == "select")
+        if (gameState == "select" || gameState == "break")
         {
             Collider2D targetObject = Physics2D.OverlapPoint(mouseWorldPos3);
             //Debug.Log(targetObject);
@@ -192,7 +192,7 @@ public class General : MonoBehaviour
         if (map.GetTile(selectorLocation)) { // if selectorLocation has a tile
             if (map.GetTile(selectorLocation).name.Contains("SelectorBox") || map.GetTile(selectorLocation).name.Contains("SelectorRedBox")) { // if tile is selectorbox
                 map.SetTile(selectorLocation, null); // clear grid location
-            } else if (map.GetTile(selectorLocation).name.ToLower().Contains("selected")) { // if tile is marked
+            } else if (map.GetTile(selectorLocation).name.ToLower().Contains("lected")) { // if tile is marked
                 map.SetTile(selectorLocation, GlobalMethods.getTileByName(GlobalMethods.removeTagFromBlockName(map.GetTile(selectorLocation).name))); // turn back to original tile
             }
         }
@@ -204,11 +204,18 @@ public class General : MonoBehaviour
     }//*/
 
     private void markSelectedTile(bool update = false) {
+        string markTag;
+        if (gameState == "select")
+        {
+            markTag = "selected";
+        } else {
+            markTag = "selected";
+        }
         if (lastLocation != location || update == true) // runs if pointer have moved to another grid square or if the z position has changed
         {
             //reseting the old selection
             if (map.GetTile(selectorLocation)) { // if selectorLocation has a tile
-                if (map.GetTile(selectorLocation).name.Contains("selected")) { // if tile has selected tag
+                if (map.GetTile(selectorLocation).name.Contains("lected")) { // if tile has been marked
                     if (General.bricks.ContainsKey(selectorLocation)) // temporary if statement for brick not in bricks dictionary - REMOVE WHEN GAME SAVE is finished or WHEN ALL BRICKS IS in the bricks dictionary
                     {
                         if (General.bricks[selectorLocation].tile.name.ToLower().Contains("fabricator"))
@@ -236,16 +243,17 @@ public class General : MonoBehaviour
 
             if (map.HasTile(location)) {
                 TileBase tile = map.GetTile(location);
-                Tile tmpTile = GlobalMethods.getTileByName(GlobalMethods.addTagToBlockName(tile.name, "selected"));
+                Tile tmpTile = GlobalMethods.getTileByName(GlobalMethods.addTagToBlockName(tile.name, markTag));
+                Debug.Log(GlobalMethods.addTagToBlockName(tile.name, markTag));
                 if (GlobalMethods.isBrickPlayerEditable(tmpTile.name)) {
                     if (General.bricks.ContainsKey(location))
                     {
                         // add tag via bricks class
-                        General.bricks[location].changeTileTag("selected", temp: true);
+                        General.bricks[location].changeTileTag(markTag, temp: true);
                         if (tile.name.ToLower().Contains("fabricator"))
                         {
                             FabricatorComponent fc = General.bricks[location];
-                            fc.fabricator.select();
+                            fc.fabricator.select(markTag);
                         }
                     } else {
                         map.SetTile(location, tmpTile); // set tile to selected
@@ -256,7 +264,7 @@ public class General : MonoBehaviour
                         {
                             if (General.bricks[location] is Conveyor)
                             {
-                                General.bricks[location].belt.Select();
+                                General.bricks[location].belt.Select(markTag);
                             }
                         }
                         
@@ -659,6 +667,22 @@ public class General : MonoBehaviour
                     if (Input.GetMouseButtonDown(0))
                     {
                         SelectInspecter.inspectAtCordiante(selectorLocation);
+                    }
+                }
+            }
+            
+        } else if (gameState == "break") {
+            if (map.HasTile(selectorLocation))
+            {
+                if (map.GetTile(selectorLocation).name.ToLower().Contains("lected"))
+                {
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                        //break block at selectorLocation
+                        if (General.bricks.ContainsKey(selectorLocation))
+                        {
+                            General.bricks[selectorLocation].destroy();
+                        }
                     }
                 }
             }

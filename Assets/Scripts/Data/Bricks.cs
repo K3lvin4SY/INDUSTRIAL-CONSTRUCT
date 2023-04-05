@@ -210,4 +210,10 @@ public class Bricks
         }
         return true;
     }
+
+    public virtual void destroy() {
+        General.Instance.map.SetTile(cordinates, null);
+        General.bricks.Remove(cordinates);
+        Debug.Log("Destoryed Block: "+tile.name);
+    }
 }

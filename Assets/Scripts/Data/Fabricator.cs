@@ -190,10 +190,10 @@ public class Fabricator
         }
     }
 
-    public void select() {
+    public void select(string tag) {
         foreach ((Vector3Int coord, Bricks fc) in components)
         {
-            fc.changeTileTag("selected", temp: true);
+            fc.changeTileTag(tag, temp: true);
         }
     }
 
