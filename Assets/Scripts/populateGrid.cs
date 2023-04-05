@@ -5,7 +5,6 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using UnityEditor;
 using UnityEngine.UI;
 
 public class populateGrid : MonoBehaviour
@@ -35,14 +34,14 @@ public class populateGrid : MonoBehaviour
     private void getSpriteByName() {
         sprites.Clear();
 
-        string[] assetFiles = Directory.GetFiles("Assets/Tiles/Assets/"); // Gets string array of the tile assets file path
+        string[] assetFiles = Directory.GetFiles("Assets/Resources/Tiles/Assets/"); // Gets string array of the tile assets file path
         
         foreach (var item in assetFiles)
         {
-            if (item.EndsWith(".asset"))
+            if (item.ToLower().EndsWith(".asset"))
             {
                 //Debug.Log(item);
-                Tile assetTile = (Tile)AssetDatabase.LoadAssetAtPath<Tile>(item); // loads the tile asset from path
+                Tile assetTile = (Tile)Resources.Load<Tile>(item.ToLower().Split("assets/resources/")[1].Replace(".asset", "")); // loads the tile asset from path
                 if (assetTile != null) // exclude animation tiles
                 {
                     if (assetTile.sprite.name.Contains("brpck"))

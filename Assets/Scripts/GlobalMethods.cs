@@ -4,7 +4,7 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using UnityEditor;
+//using UnityEditor;
 
 public class GlobalMethods : MonoBehaviour
 {
@@ -25,6 +25,11 @@ public class GlobalMethods : MonoBehaviour
         {"U", new Vector3Int(0, 0, 1)},
         {"D", new Vector3Int(0, 0, -1)}
     };
+
+    public static void loadAllAssets()
+    {
+        
+    }
     public static string addTagToBlockName(string blockName, string tag)
     {
         if (doesBlockNameHaveTag(blockName))
@@ -106,15 +111,15 @@ public class GlobalMethods : MonoBehaviour
         key = key.ToLower();
         if (!tiles.ContainsKey(key))
         {
-            string[] assetFiles2 = Directory.GetFiles("Assets/imgs/items/"); // Gets string array of the tile assets file path
-            assetFiles2 = assetFiles2.Select(s => s.ToLowerInvariant()).ToArray(); // to lowercase
-            
-            string asset = "Assets/imgs/items/"+key+".png";
 
-            Sprite assetTile = (Sprite)AssetDatabase.LoadAssetAtPath(asset, typeof(Sprite)); // loads the tile asset from path
+            
+            string asset = "imgs/items/"+key;
+
+            Sprite assetTile = (Sprite)Resources.Load(asset, typeof(Sprite)); // loads the tile asset from path
             if (assetTile == null)
             {
                 Debug.Log("null assetTile");
+                Debug.Log(Resources.Load(asset));
                 return null;
             }
             string assetTileName = assetTile.name.ToLower(); // gets the name of the tile
@@ -129,18 +134,19 @@ public class GlobalMethods : MonoBehaviour
         key = key.ToLower();
         if (!tiles.ContainsKey(key))
         {
-            string[] assetFiles = Directory.GetFiles("Assets/Tiles/Assets/"); // Gets string array of the tile assets file path
+            string[] assetFiles = Directory.GetFiles("Assets/Resources/Tiles/Assets/"); // Gets string array of the tile assets file path
             assetFiles = assetFiles.Select(s => s.ToLowerInvariant()).ToArray(); // to lowercase
             bool[] assetFilesCheck = assetFiles.Select(s => s.Contains("selector")).ToArray();
             
             if (assetFilesCheck.Contains(true))
             {
-                string asset = "Assets/Tiles/Assets/"+key+".asset";
+                string asset = "Tiles/Assets/"+key;
 
-                Tile assetTile = (Tile)AssetDatabase.LoadAssetAtPath(asset, typeof(Tile)); // loads the tile asset from path
+                Tile assetTile = (Tile)Resources.Load(asset, typeof(Tile)); // loads the tile asset from path
                 if (assetTile == null)
                 {
                     Debug.Log(key);
+                    Debug.Log(Resources.Load(asset));
                     Debug.Log("null assetTile");
                     return null;
                 }
@@ -169,7 +175,7 @@ public class GlobalMethods : MonoBehaviour
             }
         }
         Debug.Log("Searching for lost Tile");
-        string[] assetFiles = Directory.GetFiles("Assets/Tiles/Assets/"); // Gets string array of the tile assets file path
+        string[] assetFiles = Directory.GetFiles("Assets/Resources/Tiles/Assets/"); // Gets string array of the tile assets file path
         assetFiles = assetFiles.Select(s => s.ToLowerInvariant()).ToArray(); // to lowercase
         assetFiles = assetFiles.Where(s => !s.Contains("animated")).ToArray(); // remove animated tiles
         assetFiles = assetFiles.Where(s => !s.Contains("selected")).ToArray(); // remove selected tiles
@@ -181,7 +187,7 @@ public class GlobalMethods : MonoBehaviour
         foreach (var assetFile in assetFiles)
         {
             //Debug.Log(assetFile);
-            if (assetFile.Contains(key) && assetFile.Replace("assets/tiles/assets/", "").Split("-")[0].Contains(dir))
+            if (assetFile.Contains(key) && assetFile.Replace("tiles/assets/", "").Split("-")[0].Contains(dir))
             {
                 //Debug.Log(key.Split("_").Last()+": "+assetFile);
                 asset = assetFile;
@@ -194,7 +200,7 @@ public class GlobalMethods : MonoBehaviour
             Debug.Log("null assetTile1");
             return null;
         }
-        Tile assetTile = (Tile)AssetDatabase.LoadAssetAtPath(asset, typeof(Tile)); // loads the tile asset from path
+        Tile assetTile = (Tile)Resources.Load(asset, typeof(Tile)); // loads the tile asset from path
         if (assetTile == null)
         {
             Debug.Log("null assetTile2");
@@ -218,7 +224,7 @@ public class GlobalMethods : MonoBehaviour
                 }
             }
         }
-        string[] assetFiles = Directory.GetFiles("Assets/Tiles/Assets/"); // Gets string array of the tile assets file path
+        string[] assetFiles = Directory.GetFiles("Assets/Resources/Tiles/Assets/"); // Gets string array of the tile assets file path
         assetFiles = assetFiles.Select(s => s.ToLowerInvariant()).ToArray(); // to lowercase
         assetFiles = assetFiles.Where(s => s.Contains("animated")).ToArray(); // keep animated tiles, remove everything else
 
@@ -234,7 +240,7 @@ public class GlobalMethods : MonoBehaviour
         if (asset == null) {
             return null;
         }
-        AnimatedTile assetTile = (AnimatedTile)AssetDatabase.LoadAssetAtPath(asset, typeof(AnimatedTile)); // loads the tile asset from path
+        AnimatedTile assetTile = (AnimatedTile)Resources.Load(asset, typeof(AnimatedTile)); // loads the tile asset from path
         if (assetTile == null)
         {
             Debug.Log("null assetTile");
@@ -250,15 +256,13 @@ public class GlobalMethods : MonoBehaviour
         key = key.ToLower();
         if (!flatTiles.ContainsKey(key))
         {
-            string[] assetFiles = Directory.GetFiles("Assets/Tiles/flat Assets/"); // Gets string array of the tile assets file path
-            assetFiles = assetFiles.Select(s => s.ToLowerInvariant()).ToArray(); // to lowercase
-            
-            string asset = "Assets/Tiles/flat Assets/"+key+".asset";
+            string asset = "Tiles/flat Assets/"+key;
 
-            Tile assetTile = (Tile)AssetDatabase.LoadAssetAtPath(asset, typeof(Tile)); // loads the tile asset from path
+            Tile assetTile = (Tile)Resources.Load(asset, typeof(Tile)); // loads the tile asset from path
             if (assetTile == null)
             {
                 Debug.Log("null assetTile");
+                Debug.Log(key);
                 return null;
             }
             string assetTileName = assetTile.name.ToLower(); // gets the name of the tile
@@ -273,16 +277,16 @@ public class GlobalMethods : MonoBehaviour
         key = key.ToLower();
         if (!tiles.ContainsKey(key))
         {
-            string[] assetFiles = Directory.GetFiles("Assets/Tiles/Assets/"); // Gets string array of the tile assets file path
+            string[] assetFiles = Directory.GetFiles("Assets/Resources/Tiles/Assets/"); // Gets string array of the tile assets file path
             assetFiles = assetFiles.Select(s => s.ToLowerInvariant()).ToArray(); // to lowercase
             bool[] assetFilesCheck = assetFiles.Select(s => s.Contains("selector")).ToArray();
             
             if (assetFilesCheck.Contains(true))
             {
-                string asset = "Assets/Tiles/Assets/"+key+".asset";
+                string asset = "Tiles/Assets/"+key;
                 //Debug.Log(asset);
 
-                AnimatedTile assetTile = (AnimatedTile)AssetDatabase.LoadAssetAtPath(asset, typeof(AnimatedTile)); // loads the tile asset from path
+                AnimatedTile assetTile = (AnimatedTile)Resources.Load(asset, typeof(AnimatedTile)); // loads the tile asset from path
                 if (assetTile == null)
                 {
                     Debug.Log("null assetTile");

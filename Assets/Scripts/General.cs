@@ -35,12 +35,13 @@ public class General : MonoBehaviour
 
 
     private void Start() {
+        General.Instance = this;
+        gameState = "select";
         InvokeRepeating("tick", 0f, 1.5f);  //0s delay, repeat every 1.5s
         Debug.Log("test1");
         General.tile = GlobalMethods.getTileByName("E-conveyor_Straight_slab");
+        Debug.Log(General.tile);
         Debug.Log(General.tile.name);
-        General.Instance = this;
-        gameState = "select";
         //tile = pgScript.tilePick;
     }
 
@@ -685,7 +686,7 @@ public class General : MonoBehaviour
                     newDirIndex += 1;
                 }
                 newTileName = directions[newDirIndex].ToString() + currentBrickName.Substring(1);
-                string[] assetFiles = Directory.GetFiles("Assets/Tiles/Assets/"); // Gets string array of the tile assets file path
+                string[] assetFiles = Directory.GetFiles("Assets/Resources/Tiles/Assets/"); // Gets string array of the tile assets file path
                 assetFiles = assetFiles.Select(s => s.ToLowerInvariant()).ToArray(); // to lowercase
                 bool[] assetFilesCheck = assetFiles.Select(s => s.Contains(newTileName.ToLower())).ToArray();
                 if (assetFilesCheck.Contains(true))
