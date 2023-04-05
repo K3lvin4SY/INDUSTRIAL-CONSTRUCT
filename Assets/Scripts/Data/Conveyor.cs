@@ -212,6 +212,7 @@ public class Conveyor : Bricks
                     dir = GlobalMethods.oppositeDir(inputDirections[0]);
                 }
                 changeTileTag("animated+"+dir);
+                //changeTileTag("selected");
             }
         }
     }

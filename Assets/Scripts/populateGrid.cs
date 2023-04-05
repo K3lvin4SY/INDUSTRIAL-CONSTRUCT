@@ -12,17 +12,17 @@ public class populateGrid : MonoBehaviour
     public GameObject prefab;
     public Image SelectedBrick;
 
-    private General sn;
-
     public static Tile tilePick;
+    public static populateGrid Instance;
 
     public Dictionary<Sprite, Tile> sprites = new Dictionary<Sprite, Tile>();
 
     private void Start() {
-        Populate();
+        //Populate();
         //SelectedBrick.sprite = MousePosition2D.tile.sprite;
         /*MousePosition2D sn = gameObject.GetComponent<MousePosition2D>();
         Debug.Log(sn.getTileByName("simple_grass_block").name);//*/
+        populateGrid.Instance = this;
     }
 
     private void Update() {
@@ -31,32 +31,24 @@ public class populateGrid : MonoBehaviour
         SelectedBrick.sprite = General.tile.sprite;
     }
 
-    private void getSpriteByName() {
+    private void loadSprites() {
         sprites.Clear();
 
-        string[] assetFiles = Directory.GetFiles("Assets/Resources/Tiles/Assets/"); // Gets string array of the tile assets file path
-        
-        foreach (var item in assetFiles)
+        //Debug.Log(GlobalMethods.getTiles().Count());
+        foreach (var item in GlobalMethods.getTiles())
         {
-            if (item.ToLower().EndsWith(".asset"))
+            //Debug.Log(item);
+            if (item.sprite.name.Contains("brpck"))
             {
                 //Debug.Log(item);
-                Tile assetTile = (Tile)Resources.Load<Tile>(item.ToLower().Split("assets/resources/")[1].Replace(".asset", "")); // loads the tile asset from path
-                if (assetTile != null) // exclude animation tiles
-                {
-                    if (assetTile.sprite.name.Contains("brpck"))
-                    {
-                        sprites[assetTile.sprite] = assetTile; // inserts the data into a dictionary
-                    }
-                }
-                
-                
+                sprites[item.sprite] = item; // inserts the data into a dictionary
             }
+                
         }
     }
 
-    void Populate() { //https://www.youtube.com/watch?v=kdkrjCF0KCo
-        getSpriteByName();
+    public void Populate() { //https://www.youtube.com/watch?v=kdkrjCF0KCo
+        loadSprites();
         GameObject newObj;
 
         foreach (var (spritei, tilei) in sprites)

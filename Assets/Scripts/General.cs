@@ -37,6 +37,8 @@ public class General : MonoBehaviour
     private void Start() {
         General.Instance = this;
         gameState = "select";
+        GlobalMethods.loadAllAssets();
+        populateGrid.Instance.Populate();
         InvokeRepeating("tick", 0f, 1.5f);  //0s delay, repeat every 1.5s
         Debug.Log("test1");
         General.tile = GlobalMethods.getTileByName("E-conveyor_Straight_slab");
@@ -677,7 +679,7 @@ public class General : MonoBehaviour
             int dirIndex = directions.ToList().FindIndex(c => c == brickNameDirection);
             int newDirIndex = dirIndex;
             string newTileName = "";
-            for (int i = 0; i != 1;)
+            while (true)
             {
                 if (newDirIndex + 1 == 4)
                 {
@@ -686,12 +688,9 @@ public class General : MonoBehaviour
                     newDirIndex += 1;
                 }
                 newTileName = directions[newDirIndex].ToString() + currentBrickName.Substring(1);
-                string[] assetFiles = Directory.GetFiles("Assets/Resources/Tiles/Assets/"); // Gets string array of the tile assets file path
-                assetFiles = assetFiles.Select(s => s.ToLowerInvariant()).ToArray(); // to lowercase
-                bool[] assetFilesCheck = assetFiles.Select(s => s.Contains(newTileName.ToLower())).ToArray();
-                if (assetFilesCheck.Contains(true))
+                if (GlobalMethods.getTileNames().Contains(newTileName.ToLower()))
                 {
-                    i = 1;
+                    break;
                 }
             }
             

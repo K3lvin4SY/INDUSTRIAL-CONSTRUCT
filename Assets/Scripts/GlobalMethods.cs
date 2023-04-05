@@ -10,6 +10,13 @@ public class GlobalMethods : MonoBehaviour
 {
 
     private static Dictionary<string, Tile> tiles = new Dictionary<string, Tile>();
+
+    public static List<Tile> getTiles() {
+        return tiles.Values.ToList<Tile>();
+    }
+    public static List<string> getTileNames() {
+        return tiles.Keys.ToList<string>();
+    }
     private static Dictionary<string, Tile> flatTiles = new Dictionary<string, Tile>();
     private static Dictionary<string, Sprite> sprites = new Dictionary<string, Sprite>();
     private static Dictionary<string, AnimatedTile> aTiles = new Dictionary<string, AnimatedTile>();
@@ -28,7 +35,33 @@ public class GlobalMethods : MonoBehaviour
 
     public static void loadAllAssets()
     {
-        
+        Tile[] assetTiles = Resources.LoadAll("Tiles/Assets", typeof(Tile)).Cast<Tile>().ToArray();
+        foreach (Tile item in assetTiles)
+        {
+            string assetTileName = item.name.ToLower(); // gets the name of the tile
+            tiles[assetTileName] = item; // inserts the data into a dictionary
+            
+        }
+        AnimatedTile[] assetATiles = Resources.LoadAll("Tiles/Animated Assets", typeof(AnimatedTile)).Cast<AnimatedTile>().ToArray();
+        foreach (AnimatedTile item in assetATiles)
+        {
+            string assetTileName = item.name.ToLower(); // gets the name of the tile
+            Debug.Log(assetTileName);
+            aTiles[assetTileName] = item; // inserts the data into a dictionary
+            
+        }
+        Tile[] assetTiles2 = Resources.LoadAll("Tiles/flat Assets", typeof(Tile)).Cast<Tile>().ToArray();
+        foreach (Tile item in assetTiles2)
+        {
+            string assetTileName = item.name.ToLower(); // gets the name of the tile
+            flatTiles[assetTileName] = item; // inserts the data into a dictionary
+        }
+        Sprite[] assetSprite = Resources.LoadAll("Tiles/flat Assets", typeof(Sprite)).Cast<Sprite>().ToArray();
+        foreach (Sprite item in assetSprite)
+        {
+            string assetTileName = item.name.ToLower(); // gets the name of the tile
+            sprites[assetTileName] = item; // inserts the data into a dictionary
+        }
     }
     public static string addTagToBlockName(string blockName, string tag)
     {
@@ -134,29 +167,7 @@ public class GlobalMethods : MonoBehaviour
         key = key.ToLower();
         if (!tiles.ContainsKey(key))
         {
-            string[] assetFiles = Directory.GetFiles("Assets/Resources/Tiles/Assets/"); // Gets string array of the tile assets file path
-            assetFiles = assetFiles.Select(s => s.ToLowerInvariant()).ToArray(); // to lowercase
-            bool[] assetFilesCheck = assetFiles.Select(s => s.Contains("selector")).ToArray();
-            
-            if (assetFilesCheck.Contains(true))
-            {
-                string asset = "Tiles/Assets/"+key;
-
-                Tile assetTile = (Tile)Resources.Load(asset, typeof(Tile)); // loads the tile asset from path
-                if (assetTile == null)
-                {
-                    Debug.Log(key);
-                    Debug.Log(Resources.Load(asset));
-                    Debug.Log("null assetTile");
-                    return null;
-                }
-                string assetTileName = assetTile.name.ToLower(); // gets the name of the tile
-                tiles[assetTileName] = assetTile; // inserts the data into a dictionary
-                //Debug.Log(assetTile.name);
-            } else {
-                Debug.Log("null tile");
-                return null;
-            }
+            return null;
         }
         return tiles[key];
     }
@@ -174,42 +185,8 @@ public class GlobalMethods : MonoBehaviour
                 }
             }
         }
-        Debug.Log("Searching for lost Tile");
-        string[] assetFiles = Directory.GetFiles("Assets/Resources/Tiles/Assets/"); // Gets string array of the tile assets file path
-        assetFiles = assetFiles.Select(s => s.ToLowerInvariant()).ToArray(); // to lowercase
-        assetFiles = assetFiles.Where(s => !s.Contains("animated")).ToArray(); // remove animated tiles
-        assetFiles = assetFiles.Where(s => !s.Contains("selected")).ToArray(); // remove selected tiles
-
-        string asset = null;
-        //Debug.Log(key);
-        //Debug.Log(dir);
-        //Debug.Log("-----asetfaile---------");
-        foreach (var assetFile in assetFiles)
-        {
-            //Debug.Log(assetFile);
-            if (assetFile.Contains(key) && assetFile.Replace("tiles/assets/", "").Split("-")[0].Contains(dir))
-            {
-                //Debug.Log(key.Split("_").Last()+": "+assetFile);
-                asset = assetFile;
-                break;
-            }
-        }
-        //Debug.Log("-----asetfaile---------");
-
-        if (asset == null) {
-            Debug.Log("null assetTile1");
-            return null;
-        }
-        Tile assetTile = (Tile)Resources.Load(asset, typeof(Tile)); // loads the tile asset from path
-        if (assetTile == null)
-        {
-            Debug.Log("null assetTile2");
-            return null;
-        }
-        string assetTileName = assetTile.name.ToLower(); // gets the name of the tile
-        tiles[assetTileName] = assetTile; // inserts the data into a dictionary
-        //Debug.Log(assetTile.name);
-        return assetTile;
+        
+        return null;
     }
 
     public static AnimatedTile getAnimatedTileByNameAndDir(string key, string dir) {
@@ -224,82 +201,23 @@ public class GlobalMethods : MonoBehaviour
                 }
             }
         }
-        string[] assetFiles = Directory.GetFiles("Assets/Resources/Tiles/Assets/"); // Gets string array of the tile assets file path
-        assetFiles = assetFiles.Select(s => s.ToLowerInvariant()).ToArray(); // to lowercase
-        assetFiles = assetFiles.Where(s => s.Contains("animated")).ToArray(); // keep animated tiles, remove everything else
-
-        string asset = null;
-        foreach (var assetFile in assetFiles)
-        {
-            if (assetFile.Contains(key) && assetFile.Split("-")[0].Contains(dir))
-            {
-                asset = assetFile;
-            }
-        }
-
-        if (asset == null) {
-            return null;
-        }
-        AnimatedTile assetTile = (AnimatedTile)Resources.Load(asset, typeof(AnimatedTile)); // loads the tile asset from path
-        if (assetTile == null)
-        {
-            Debug.Log("null assetTile");
-            return null;
-        }
-        string assetTileName = assetTile.name.ToLower(); // gets the name of the tile
-        aTiles[assetTileName] = assetTile; // inserts the data into a dictionary
-        //Debug.Log(assetTile.name);
-        return assetTile;
+        return null;
     }
 
     public static Tile getFlatTileByName(string key) {
         key = key.ToLower();
         if (!flatTiles.ContainsKey(key))
         {
-            string asset = "Tiles/flat Assets/"+key;
-
-            Tile assetTile = (Tile)Resources.Load(asset, typeof(Tile)); // loads the tile asset from path
-            if (assetTile == null)
-            {
-                Debug.Log("null assetTile");
-                Debug.Log(key);
-                return null;
-            }
-            string assetTileName = assetTile.name.ToLower(); // gets the name of the tile
-            flatTiles[assetTileName] = assetTile; // inserts the data into a dictionary
-            //Debug.Log(assetTile.name);
-           
+            return null;
         }
         return flatTiles[key];
     }
 
     public static AnimatedTile getAnimatedTileByName(string key) {
         key = key.ToLower();
-        if (!tiles.ContainsKey(key))
+        if (!aTiles.ContainsKey(key))
         {
-            string[] assetFiles = Directory.GetFiles("Assets/Resources/Tiles/Assets/"); // Gets string array of the tile assets file path
-            assetFiles = assetFiles.Select(s => s.ToLowerInvariant()).ToArray(); // to lowercase
-            bool[] assetFilesCheck = assetFiles.Select(s => s.Contains("selector")).ToArray();
-            
-            if (assetFilesCheck.Contains(true))
-            {
-                string asset = "Tiles/Assets/"+key;
-                //Debug.Log(asset);
-
-                AnimatedTile assetTile = (AnimatedTile)Resources.Load(asset, typeof(AnimatedTile)); // loads the tile asset from path
-                if (assetTile == null)
-                {
-                    Debug.Log("null assetTile");
-                    //Debug.Log(key);
-                    return null;
-                }
-                string assetTileName = assetTile.name.ToLower(); // gets the name of the tile
-                aTiles[assetTileName] = assetTile; // inserts the data into a dictionary
-                //Debug.Log(assetTile.name);
-            } else {
-                Debug.Log("null tile");
-                return null;
-            }
+            return null;
         }
         return aTiles[key];
     }

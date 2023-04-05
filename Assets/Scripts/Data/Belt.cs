@@ -562,7 +562,7 @@ public class Belt// : ScriptableObject
                 }
             }
             
-            if (!moveing /*&& false*/)
+            if (!moveing && false)
             {
                 for (int i = subCordinates.Count-1; i >= 0; i--)
                 {
