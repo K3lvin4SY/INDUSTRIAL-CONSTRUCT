@@ -97,7 +97,7 @@ public class GlobalMethods : MonoBehaviour
     }
 
     private static bool doesBlockNameHaveTag(string blockName) {
-        if (blockName.ToLower().Contains("selected") || blockName.ToLower().Contains("selectorredbox") || blockName.ToLower().Contains("selectorbox") || blockName.ToLower().Contains("animated") || blockName.ToLower().Contains("still"))
+        if (blockName.ToLower().Contains("selected") || blockName.ToLower().Contains("selectorredbox") || blockName.ToLower().Contains("selectorbox") || blockName.ToLower().Contains("animated") || blockName.ToLower().Contains("still") || blockName.ToLower().Contains("breaklected"))
         {
             return true;
         }

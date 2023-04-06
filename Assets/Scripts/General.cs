@@ -90,7 +90,7 @@ public class General : MonoBehaviour
                 {
                     return false;
                 }
-            } else if (gameState == "select") {
+            } else if (gameState == "select" || gameState == "break") {
                 if (occupiedZ.Contains(i))
                 {
                     return false;
@@ -113,7 +113,7 @@ public class General : MonoBehaviour
                 {
                     return false;
                 }
-            } else if (gameState == "select") {
+            } else if (gameState == "select" || gameState == "break") {
                 if (occupiedZ.Contains(i))
                 {
                     return false;
@@ -209,7 +209,7 @@ public class General : MonoBehaviour
         {
             markTag = "selected";
         } else {
-            markTag = "selected";
+            markTag = "breaklected";
         }
         if (lastLocation != location || update == true) // runs if pointer have moved to another grid square or if the z position has changed
         {
@@ -567,7 +567,7 @@ public class General : MonoBehaviour
             {
                 location.z = lastZ;
             }
-        } else if (gameState == "select") {
+        } else if (gameState == "select" || gameState == "break") {
             if (occupiedZ.Count > 0) {
                 lastZ = occupiedZ.Last();
             } else {
@@ -600,7 +600,7 @@ public class General : MonoBehaviour
                     location.z += direction;
                 }
             }
-        } else if (gameState == "select") {
+        } else if (gameState == "select" || gameState == "break") {
             if ((!minimumZ(location) && direction == -1) || (direction == 1 && !maximumZ(location)))
             {
                 do

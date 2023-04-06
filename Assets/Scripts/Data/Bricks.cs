@@ -74,6 +74,7 @@ public class Bricks
         {
             if (tag == null)
             {
+                Debug.Log("tag: "+tag);
                 General.Instance.map.SetTile(cordinates, GlobalMethods.getTileByName(GlobalMethods.removeTagFromBlockName(tile.name))); // Set tile to original type
                 if (!temp)
                 {
