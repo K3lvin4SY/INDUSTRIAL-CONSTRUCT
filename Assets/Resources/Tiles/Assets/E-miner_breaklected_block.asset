@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 13312, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: W_miner_breaklected_block
+  m_Name: E-miner_breaklected_block
   m_EditorClassIdentifier: 
-  m_Sprite: {fileID: 21300000, guid: 8593d5e4b24389c4b87c7f60339aecca, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 20fe47989fb4916458dbc714ad2e0a9f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Transform:
     e00: 1

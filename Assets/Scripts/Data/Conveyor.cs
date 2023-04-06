@@ -216,4 +216,31 @@ public class Conveyor : Bricks
             }
         }
     }
+
+    public override void destroy()
+    {
+        if (belt != null)
+        {
+            if (belt.selected)
+            {
+                belt.destroy();
+            } else if (belt.isBrick(this) != null) // if belt is last or first
+            {
+                int index = 0;
+                foreach (Conveyor conveyor in belt.subCordinates)
+                {
+                    if (conveyor == this)
+                    {
+                        break;
+                    }
+                    index += 1;
+                }
+                belt.subCordinates.RemoveAt(index);
+                belt.storage.RemoveAt(index);
+                General.Instance.map.SetTile(cordinates, null);
+                General.bricks.Remove(cordinates);
+                Debug.Log("Destoryed Block: "+tile.name);
+            }
+        }
+    }
 }

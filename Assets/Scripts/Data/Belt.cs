@@ -693,4 +693,15 @@ public class Belt// : ScriptableObject
         return false;
     }
 
+    public void destroy() {
+        if (selected)
+        {
+            foreach (Conveyor conveyor in subCordinates)
+            {
+                General.Instance.map.SetTile(conveyor.cordinates, null);
+                General.bricks.Remove(conveyor.cordinates);
+            }
+        }
+    }
+
 }
