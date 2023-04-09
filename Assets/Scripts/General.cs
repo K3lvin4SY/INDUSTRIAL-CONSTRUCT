@@ -31,6 +31,7 @@ public class General : MonoBehaviour
     public string gameState;
 
     public GameObject gridMap;
+    public GameObject audioEmitter;
     Vector3 offset;
 
 
@@ -732,24 +733,30 @@ public class General : MonoBehaviour
 
                 if (map.GetTile(selectorLocation).name.ToLower().Contains("fabricator"))
                 {
+                        audioEmitter.GetComponents<AudioSource>()[7].Play();
                     new Fabricator(General.tile, selectorLocation, GlobalMethods.getDirections(General.tile.name), GlobalMethods.getInputDirections(General.tile.name, selectorLocation), GlobalMethods.getOutputDirections(General.tile.name, selectorLocation));
                 } else {
                     map.SetTile(selectorLocation, General.tile);
                     Map.updateColumn(selectorLocation);
                     if (map.GetTile(selectorLocation).name.ToLower().Contains("conveyor"))
                     {
+                        audioEmitter.GetComponents<AudioSource>()[5].Play();
                         new Conveyor(General.tile, selectorLocation, GlobalMethods.getDirections(General.tile.name), GlobalMethods.getInputDirections(General.tile.name, selectorLocation), GlobalMethods.getOutputDirections(General.tile.name, selectorLocation), GlobalMethods.getBelt(General.tile.name, selectorLocation));
                     } else if (map.GetTile(selectorLocation).name.ToLower().Contains("splitter"))
                     {
+                        audioEmitter.GetComponents<AudioSource>()[6].Play();
                         new Splitter(General.tile, selectorLocation, GlobalMethods.getDirections(General.tile.name), GlobalMethods.getInputDirections(General.tile.name, selectorLocation), GlobalMethods.getOutputDirections(General.tile.name, selectorLocation), GlobalMethods.getBelt(General.tile.name, selectorLocation));
                     } else if (map.GetTile(selectorLocation).name.ToLower().Contains("merger"))
                     {
+                        audioEmitter.GetComponents<AudioSource>()[6].Play();
                         new Merger(General.tile, selectorLocation, GlobalMethods.getDirections(General.tile.name), GlobalMethods.getInputDirections(General.tile.name, selectorLocation), GlobalMethods.getOutputDirections(General.tile.name, selectorLocation), GlobalMethods.getBelt(General.tile.name, selectorLocation));
                     } else if (map.GetTile(selectorLocation).name.ToLower().Contains("miner"))
                     {
+                        audioEmitter.GetComponents<AudioSource>()[6].Play();
                         new Miner(General.tile, selectorLocation, GlobalMethods.getDirections(General.tile.name), GlobalMethods.getInputDirections(General.tile.name, selectorLocation), GlobalMethods.getOutputDirections(General.tile.name, selectorLocation), GlobalMethods.getBelt(General.tile.name, selectorLocation));
                     } else if (map.GetTile(selectorLocation).name.ToLower().Contains("smelter") || map.GetTile(selectorLocation).name.ToLower().Contains("constructer"))
                     {
+                        audioEmitter.GetComponents<AudioSource>()[6].Play();
                         new Converter(General.tile, selectorLocation, GlobalMethods.getDirections(General.tile.name), GlobalMethods.getInputDirections(General.tile.name, selectorLocation), GlobalMethods.getOutputDirections(General.tile.name, selectorLocation), GlobalMethods.getBelt(General.tile.name, selectorLocation));
                     }
                 }

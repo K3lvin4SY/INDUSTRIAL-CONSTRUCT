@@ -19,6 +19,6 @@ public class SaveGame : MonoBehaviour
 
     public void Save() {
         Debug.Log("Saving Game...");
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(0);
     }
 }

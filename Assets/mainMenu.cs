@@ -12,7 +12,7 @@ public class mainMenu : MonoBehaviour
         options.SetActive(false);
     }
     public void playBtn() {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(1);
     }
 
     public void quitBtn() {
