@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 13312, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: S-smelter_fireup_breaklected_block
+  m_Name: E-smelter_breaklected_block
   m_EditorClassIdentifier: 
-  m_Sprite: {fileID: 21300000, guid: d192718ece9f2204f83fde9f3f99b40c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 722f11134e6b6314aa581d86b7a2683e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Transform:
     e00: 1
