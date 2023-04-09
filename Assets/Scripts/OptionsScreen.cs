@@ -13,6 +13,14 @@ public class OptionsScreen : MonoBehaviour
 
     public TMP_Text resolutionLabel;
 
+    public TMP_Text masterVolProLabel;
+    public Slider masterVolPro;
+    public TMP_Text musicVolProLabel;
+    public Slider musicVolPro;
+    public TMP_Text sfxVolProLabel;
+    public Slider sfxVolPro;
+    public GameObject audioEmitter;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -86,6 +94,30 @@ public class OptionsScreen : MonoBehaviour
         }
 
         Screen.SetResolution(resolutions[selectedResolution].horizontal, resolutions[selectedResolution].vertical, fullscreenToggle.isOn);
+    }
+
+    private void UpdateVolume() {
+        audioEmitter.GetComponents<AudioSource>()[0].volume = masterVolPro.value*0.01f*musicVolPro.value*0.01f;
+
+        //Btn sound
+        audioEmitter.GetComponents<AudioSource>()[1].volume = masterVolPro.value*0.01f*sfxVolPro.value*0.01f;
+        audioEmitter.GetComponents<AudioSource>()[2].volume = masterVolPro.value*0.01f*sfxVolPro.value*0.01f;
+        audioEmitter.GetComponents<AudioSource>()[3].volume = masterVolPro.value*0.01f*sfxVolPro.value*0.01f;
+    }
+
+    public void MasterValueChange() {
+        masterVolProLabel.text = masterVolPro.value.ToString()+ " %";
+        UpdateVolume();
+    }
+
+    public void MusicValueChange() {
+        musicVolProLabel.text = musicVolPro.value.ToString()+ " %";
+        UpdateVolume();
+    }
+
+    public void SfxValueChange() {
+        sfxVolProLabel.text = sfxVolPro.value.ToString()+ " %";
+        UpdateVolume();
     }
 }
 
