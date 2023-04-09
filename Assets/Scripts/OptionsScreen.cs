@@ -103,6 +103,7 @@ public class OptionsScreen : MonoBehaviour
         audioEmitter.GetComponents<AudioSource>()[1].volume = masterVolPro.value*0.01f*sfxVolPro.value*0.01f;
         audioEmitter.GetComponents<AudioSource>()[2].volume = masterVolPro.value*0.01f*sfxVolPro.value*0.01f;
         audioEmitter.GetComponents<AudioSource>()[3].volume = masterVolPro.value*0.01f*sfxVolPro.value*0.01f;
+        audioEmitter.GetComponents<AudioSource>()[4].volume = masterVolPro.value*0.01f*sfxVolPro.value*0.01f;
     }
 
     public void MasterValueChange() {
