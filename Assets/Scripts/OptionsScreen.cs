@@ -20,10 +20,27 @@ public class OptionsScreen : MonoBehaviour
     public TMP_Text sfxVolProLabel;
     public Slider sfxVolPro;
     public GameObject audioEmitter;
+    public static OptionsScreen Instance;
+
+    public float masterVal = 100;
+    public float musicVal = 100;
+    public float sfxVal = 100;
 
     // Start is called before the first frame update
     void Start()
     {
+        try
+        {
+            masterVal = OptionsScreen.Instance.masterVal;
+            musicVal = OptionsScreen.Instance.musicVal;
+            sfxVal = OptionsScreen.Instance.sfxVal;
+        }
+        catch (System.Exception)
+        {
+        }
+
+        OptionsScreen.Instance = this;
+
         fullscreenToggle.isOn = Screen.fullScreen;
 
         if (QualitySettings.vSyncCount == 0) // no vsync
@@ -57,6 +74,16 @@ public class OptionsScreen : MonoBehaviour
 
             UpdateResLabel();
         }
+
+        masterVolPro.value = masterVal;
+        masterVolProLabel.text = masterVolPro.value.ToString()+ " %";
+
+        musicVolPro.value = musicVal;
+        musicVolProLabel.text = musicVolPro.value.ToString()+ " %";
+
+        sfxVolPro.value = sfxVal;
+        sfxVolProLabel.text = sfxVolPro.value.ToString()+ " %";
+        UpdateVolume();
 
     }
 
@@ -108,16 +135,19 @@ public class OptionsScreen : MonoBehaviour
 
     public void MasterValueChange() {
         masterVolProLabel.text = masterVolPro.value.ToString()+ " %";
+        masterVal = masterVolPro.value;
         UpdateVolume();
     }
 
     public void MusicValueChange() {
         musicVolProLabel.text = musicVolPro.value.ToString()+ " %";
+        musicVal = musicVolPro.value;
         UpdateVolume();
     }
 
     public void SfxValueChange() {
         sfxVolProLabel.text = sfxVolPro.value.ToString()+ " %";
+        sfxVal = sfxVolPro.value;
         UpdateVolume();
     }
 }

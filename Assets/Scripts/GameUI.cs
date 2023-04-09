@@ -19,7 +19,7 @@ public class GameUI : MonoBehaviour
                 SelectedBrick.enabled = true;
             }
             
-        } else if (General.Instance.gameState == "select")
+        } else if (General.Instance.gameState == "select" || General.Instance.gameState == "break")
         {
             //show selected brick
             SelectedBrick.sprite = General.Instance.selectedSprite;

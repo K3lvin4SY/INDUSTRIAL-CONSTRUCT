@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SaveGame : MonoBehaviour
 {
@@ -18,5 +19,6 @@ public class SaveGame : MonoBehaviour
 
     public void Save() {
         Debug.Log("Saving Game...");
+        SceneManager.LoadScene(1);
     }
 }
