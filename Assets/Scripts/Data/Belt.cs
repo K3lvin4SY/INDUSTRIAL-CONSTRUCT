@@ -581,6 +581,7 @@ public class Belt// : ScriptableObject
                             if (/*false && */ items.Contains(subCordinates[i].GetItem(true))) // temp
                             {
                                 subCordinates[i].changeTileTag("still+"+dir+"+"+subCordinates[i].GetItem(true).Replace("_", ""), false);
+                                Debug.Log("still+"+dir+"+"+subCordinates[i].GetItem(true).Replace("_", ""));
                             } else {
                                 subCordinates[i].changeTileTag("selected", true);
                             }
