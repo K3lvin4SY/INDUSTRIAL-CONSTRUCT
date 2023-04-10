@@ -13,22 +13,22 @@ MonoBehaviour:
   m_Name: W-conveyor_Bend_animated+N+IronOre_slab
   m_EditorClassIdentifier: 
   m_AnimatedSprites:
-  - {fileID: 21300000, guid: e3747457b2815d644808fbeb367dd381, type: 3}
-  - {fileID: 21300000, guid: 27fd5a1aa4c6355408a65bd50bd58506, type: 3}
-  - {fileID: 21300000, guid: d3e8b224c8702454b8c8a9f2819697b9, type: 3}
-  - {fileID: 21300000, guid: 395931d1ed3223e40b3ddec9d08fe0c3, type: 3}
-  - {fileID: 21300000, guid: 32b91a2ec8305774f90878c5e0fa02aa, type: 3}
-  - {fileID: 21300000, guid: cc4c5664f7d48d0408953e9471cea47b, type: 3}
-  - {fileID: 21300000, guid: fd140d26d95a8a9448ac9dd25f68e659, type: 3}
-  - {fileID: 21300000, guid: e1fd3c0888e389d4e9e27e80fd1b42d9, type: 3}
-  - {fileID: 21300000, guid: 37fdca359ee465c43a5243b0191cb807, type: 3}
-  - {fileID: 21300000, guid: 5e60cb97e975b7e4ba3f7d414dd6bd86, type: 3}
-  - {fileID: 21300000, guid: ddeedb1ea0e20e54ca1cd36a0ba0be23, type: 3}
-  - {fileID: 21300000, guid: 6d1bdafb18fe90b48b99890783d7e985, type: 3}
-  - {fileID: 21300000, guid: e40956d1d157b554eb2c8cdc4012a3f5, type: 3}
-  - {fileID: 21300000, guid: f96c672386f276c4388cf9e7ffc6c8ad, type: 3}
-  - {fileID: 21300000, guid: e27000cf2c3facd4ba8463cccc4d0de2, type: 3}
-  - {fileID: 21300000, guid: 4e58050acfb55bb4fbb54a688ec5d968, type: 3}
+  - {fileID: 21300000, guid: 1c0d6488742dcd44e9837695cd030497, type: 3}
+  - {fileID: 21300000, guid: fb36eda40e849ca45a3134d54fd1eb36, type: 3}
+  - {fileID: 21300000, guid: c07e8d403ff00b74aa92408ea7aa47ff, type: 3}
+  - {fileID: 21300000, guid: ad1d939b48ff848469f4510b83da2f21, type: 3}
+  - {fileID: 21300000, guid: e35445ce19f696f419494defd88cc8ef, type: 3}
+  - {fileID: 21300000, guid: 7f66139dba71e1341ab74dc5fac9a46b, type: 3}
+  - {fileID: 21300000, guid: 5ba6dfbb62a4e6948ba0aea406d605c4, type: 3}
+  - {fileID: 21300000, guid: 6b986d97389e3d249a057f988f1abb54, type: 3}
+  - {fileID: 21300000, guid: 123611fbbdf055549a9a7a56cc7377a6, type: 3}
+  - {fileID: 21300000, guid: d94bfbd1cb3b7ed42a4487ac8c14eb16, type: 3}
+  - {fileID: 21300000, guid: a4e7546de4091414a89b4137d9501d1b, type: 3}
+  - {fileID: 21300000, guid: f9f835e9aa61ff741a850e9105e810ab, type: 3}
+  - {fileID: 21300000, guid: c17f9459995dec14ea95f017c1e58a61, type: 3}
+  - {fileID: 21300000, guid: d8715e46b376aae43bca0e0b52db45bd, type: 3}
+  - {fileID: 21300000, guid: 5a16371c1190d484eab5b9b32d7aa754, type: 3}
+  - {fileID: 21300000, guid: 32b7e79d0c377d343bb6c5856d201796, type: 3}
   m_MinSpeed: 15
   m_MaxSpeed: 15
   m_AnimationStartTime: 0

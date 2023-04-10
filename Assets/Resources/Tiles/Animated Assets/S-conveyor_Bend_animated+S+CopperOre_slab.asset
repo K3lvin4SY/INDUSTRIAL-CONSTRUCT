@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13b75c95f34a00d4e8c04f76b73312e6, type: 3}
+  m_Name: S-conveyor_Bend_animated+S+CopperOre_slab
+  m_EditorClassIdentifier: 
+  m_AnimatedSprites:
+  - {fileID: 21300000, guid: a058e47a86a0ff042b1659b1827bc697, type: 3}
+  - {fileID: 21300000, guid: 2931f3d42e67bfa478d75a58cfe1ba90, type: 3}
+  - {fileID: 21300000, guid: 3f4ee82a537a09947bf149f5ab14ace0, type: 3}
+  - {fileID: 21300000, guid: 41cffabd9570f54428a5f173095a3f85, type: 3}
+  - {fileID: 21300000, guid: d052ccbf5ef71ca4e8bf508996ccebbb, type: 3}
+  - {fileID: 21300000, guid: f8e8107d9a4446a41b7e4da12e7a1bd6, type: 3}
+  - {fileID: 21300000, guid: 573208748c1d05a458248b89cd86ea7d, type: 3}
+  - {fileID: 21300000, guid: 2fceaac1ead1d9c49b704a520cb0fae0, type: 3}
+  - {fileID: 21300000, guid: 234ee6bd85f6adf4d8fe210fbce801bd, type: 3}
+  - {fileID: 21300000, guid: 9f59b0033a027724cbf88fe21fcfb5db, type: 3}
+  - {fileID: 21300000, guid: 3d3a428832c81ab42aeefd63e29978db, type: 3}
+  - {fileID: 21300000, guid: ef385268083dc9c4ca076d1d9850e322, type: 3}
+  - {fileID: 21300000, guid: 96f72eafeb7e7ec4a8b182b01b85c4c3, type: 3}
+  - {fileID: 21300000, guid: 87ca7d7f36003da4dbce8ba3cbfa5516, type: 3}
+  - {fileID: 21300000, guid: 66b434cffb8f3794287ba697ad31c507, type: 3}
+  - {fileID: 21300000, guid: b1c08f59fb8584649aeab55ca3bf6d48, type: 3}
+  m_MinSpeed: 15
+  m_MaxSpeed: 15
+  m_AnimationStartTime: 0
+  m_AnimationStartFrame: 1
+  m_TileColliderType: 0

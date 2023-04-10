@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13b75c95f34a00d4e8c04f76b73312e6, type: 3}
+  m_Name: W-conveyor_Slant_animated+E+IronBar_block
+  m_EditorClassIdentifier: 
+  m_AnimatedSprites:
+  - {fileID: 21300000, guid: bb78bd11107382e409f8d2debdb62700, type: 3}
+  - {fileID: 21300000, guid: 961b060d57dc2b6468f6f260cc3ab5be, type: 3}
+  - {fileID: 21300000, guid: 0180014fa5d4be14db33065396bceb94, type: 3}
+  - {fileID: 21300000, guid: 5de9e005ff6c7304ba3203576b1b9229, type: 3}
+  - {fileID: 21300000, guid: fec525ab427aeec4d88ee7da54ef50f2, type: 3}
+  - {fileID: 21300000, guid: 0d73273522b80cd4cb55f3ccfef612a8, type: 3}
+  - {fileID: 21300000, guid: 70d180f6c7fa7c048837791779419fa3, type: 3}
+  - {fileID: 21300000, guid: 2cdb16c6d1d570f419f59a6808b43810, type: 3}
+  - {fileID: 21300000, guid: fc9000402346eee4ab48a7557c2b5eca, type: 3}
+  - {fileID: 21300000, guid: ab0a4aa030034c04e82f453ca377355f, type: 3}
+  - {fileID: 21300000, guid: 92d36590cda412347a62611f0b3a5167, type: 3}
+  - {fileID: 21300000, guid: 8a75518b644f0b340a8a8cd019dfb1d4, type: 3}
+  - {fileID: 21300000, guid: 3950ec70e7da7084ebe5798c84ec2ab1, type: 3}
+  - {fileID: 21300000, guid: 7a2cdf3152261dd4bb09652e168307ee, type: 3}
+  - {fileID: 21300000, guid: e30639b4867e50649bccc53f912a895e, type: 3}
+  - {fileID: 21300000, guid: b70d276a3983b3f489c37c6373a1a6b1, type: 3}
+  m_MinSpeed: 16
+  m_MaxSpeed: 16
+  m_AnimationStartTime: 0
+  m_AnimationStartFrame: 1
+  m_TileColliderType: 0
