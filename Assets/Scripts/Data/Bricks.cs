@@ -29,7 +29,7 @@ public class Bricks
 
     
 
-    private string currentTag;
+    protected string currentTag;
 
     public Bricks(Tile cTile, Vector3Int coords, List<string> dir, List<string> inputDir, List<string> outputDir)
     {
@@ -83,6 +83,14 @@ public class Bricks
                 return;
             }
             string newBrickName = GlobalMethods.addTagToBlockName(tile.name, tag);
+            Debug.Log(General.Instance.map.GetTile(cordinates).name);
+            if (General.Instance.map.GetTile(cordinates).name.Contains("lected"))
+            {
+                //Debug.Log("Hover lected");
+                return;
+            } else {
+                //Debug.Log("Hover not lected");
+            }
             if (tag.Contains("animated"))
             {
                 General.Instance.map.SetTile(cordinates, GlobalMethods.getAnimatedTileByName(newBrickName));

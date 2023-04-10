@@ -217,6 +217,27 @@ public class Conveyor : Bricks
         }
     }
 
+    public void removeItemFromAnimation() {
+        if (tile != null)
+        {
+            string newTag = currentTag;
+            string[] items = {"IronOre", "IronBar", "CopperOre", "GoldOre"};
+            foreach (string item in items)
+            {
+                newTag = newTag.Replace("+"+item, "");
+            }
+            if (currentTag.Contains("animated"))
+            {
+                changeTileTag(newTag, false);
+            } else if (currentTag.Contains("still")) {
+                changeTileTag(newTag.Replace("still", "animated"), false);
+            } else {
+                Debug.Log("ERROR: "+currentTag);
+            }
+            
+        }
+    }
+
     public override void destroy()
     {
         if (belt != null)
